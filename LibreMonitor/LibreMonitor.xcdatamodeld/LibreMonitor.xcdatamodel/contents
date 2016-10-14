@@ -6,4 +6,36 @@
     <elements>
         <element name="Event" positionX="261" positionY="189" width="128" height="60"/>
     </elements>
+    <entity name="BloodGlucose" representedClassName=".BloodGlucose" syncable="YES">
+        <attribute name="bytes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <relationship name="sensor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sensor" inverseName="bloodGlucose" inverseEntity="Sensor" syncable="YES"/>
+    </entity>
+    <entity name="HeaderData" representedClassName="HeaderData" syncable="YES">
+        <attribute name="bytes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
+    <entity name="Reader" representedClassName=".Reader" syncable="YES">
+        <attribute name="batteryVoltage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="temperature" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Sensor" representedClassName=".Sensor" syncable="YES">
+        <attribute name="lastScanDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="minutesSinceStart" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bloodGlucose" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BloodGlucose" inverseName="sensor" inverseEntity="BloodGlucose" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Event" positionX="207" positionY="-135" width="128" height="58"/>
+        <element name="BloodGlucose" positionX="43" positionY="81" width="128" height="148"/>
+        <element name="HeaderData" positionX="189" positionY="-18" width="128" height="75"/>
+        <element name="Reader" positionX="288" positionY="261" width="128" height="88"/>
+        <element name="Sensor" positionX="261" positionY="84" width="128" height="118"/>
+    </elements>
 </model>
