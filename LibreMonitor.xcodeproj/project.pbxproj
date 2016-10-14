@@ -1,0 +1,558 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
+		C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */; };
+		C6822D6B1DB13F2200D08393 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D6A1DB13F2200D08393 /* MasterViewController.swift */; };
+		C6822D6D1DB13F2200D08393 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D6C1DB13F2200D08393 /* DetailViewController.swift */; };
+		C6822D701DB13F2200D08393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6822D6E1DB13F2200D08393 /* Main.storyboard */; };
+		C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6822D711DB13F2200D08393 /* Assets.xcassets */; };
+		C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */; };
+		C6822D801DB13F2200D08393 /* LibreMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D7F1DB13F2200D08393 /* LibreMonitorTests.swift */; };
+		C6822D8B1DB13F2200D08393 /* LibreMonitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D8A1DB13F2200D08393 /* LibreMonitorUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C6822D7C1DB13F2200D08393 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C6822D5A1DB13F2200D08393 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C6822D611DB13F2200D08393;
+			remoteInfo = LibreMonitor;
+		};
+		C6822D871DB13F2200D08393 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C6822D5A1DB13F2200D08393 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C6822D611DB13F2200D08393;
+			remoteInfo = LibreMonitor;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C6822D621DB13F2200D08393 /* LibreMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6822D651DB13F2200D08393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C6822D681DB13F2200D08393 /* LibreMonitor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LibreMonitor.xcdatamodel; sourceTree = "<group>"; };
+		C6822D6A1DB13F2200D08393 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		C6822D6C1DB13F2200D08393 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		C6822D6F1DB13F2200D08393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C6822D711DB13F2200D08393 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C6822D741DB13F2200D08393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C6822D761DB13F2200D08393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C6822D7B1DB13F2200D08393 /* LibreMonitorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibreMonitorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6822D7F1DB13F2200D08393 /* LibreMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreMonitorTests.swift; sourceTree = "<group>"; };
+		C6822D811DB13F2200D08393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C6822D861DB13F2200D08393 /* LibreMonitorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibreMonitorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6822D8A1DB13F2200D08393 /* LibreMonitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreMonitorUITests.swift; sourceTree = "<group>"; };
+		C6822D8C1DB13F2200D08393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C6822D5F1DB13F2200D08393 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6822D781DB13F2200D08393 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6822D831DB13F2200D08393 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C6822D591DB13F2200D08393 = {
+			isa = PBXGroup;
+			children = (
+				C6822D641DB13F2200D08393 /* LibreMonitor */,
+				C6822D7E1DB13F2200D08393 /* LibreMonitorTests */,
+				C6822D891DB13F2200D08393 /* LibreMonitorUITests */,
+				C6822D631DB13F2200D08393 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C6822D631DB13F2200D08393 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C6822D621DB13F2200D08393 /* LibreMonitor.app */,
+				C6822D7B1DB13F2200D08393 /* LibreMonitorTests.xctest */,
+				C6822D861DB13F2200D08393 /* LibreMonitorUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6822D641DB13F2200D08393 /* LibreMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				C6822D651DB13F2200D08393 /* AppDelegate.swift */,
+				C6822D6A1DB13F2200D08393 /* MasterViewController.swift */,
+				C6822D6C1DB13F2200D08393 /* DetailViewController.swift */,
+				C6822D6E1DB13F2200D08393 /* Main.storyboard */,
+				C6822D711DB13F2200D08393 /* Assets.xcassets */,
+				C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */,
+				C6822D761DB13F2200D08393 /* Info.plist */,
+				C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */,
+			);
+			path = LibreMonitor;
+			sourceTree = "<group>";
+		};
+		C6822D7E1DB13F2200D08393 /* LibreMonitorTests */ = {
+			isa = PBXGroup;
+			children = (
+				C6822D7F1DB13F2200D08393 /* LibreMonitorTests.swift */,
+				C6822D811DB13F2200D08393 /* Info.plist */,
+			);
+			path = LibreMonitorTests;
+			sourceTree = "<group>";
+		};
+		C6822D891DB13F2200D08393 /* LibreMonitorUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C6822D8A1DB13F2200D08393 /* LibreMonitorUITests.swift */,
+				C6822D8C1DB13F2200D08393 /* Info.plist */,
+			);
+			path = LibreMonitorUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C6822D611DB13F2200D08393 /* LibreMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6822D8F1DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitor" */;
+			buildPhases = (
+				C6822D5E1DB13F2200D08393 /* Sources */,
+				C6822D5F1DB13F2200D08393 /* Frameworks */,
+				C6822D601DB13F2200D08393 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LibreMonitor;
+			productName = LibreMonitor;
+			productReference = C6822D621DB13F2200D08393 /* LibreMonitor.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C6822D7A1DB13F2200D08393 /* LibreMonitorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6822D921DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitorTests" */;
+			buildPhases = (
+				C6822D771DB13F2200D08393 /* Sources */,
+				C6822D781DB13F2200D08393 /* Frameworks */,
+				C6822D791DB13F2200D08393 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C6822D7D1DB13F2200D08393 /* PBXTargetDependency */,
+			);
+			name = LibreMonitorTests;
+			productName = LibreMonitorTests;
+			productReference = C6822D7B1DB13F2200D08393 /* LibreMonitorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C6822D851DB13F2200D08393 /* LibreMonitorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6822D951DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitorUITests" */;
+			buildPhases = (
+				C6822D821DB13F2200D08393 /* Sources */,
+				C6822D831DB13F2200D08393 /* Frameworks */,
+				C6822D841DB13F2200D08393 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C6822D881DB13F2200D08393 /* PBXTargetDependency */,
+			);
+			name = LibreMonitorUITests;
+			productName = LibreMonitorUITests;
+			productReference = C6822D861DB13F2200D08393 /* LibreMonitorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C6822D5A1DB13F2200D08393 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Uwe Petersen";
+				TargetAttributes = {
+					C6822D611DB13F2200D08393 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 26F6YWJYL8;
+						ProvisioningStyle = Automatic;
+					};
+					C6822D7A1DB13F2200D08393 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 26F6YWJYL8;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C6822D611DB13F2200D08393;
+					};
+					C6822D851DB13F2200D08393 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 26F6YWJYL8;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C6822D611DB13F2200D08393;
+					};
+				};
+			};
+			buildConfigurationList = C6822D5D1DB13F2200D08393 /* Build configuration list for PBXProject "LibreMonitor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C6822D591DB13F2200D08393;
+			productRefGroup = C6822D631DB13F2200D08393 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C6822D611DB13F2200D08393 /* LibreMonitor */,
+				C6822D7A1DB13F2200D08393 /* LibreMonitorTests */,
+				C6822D851DB13F2200D08393 /* LibreMonitorUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C6822D601DB13F2200D08393 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */,
+				C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */,
+				C6822D701DB13F2200D08393 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6822D791DB13F2200D08393 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6822D841DB13F2200D08393 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C6822D5E1DB13F2200D08393 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
+				C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */,
+				C6822D6B1DB13F2200D08393 /* MasterViewController.swift in Sources */,
+				C6822D6D1DB13F2200D08393 /* DetailViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6822D771DB13F2200D08393 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6822D801DB13F2200D08393 /* LibreMonitorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6822D821DB13F2200D08393 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6822D8B1DB13F2200D08393 /* LibreMonitorUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C6822D7D1DB13F2200D08393 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C6822D611DB13F2200D08393 /* LibreMonitor */;
+			targetProxy = C6822D7C1DB13F2200D08393 /* PBXContainerItemProxy */;
+		};
+		C6822D881DB13F2200D08393 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C6822D611DB13F2200D08393 /* LibreMonitor */;
+			targetProxy = C6822D871DB13F2200D08393 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C6822D6E1DB13F2200D08393 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C6822D6F1DB13F2200D08393 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C6822D741DB13F2200D08393 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C6822D8D1DB13F2200D08393 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C6822D8E1DB13F2200D08393 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C6822D901DB13F2200D08393 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				INFOPLIST_FILE = LibreMonitor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		C6822D911DB13F2200D08393 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				INFOPLIST_FILE = LibreMonitor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		C6822D931DB13F2200D08393 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				INFOPLIST_FILE = LibreMonitorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LibreMonitor.app/LibreMonitor";
+			};
+			name = Debug;
+		};
+		C6822D941DB13F2200D08393 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				INFOPLIST_FILE = LibreMonitorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LibreMonitor.app/LibreMonitor";
+			};
+			name = Release;
+		};
+		C6822D961DB13F2200D08393 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				INFOPLIST_FILE = LibreMonitorUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = LibreMonitor;
+			};
+			name = Debug;
+		};
+		C6822D971DB13F2200D08393 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				INFOPLIST_FILE = LibreMonitorUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = LibreMonitor;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C6822D5D1DB13F2200D08393 /* Build configuration list for PBXProject "LibreMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6822D8D1DB13F2200D08393 /* Debug */,
+				C6822D8E1DB13F2200D08393 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C6822D8F1DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6822D901DB13F2200D08393 /* Debug */,
+				C6822D911DB13F2200D08393 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C6822D921DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6822D931DB13F2200D08393 /* Debug */,
+				C6822D941DB13F2200D08393 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C6822D951DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C6822D961DB13F2200D08393 /* Debug */,
+				C6822D971DB13F2200D08393 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C6822D681DB13F2200D08393 /* LibreMonitor.xcdatamodel */,
+			);
+			currentVersion = C6822D681DB13F2200D08393 /* LibreMonitor.xcdatamodel */;
+			path = LibreMonitor.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = C6822D5A1DB13F2200D08393 /* Project object */;
+}
