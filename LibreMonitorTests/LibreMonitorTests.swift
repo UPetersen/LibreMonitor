@@ -1,19 +1,15 @@
 //
-//  LibreMonitorTestSensorData.swift
-//  LibreMonitor
+//  LibreMonitorTests.swift
+//  LibreMonitorTests
 //
-//  Created by Uwe Petersen on 28.07.16.
+//  Created by Uwe Petersen on 09.10.16.
 //  Copyright © 2016 Uwe Petersen. All rights reserved.
 //
 
-import Foundation
-
 import XCTest
-//@testable import Pods_LibreMonitor
 @testable import LibreMonitor
 
-class LibreCGMTestSensorData: XCTestCase {
-    
+class LibreMonitorTests: XCTestCase, SLIPBufferDelegate  {
     // Adaptions for the c-code from the arduino part
     typealias byte = UInt8
     
@@ -33,194 +29,179 @@ class LibreCGMTestSensorData: XCTestCase {
         super.tearDown()
     }
     
-    func arrayOfValidTestInputs() -> [[UInt8]] {
-        
-        var testString2 =  "FD 61 18 19 01 00 00 00"  //  0 should return "62 C2", i.e. 25282 oder 49762 (with bytes not swapped)
-        testString2.append("00 00 00 00 00 00 00 00") //  1
-        testString2.append("00 00 00 00 00 00 00 00") //  2
-        testString2.append("62 C2 00 00 00 00 00 00") //  3
-        testString2.append("00 00 00 00 00 00 00 00") //  4
-        testString2.append("00 00 00 00 00 00 00 00") //  5
-        testString2.append("00 00 00 00 00 00 00 00") //  6
-        testString2.append("00 00 00 00 00 00 00 00") //  7
-        testString2.append("00 00 00 00 00 00 00 00") //  8
-        testString2.append("00 00 00 00 00 00 00 00") //  9
-        testString2.append("00 00 00 00 00 00 00 00") // 10
-        testString2.append("00 00 00 00 00 00 00 00") // 11
-        testString2.append("00 00 00 00 00 00 00 00") // 12
-        testString2.append("00 00 00 00 00 00 00 00") // 13
-        testString2.append("00 00 00 00 00 00 00 00") // 14
-        testString2.append("00 00 00 00 00 00 00 00") // 15
-        testString2.append("00 00 00 00 00 00 00 00") // 16
-        testString2.append("00 00 00 00 00 00 00 00") // 17
-        testString2.append("00 00 00 00 00 00 00 00") // 18
-        testString2.append("00 00 00 00 00 00 00 00") // 19
-        testString2.append("00 00 00 00 00 00 00 00") // 20
-        testString2.append("00 00 00 00 00 00 00 00") // 21
-        testString2.append("00 00 00 00 00 00 00 00") // 22
-        testString2.append("00 00 00 00 00 00 00 00") // 23
-        testString2.append("00 00 00 00 00 00 00 00") // 24
-        testString2.append("00 00 00 00 00 00 00 00") // 25
-        testString2.append("00 00 00 00 00 00 00 00") // 26
-        testString2.append("00 00 00 00 00 00 00 00") // 27
-        testString2.append("00 00 00 00 00 00 00 00") // 28
-        testString2.append("00 00 00 00 00 00 00 00") // 29
-        testString2.append("00 00 00 00 00 00 00 00") // 30
-        testString2.append("00 00 00 00 00 00 00 00") // 31
-        testString2.append("00 00 00 00 00 00 00 00") // 32
-        testString2.append("00 00 00 00 00 00 00 00") // 33
-        testString2.append("00 00 00 00 00 00 00 00") // 34
-        testString2.append("00 00 00 00 00 00 00 00") // 35
-        testString2.append("00 00 00 00 00 00 00 00") // 36
-        testString2.append("00 00 00 00 00 00 00 00") // 37
-        testString2.append("00 00 00 00 00 00 00 00") // 38
-        testString2.append("00 00 00 00 00 00 00 00") // 39
-        testString2.append("58 C7 00 01 15 04 96 50") // 40
-        testString2.append("14 07 96 80 5A 00 ED A6") // 41
-        testString2.append("12 13 1B C8 04 99 28 66") // 42
-        
-        testString2 = testString2.replacingOccurrences(of: " ", with: "")
-        let bytes2 = stringToBytes(testString2)
-        
-        
-        var testString3 =  "90 DC 18 19 03 00 00 00"  //  0
-        testString3.append("00 00 00 00 00 00 00 00") //  1
-        testString3.append("00 00 00 00 00 00 00 00") //  2
-        testString3.append("E1 D7 06 03 FC 04 C8 24") //  3
-        testString3.append("DA 80 F1 04 C8 30 9A 80") //  4
-        testString3.append("E4 04 C8 24 9A 80 D4 04") //  5
-        testString3.append("C8 10 5A 80 CB 04 C8 6C") //  6
-        testString3.append("9A 80 C2 04 C8 78 DA 80") //  7 "C204C878DA80" for trend test
-        testString3.append("2D 05 C8 18 D9 80 2B 05") //  8
-        testString3.append("88 0E D9 81 33 05 C8 2C") //  9
-        testString3.append("D9 80 31 05 C8 38 D9 80") // 10
-        testString3.append("31 05 C8 28 D9 80 2E 05") // 11
-        testString3.append("C8 34 D9 80 2B 05 C8 98") // 12
-        testString3.append("99 80 22 05 C8 C0 99 80") // 13
-        testString3.append("18 05 C8 00 9A 80 0A 05") // 14
-        testString3.append("C8 08 9A 80 00 00 88 06") // 15
-        testString3.append("98 80 55 05 C8 2C D9 80") // 16
-        testString3.append("27 05 C8 98 99 80 00 00") // 17 "2705C8989980" for history test
-        testString3.append("00 00 00 00 00 00 00 00") // 18
-        testString3.append("00 00 00 00 00 00 00 00") // 19
-        testString3.append("00 00 00 00 00 00 00 00") // 20
-        testString3.append("00 00 00 00 00 00 00 00") // 21
-        testString3.append("00 00 00 00 00 00 00 00") // 22
-        testString3.append("00 00 00 00 00 00 00 00") // 23
-        testString3.append("00 00 00 00 00 00 00 00") // 24
-        testString3.append("00 00 00 00 00 00 00 00") // 25
-        testString3.append("00 00 00 00 00 00 00 00") // 26
-        testString3.append("00 00 00 00 00 00 00 00") // 27
-        testString3.append("00 00 00 00 00 00 00 00") // 28
-        testString3.append("00 00 00 00 00 00 00 00") // 29
-        testString3.append("00 00 00 00 00 00 00 00") // 30
-        testString3.append("00 00 00 00 00 00 00 00") // 31
-        testString3.append("00 00 00 00 00 00 00 00") // 32
-        testString3.append("00 00 00 00 00 00 00 00") // 33
-        testString3.append("00 00 00 00 00 00 00 00") // 34
-        testString3.append("00 00 00 00 00 00 00 00") // 35
-        testString3.append("00 00 00 00 00 00 00 00") // 36
-        testString3.append("00 00 00 00 00 00 00 00") // 37
-        testString3.append("00 00 00 00 00 00 00 00") // 38
-        testString3.append("00 00 00 00 37 00 00 00") // 39
-        testString3.append("58 C7 00 01 15 04 96 50") // 40
-        testString3.append("14 07 96 80 5A 00 ED A6") // 41
-        testString3.append("12 13 1B C8 04 99 28 66") // 42
-        testString3 = testString3.replacingOccurrences(of: " ", with: "")
-        let bytes3 = stringToBytes(testString3)
-        
-        return [bytes2, bytes3]
-    }
-    
-    func testCrcTable() {
-        
-    }
-    
     func testExample() {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
         
-        // Test valid crc and other data for the test cases
-        print("------- valid test cases for crc and other ------")
-        let validTestCaseBytes = arrayOfValidTestInputs().last!
-        let date = Date()
-        if let sensorData = SensorData(bytes: validTestCaseBytes, date: date) {
-            print(sensorData)
-            print("Header validity: " + String(sensorData.hasValidHeaderCRC))
-            print("Body validity:" + String(sensorData.hasValidBodyCRC))
-            
-            XCTAssert(sensorData.hasValidHeaderCRC == true, "Unvalid header crc")
-            XCTAssert(sensorData.hasValidBodyCRC == true, "Unvalid body crc")
-            XCTAssert(sensorData.hasValidFooterCRC == true, "Unvalid footer crc")
-            
-            XCTAssert(sensorData.minutesSinceStart == 55, "Wrong minutesSinceStart counter")
-            XCTAssert(sensorData.nextTrendBlock == 6, "Wrong next trend block")
-            XCTAssert(sensorData.nextHistoryBlock == 3, "Wrong next history block")
-            XCTAssert(sensorData.date == date, "Wrong date")
-            XCTAssert(sensorData.state == .ready, "Wrong sensor state")
-            
-            // Test trend glucose measurement
-            let trendMeasurements = sensorData.trendMeasurements(0.0, slope: 0.1)
-            XCTAssert(trendMeasurements.count == 16, "Wrong number of trend measurements")
-            let byteStringInTrendMeasurement = trendMeasurements[0].byteString
-            let byteTrendStringAsReadFromSensor = "C204C878DA80"
-            XCTAssert(byteStringInTrendMeasurement == byteTrendStringAsReadFromSensor, "Wrong byte string") // "[194, 4, 200, 120, 218, 128]" or "C204C878DA80"
-            XCTAssert(trendMeasurements[0].date == date, "Wrong date")
-            XCTAssert(trendMeasurements[0].rawValue == 1218, "Wrong raw value")
-            XCTAssert((trendMeasurements[0].glucose - 121.8) < 0.001, "Wrong glucose value")
-            
-            // Test count and byte strings of history glucose measurement
-            let historyMeasurements = sensorData.historyMeasurements(0.0, slope: 0.1)
-            XCTAssert(historyMeasurements.count == 32, "Wrong number of history measurements")
-            let byteStringInHistoryMeasurement = historyMeasurements[0].byteString
-            let byteHIstoryStringAsReadFromSensor = "2705C8989980"
-            XCTAssert(byteStringInHistoryMeasurement == byteHIstoryStringAsReadFromSensor, "Wrong byte string") // "[194, 4, 200, 120, 218, 128]" or "C204C878DA80"
-            
-            
-            // Test dates of history glucose measurements. Date of most recent value must be 10 minutes behind and date of second most recent value must be 10 + 15 = 25 minutes behind
-            let tenMintues = 10 * 60
-            let twentyFiveMintues = 25 * 60
-            XCTAssert( Int(round(date.timeIntervalSince(historyMeasurements[0].date))) == tenMintues, "Wrong history date, not 10 minutes apart")
-            XCTAssert( Int(round(date.timeIntervalSince(historyMeasurements[1].date))) == twentyFiveMintues, "Wrong history date, not 25 minutes apart")
-            
-            // Test raw values and glucose values of history measurements
-            XCTAssert(historyMeasurements[0].rawValue == 1319, "Wrong raw value")
-            XCTAssert((historyMeasurements[0].glucose - 131.9) < 0.001, "Wrong glucose value")
-            
-        }
-        
-        // change data of body and ensure that crc is now different
-        print("------- invalid test cases for crc ------")
-        var invalidTestCaseBytes = validTestCaseBytes
-        let endIndex = invalidTestCaseBytes.endIndex-1
-        invalidTestCaseBytes[endIndex] = invalidTestCaseBytes[endIndex] | 0xff  // change data such that crc will not match any more
-        if let sensorData = SensorData(bytes: invalidTestCaseBytes, date: Date()) {
-            print(sensorData)
-            print("Header validity: " + String(sensorData.hasValidHeaderCRC))
-            
-            XCTAssertFalse(sensorData.hasValidFooterCRC == true, "Error in footer crc")
-        }
+        XCTAssert(2 == 2, "the message is it is false")
     }
     
     
     
-    func stringToBytes(_ theString: String) -> [UInt8] {
+    // Delegate function for test purposes that receives the data (as received via bluetooth) and stores data in local properties
+    func slipBufferReceivedPayload(_ payloadData: Data, payloadIdentifier: UInt16, txFlags: UInt8) {
+        slipBufferPayloadData = payloadData
+        slipBufferPayloadIdentifier = payloadIdentifier
+        slipBufferTxFlags = txFlags
+        print("Payload is: " + slipBufferPayloadData.debugDescription)
+    }
+    
+    // Test complete transmission of a packet of bytes with SLIP, see https://de.wikipedia.org/wiki/Serial_Line_Internet_Protocol
+    func transmission(forPayload payload: [UInt8], packetIdentifier: UInt16) {
         
-        let length = theString.lengthOfBytes(using: String.Encoding.utf8)
-        guard length % 2 == 0 else {
-            print("Error in \(#function): String does not have an even number of characters and is thus not a valid string of pairs of characters where each pair represents a byte.")
-            return [0]
-        }
+        // Connect simblee
+        SimbleeBLE_onConnect()
         
-        var theBytes = [UInt8]()
-        for index in stride(from: 0, to: length, by: 2) {
-            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
-            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
-            let range = aIndex..<bIndex
-            //            let range = Range(start: aIndex, end: bIndex)
-            let string = String(theString.substring(with: range))
-            let aByte = UInt8(string!, radix: 16)
-            theBytes.append(aByte!)
+        // 1. escape the payload using SLIP
+        
+        let dataPayload =  Data(bytes: UnsafePointer<UInt8>(payload), count: payload.count)  // convert to NSData
+        
+        let count = dataPayload.count / MemoryLayout<Int8>.size
+        var cCharArray = [CChar](repeating: 0, count: count)          // c-char array, format to be transmitted
+        (dataPayload as NSData).getBytes(&cCharArray, length: count)                  // read into the c-char array
+        
+        // queue the packet and escape data if necessary according to SLIP, transmit and check for success
+        let success = UBP_queuePacketTransmission(packetIdentifier, UBP_TxFlagIsRPC, cCharArray, UInt16(payload.count))
+        XCTAssert(success, "Failed to queue packet with SLIP")
+        
+        // 2. get the escaped payload as transmitted from transmission buffer
+        
+        var txBuffer = [CChar](repeating: 0, count: 64)
+        var txBufferLength: Int32 = 0
+        getTxBuffer(&txBuffer, &txBufferLength)
+        //        let escapedDataPayload = Data(bytes: UnsafePointer<UInt8>(txBuffer), count: Int(txBufferLength))
+        let escapedDataPayload = Data(bytes: UnsafeRawPointer(txBuffer), count: Int(txBufferLength))
+        
+        print("Original data: " + dataPayload.debugDescription)
+        print("Excaped  data: " + escapedDataPayload.debugDescription)
+        
+        // 3. receive escaped data payload and unescape again. The unescaped data is stored in local properties
+        let slipBuffer = SLIPBuffer()
+        slipBuffer.delegate = self
+        slipBuffer.appendEscapedBytes(escapedDataPayload)
+        
+        XCTAssertEqual(slipBufferPayloadData, dataPayload, "Transmitted and received payload are not equal")
+        XCTAssertEqual(slipBufferPayloadIdentifier, packetIdentifier, "Transmitted and received identifier are not equal")
+        
+        // Disconnect simblee (resets the buffer)
+        SimbleeBLE_onDisconnect()
+        
+    }
+    
+    func testTransmission() {
+        // Test the crc calculation for some known cases of bytes
+        //
+        // Original data: <9c03c8c0 1a80>
+        // Excaped  data: <c0d20401 9c03c8db dc1a80cf c0> -> crc is cf as hex or -49 as Int (calculated without the c0 start and end byte)
+        // Original data: <0303c810 1980>
+        // Excaped  data: <c0d20401 0303c810 19801ec0> crc is 1e as hex or 30 as Int (calculated without the c0 start and end byte)
+        // unescaped: <06100148 02c8c859 0018a4> -> crc is -92 (as Int)
+        // escaped:   <c0c00610 014802c8 c8590018 a4c0>
+        //
+        // unescaped: <01200000 4e464320 4653324a 41535432 00000053>  crc is -> 83 as Int
+        // excaped:   <c0012000 004e4643 20465332 4a415354 32000000 53c0>
+        //
+        // unescaped: <06100100 00000000 0029d0>  -> crc is -48 as Int
+        // escaped:   <c0c00610 01000000 00000029 d0c0>
+        
+        let bytesArray: [[UInt8]] = [
+            [0xB0, 0x04, 0xC8, 0xB0, 0xD7, 0x00],
+            [0xCA, 0x02, 0xC8, 0x6C, 0x58, 0x01],
+            [0x9D, 0x02, 0xC8, 0x98, 0x97, 0x01],
+            [0x6B, 0x02, 0xC8, 0x38, 0x97, 0x00],
+            [0xCA, 0x02, 0xC8, 0x6C,   0x58, 0x01, 0x9C, 0x03, 0xC8, 0xC0,  0xDB, 0xDD, 0x1A, 0x80, 0x03, 0x03, 0xC8, 0x10,   0x19, 0x80, 0x01, 0x20, 0x00, 0x00,   0x4e, 0x46, 0x43, 0x20,   0x46, 0x53, 0x32, 0x4a,   0x41, 0x53, 0x54, 0x32,   0x00, 0x00, 0x00, 0x53],
+            [0xCA, 0x02, 0xC8, 0x6C,   0x58, 0x01, 0x9C, 0x03, 0xC8, 0xC0,   0xDB, 0xDD, 0xDC, 0x1A, 0x80, 0x03, 0x03, 0xC8, 0x10,   0x19, 0x80, 0x01, 0x20, 0x00, 0x00,   0x4e, 0x46, 0x43, 0x20,   0x46, 0x53, 0x32, 0x4a,   0x41, 0x53, 0x54, 0x32,   0x00, 0x00, 0x00, 0x53],
+            [0xCA, 0x02, 0xC8, 0x6C,   0x58, 0x01],
+            [0x9C, 0x03, 0xC8, 0xC0,   0x1A, 0x80],
+            [0x03, 0x03, 0xC8, 0x10,   0x19, 0x80],
+            [0x06, 0x10, 0x01, 0x48,   0x02, 0xc8, 0xc8, 0x59,   0x00, 0x18, 0xa4],
+            [0x01, 0x20, 0x00, 0x00,   0x4e, 0x46, 0x43, 0x20,   0x46, 0x53, 0x32, 0x4a,   0x41, 0x53, 0x54, 0x32,   0x00, 0x00, 0x00, 0x53],
+            [0x06, 0x10, 0x01, 0x00,   0x00, 0x00, 0x00, 0x00,   0x00, 0x29, 0xd0]
+        ]
+        
+        for bytes in bytesArray {
+            transmission(forPayload: bytes, packetIdentifier: UInt16(1234))
         }
-        return theBytes
+    }
+    
+    
+    // MARK: crc test code
+    
+    func testCrc8() {
+        // Test the crc calculation for some known cases of bytes
+        //
+        // Original data: <9c03c8c0 1a80>
+        // Excaped  data: <c0d20401 9c03c8db dc1a80cf c0> -> crc is cf as hex or -49 as Int (calculated without the c0 start and end byte)
+        // Original data: <0303c810 1980>
+        // Excaped  data: <c0d20401 0303c810 19801ec0> crc is 1e as hex or 30 as Int (calculated without the c0 start and end byte)
+        //
+        // unescaped: <06100148 02c8c859 0018a4> -> crc is -92 (as Int)
+        // escaped:   <c0c00610 014802c8 c8590018 a4c0>
+        //
+        // unescaped: <01200000 4e464320 4653324a 41535432 00000053>  crc is -> 83 as Int
+        // excaped:   <c0012000 004e4643 20465332 4a415354 32000000 53c0>
+        //
+        // unescaped: <06100100 00000000 0029d0>  -> crc is -48 as Int
+        // escaped:   <c0c00610 01000000 00000029 d0c0>
+        
+        let bytesArray: [[UInt8]] = [
+            [0xd2, 0x04, 0x01, 0x9c,   0x03, 0xc8, 0xdb, 0xdc,   0x1a, 0x80, 0xcf],
+            [0xd2, 0x04, 0x01, 0x03,   0x03, 0xC8, 0x10, 0x19,   0x80, 0x1e],
+            [0x06, 0x10, 0x01, 0x48,   0x02, 0xc8, 0xc8, 0x59,   0x00, 0x18, 0xa4],
+            [0x01, 0x20, 0x00, 0x00,   0x4e, 0x46, 0x43, 0x20,   0x46, 0x53, 0x32, 0x4a,   0x41, 0x53, 0x54, 0x32,   0x00, 0x00, 0x00, 0x53],
+            [0x06, 0x10, 0x01, 0x00,   0x00, 0x00, 0x00, 0x00,   0x00, 0x29, 0xd0]
+        ]
+        
+        for bytes in bytesArray {
+            testCrc(forBytes: bytes)
+            testArduinoCrc(forBytes: bytes)
+        }
+    }
+    
+    func testArduinoCrc(forBytes bytes: [UInt8])  {
+        // Test an array of bytes, where the last byte contains the crc8 that should be calculated (this last byte is then the embedded crc8)
+        
+        var bytesToTransfer = bytes
+        let bytesToTransferLength = bytes.count - 1
+        
+        let calculatedCrc: UInt8 = CRC8(&bytesToTransfer, UInt8(bytesToTransferLength))
+        
+        let embeddedCrc = bytes[bytes.count-1]
+        
+        
+        print(String(format: "Arduino crc calculated is 0x%2x and embecced ist 0x%2x", arguments: [calculatedCrc, embeddedCrc]))
+        XCTAssert(embeddedCrc == calculatedCrc, "Arduino Code: calculated and embedde crc do not match.")
+    }
+    
+    func testCrc(forBytes bytes: [UInt8]) {
+        
+        // Last byte contains crc
+        let PacketChecksumLength = MemoryLayout<UInt8>.size
+        
+        // Convert bytes to NSData
+        let data = Data(bytes: UnsafePointer<UInt8>(bytes), count: bytes.count)
+        
+        // Extract embedded checksum from packet
+        var embeddedChecksumByte:Int8 = 0
+        (data as NSData).getBytes(&embeddedChecksumByte, range: NSMakeRange(data.count - PacketChecksumLength, PacketChecksumLength))
+        
+        // Calculate checksum over bytes, excluding the last byte which is the embedded checksum
+        let payload = Data(bytes: UnsafePointer<UInt8>(bytes), count: bytes.count - PacketChecksumLength)
+        let calculatedCrc8 = (payload as NSData).crc8Checksum()
+        
+        // Assert that they both are equal
+        print(String(format: "Embedded crc8 is %d, calculated crc8 is %d", arguments: [embeddedChecksumByte, calculatedCrc8]))
+        XCTAssert(embeddedChecksumByte == calculatedCrc8, "the crc8 on nsdata is false")
+    }
+    
+    
+    // MARK: example code for performance test
+    
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
+        }
     }
     
 }
