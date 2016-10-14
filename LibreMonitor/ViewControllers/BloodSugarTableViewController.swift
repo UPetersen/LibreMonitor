@@ -69,7 +69,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         // Do any additional setup after loading the view, typically from a nib.
         // self.navigationItem.leftBarButtonItem = self.editButtonItem()
         simbleeManager.delegate = self
-        self.title = "LibreCGM"
+        self.title = "LibreMonitor"
         
         let connectButtonTitle = connectButtonTitleForState(simbleeManager.state)
         let conncectButton = UIBarButtonItem(title: connectButtonTitle, style: .plain, target: self, action: #selector(BloodSugarTableViewController.didTapConnectButton))

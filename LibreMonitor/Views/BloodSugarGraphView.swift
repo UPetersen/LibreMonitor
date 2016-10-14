@@ -56,7 +56,7 @@ class BloodSugarGraphView: LineChartView {
         self.rightAxis.drawLimitLinesBehindDataEnabled = true
         
         self.data = lineChartData
-        self.descriptionText = "LibreCgm"
+        self.descriptionText = "LibreMonitor"
         self.descriptionFont = NSUIFont.systemFont(ofSize: CGFloat(4))
     }
     

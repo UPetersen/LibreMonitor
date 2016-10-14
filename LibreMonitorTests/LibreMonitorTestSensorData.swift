@@ -12,7 +12,7 @@ import XCTest
 //@testable import Pods_LibreMonitor
 @testable import LibreMonitor
 
-class LibreCGMTestSensorData: XCTestCase {
+class LibreMonitorTestSensorData: XCTestCase {
     
     // Adaptions for the c-code from the arduino part
     typealias byte = UInt8

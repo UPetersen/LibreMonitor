@@ -1,6 +1,6 @@
 //
 //  Data_types+Extensions.swift
-//  LibreCGM
+//  LibreMonitor
 //
 //  Created by Uwe Petersen on 15.05.16.
 //  Copyright © 2016 Uwe Petersen. All rights reserved.
