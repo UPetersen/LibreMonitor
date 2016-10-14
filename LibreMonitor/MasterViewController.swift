@@ -43,7 +43,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         let newEvent = Event(context: context)
              
         // If appropriate, configure the new managed object.
-        newEvent.timestamp = NSDate()
+        newEvent.timestamp = Date() as NSDate?
 
         // Save the context.
         do {
