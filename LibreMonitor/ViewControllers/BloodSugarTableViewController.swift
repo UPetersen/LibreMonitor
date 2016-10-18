@@ -18,7 +18,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     var coreDataStack = CoreDataStack()
     var simbleeManager = SimbleeManager()
     
-    var sennsorData: SensorData?
+    var sensorData: SensorData?
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
     var batteryVoltage = 0.0
@@ -210,7 +210,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 cell.backgroundColor = colorForConnectionState()
             case 1:
                 cell.textLabel?.text = "Letzter Scan:"
-                if let sennsorData = sennsorData {
+                if let sennsorData = sensorData {
                     cell.detailTextLabel?.text = String(format: "am \(dateFormatter.string(from: sennsorData.date as Date)), um \(timeFormatter.string(from: sennsorData.date as Date)) Uhr, in %.2f s",
                                                         arguments: [transmissionDuration])
                     
@@ -232,7 +232,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             case 1:
                 var crcString = String()
                 var color = UIColor()
-                if let sensorData = sennsorData {
+                if let sensorData = sensorData {
                     crcString += ", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)"
                     color = colorForSensorState( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) )
                 } else {
@@ -256,7 +256,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 }
             case 3:
                 cell.textLabel?.text = "Blocks"
-                if let sennsorData = sennsorData {
+                if let sennsorData = sensorData {
                     cell.detailTextLabel?.text = "Trend: \(sennsorData.nextTrendBlock), History: \(sennsorData.nextHistoryBlock), Minutes: \(sennsorData.minutesSinceStart)"
                 }
             case 4:
@@ -278,7 +278,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 
             case 5:
                 cell.textLabel?.text = "Sensorstart vor"
-                if let sennsorData = sennsorData {
+                if let sennsorData = sensorData {
                     let minutes = sennsorData.minutesSinceStart
                     let days = Int( Double(minutes) / 24.0 / 60.0 )
                     let hours = Int( Double(minutes) / 60.0 ) - days*24
@@ -288,7 +288,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 //                cell.detailTextLabel?.text = startOfSensorString
             case 6:
                 cell.textLabel?.text = "Sensorstatus"
-                if let sennsorData = sennsorData {
+                if let sennsorData = sensorData {
                     cell.detailTextLabel?.text = sennsorData.state.description
                 } else {
                     cell.detailTextLabel?.text = "nil"
@@ -378,8 +378,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 
             var bytes = [UInt8](repeating: 0, count: 344)
             (payloadData as NSData).getBytes(&bytes, length: 344)
-            sennsorData = SensorData(bytes: bytes, date: Date())
-            if let sennsorData = sennsorData {
+            sensorData = SensorData(bytes: bytes, date: Date())
+            if let sennsorData = sensorData {
                 trendMeasurements = sennsorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                 historyMeasurements = sennsorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                 notificationForGlucoseMeasurements(trendMeasurements!)
