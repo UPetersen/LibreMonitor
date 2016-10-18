@@ -140,9 +140,10 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if (indexPath as NSIndexPath).section == 2 {
             
-            
+            // Draw graph
             let cell = tableView.dequeueReusableCell(withIdentifier: "BloodSugarGraphTableViewCell", for: indexPath)
             guard let theCell = cell as? BloodSugarGraphViewTableViewCell else {return cell}
 
