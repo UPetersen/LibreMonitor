@@ -81,10 +81,11 @@ class BloodSugarGraphView: LineChartView {
         // Display the last 8 hours (no matter of the date range of the data to be plotted)
         let axisMaximum = Date().timeIntervalSince1970
         self.xAxis.axisMaximum = axisMaximum
-        self.xAxis.axisMinimum = axisMaximum - 8.0 * 3600.0 // 8 hours backwards
-        self.xAxis.resetCustomAxisMin() // reset to let user pan/zoom over the whole range of data
+//        self.xAxis.axisMinimum = axisMaximum - 8.0 * 3600.0 // 8 hours backwards
+//        self.xAxis.resetCustomAxisMin() // reset to let user pan/zoom over the whole range of data
+        self.moveViewToX(axisMaximum - 8.0 * 3600.0)
         
-        self.notifyDataSetChanged()
+//        self.notifyDataSetChanged()
     }
     
     

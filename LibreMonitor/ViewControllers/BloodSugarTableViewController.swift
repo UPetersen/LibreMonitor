@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreBluetooth
 import CoreData
-
+import UserNotifications
 
 
 class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
@@ -93,8 +93,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         bloodGlucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
         bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
         
+        // Notification for updating table view after application did become active again
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        // for updating after having changed the offset and/of slope
+        // Notification for updating table view after having changed the offset and/of slope
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name(rawValue: "updateBloodSugarTableViewController"), object: nil)
     }
     
@@ -313,7 +314,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 //                let hugo = Int(measurements[index].bytes[3] & 3)
                 let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])
                 let hugo = Int(measurements[index].bytes[3])
-                cell.detailTextLabel?.text = "\(timeAsString),\(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
+                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
             }
 
         case .historyData:
@@ -329,7 +330,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 //                let hugo = Int(measurements[index].bytes[3] & 3)
                 let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])
                 let hugo = Int(measurements[index].bytes[3])
-                cell.detailTextLabel?.text = "\(timeAsString),\(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
+                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
             }
         }
     }
@@ -360,9 +361,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         self.navigationItem.rightBarButtonItem?.title? = connectButtonTitleForState(state)
         
         switch state {
-        case .Unassigned, .Connecting, .Connected, .Scanning, .Disconnected:
-            UIApplication.shared.applicationIconBadgeNumber = 0 // no badge number if not notifying
-        default:
+        case .Unassigned, .Connecting, .Connected, .Scanning, .Disconnected, .DisconnectedManually:
+            self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
+        case .Notifying:
             break
         }
         tableView.reloadData()
@@ -370,8 +371,38 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         print("Received SLIP payload with ID = \(messageIdentifier)")
+
         switch messageIdentifier {
+        case 0x2002: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
             
+            // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
+            
+            timeOfTransmissionStart = Date()
+            deviceID = "-"
+            
+            print(payloadData.debugDescription)
+            
+            var systemInformationData = SystemInformationDataType(uid: (0, 0, 0, 0, 0, 0, 0, 0), resultCode: 0, responseFlags: 0, infoFlags: 0, errorCode: 0)
+            (payloadData as NSData).getBytes(&systemInformationData, length: payloadData.count)      // get payload data into corresponding memory -> tuples
+            
+            print(String(format: "result code %02X", arguments: [systemInformationData.resultCode]))
+            print(String(format: "response flags %02X", arguments: [systemInformationData.responseFlags]))
+            print(String(format: "info flags %02X", arguments: [systemInformationData.infoFlags]))
+            print(String(format: "error code %02X", arguments: [systemInformationData.errorCode]))
+            
+            let uidString = systemInformationData.uidString()
+            sensor = LibreSensor(withUID: uidString)
+            
+            //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
+            tableView.reloadData()
+            
+        case 0x2005: // Battery
+            
+            var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
+            
+            (payloadData as NSData).getBytes(&batteryDataPayload, length:payloadData.count)
+            batteryVoltage = Double(batteryDataPayload.voltage)
+            temperatureString = String(format: "%4.1f °C", arguments: [batteryDataPayload.temperature])
             
         case 0x1007: // all data bytes (all 344 bytes, i.e. 43 blocks)
             print("received all data bytes packet")
@@ -412,10 +443,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                             if storeMeasurement && measurement.glucose > bloodGlucoseOffset && measurement.glucose > 0.0 {
                                 if let glucose = NSEntityDescription.insertNewObject(forEntityName: "BloodGlucose", into: coreDataStack.managedObjectContext) as? BloodGlucose {
                                     glucose.date = measurement.date as NSDate?
-//                                    glucose.date = measurement.date
                                     glucose.bytes = measurement.byteString
                                     glucose.value = measurement.glucose
-//                                    glucose.value = measurement.glucose as NSNumber?
                                     glucose.dateString = dateFormatter.string(from: measurement.date as Date)
                                 }
                             }
@@ -427,8 +456,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     }
                 }
                 
-
-                
                 
             } else {
                 trendMeasurements = nil
@@ -438,6 +465,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             
         case 0x2001: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
+            
+            // Convention: IDN data is the last packet sent via bluetooth
             
             print(payloadData.debugDescription)
             
@@ -459,37 +488,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             tableView.reloadData()
             
             
-        case 0x2002: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
-            
-            // Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
-            
-            timeOfTransmissionStart = Date()
-            deviceID = "-"
-            
-            print(payloadData.debugDescription)
-            
-            var systemInformationData = SystemInformationDataType(uid: (0, 0, 0, 0, 0, 0, 0, 0), resultCode: 0, responseFlags: 0, infoFlags: 0, errorCode: 0)
-            (payloadData as NSData).getBytes(&systemInformationData, length: payloadData.count)      // get payload data into corresponding memory -> tuples
-            
-            print(String(format: "result code %02X", arguments: [systemInformationData.resultCode]))
-            print(String(format: "response flags %02X", arguments: [systemInformationData.responseFlags]))
-            print(String(format: "info flags %02X", arguments: [systemInformationData.infoFlags]))
-            print(String(format: "error code %02X", arguments: [systemInformationData.errorCode]))
-            
-            let uidString = systemInformationData.uidString()
-            sensor = LibreSensor(withUID: uidString)
-            
-            //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
-            tableView.reloadData()
-            
-        case 0x2005: // Battery
-            
-            var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
-            
-            (payloadData as NSData).getBytes(&batteryDataPayload, length:payloadData.count)
-            batteryVoltage = Double(batteryDataPayload.voltage)
-            temperatureString = String(format: "%4.1f °C", arguments: [batteryDataPayload.temperature])
-            
         default:
             break
         }
@@ -500,14 +498,12 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func colorForConnectionState() -> UIColor {
         switch (simbleeManager.state) {
-        case .Unassigned, .Disconnected:
+        case .Unassigned, .Disconnected, .DisconnectedManually:
             return UIColor.red
         case .Scanning, .Connecting, .Connected:
             return UIColor(red: CGFloat(0.9), green: CGFloat(0.9), blue: CGFloat(1), alpha: CGFloat(1))
         case .Notifying:
             return UIColor.green
-        default:
-            return UIColor.red
         }
     }
     
@@ -520,14 +516,15 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func connectButtonTitleForState(_ state: SimbleeManagerState) -> String {
         switch state {
-        case .Unassigned, .Disconnected:
+        case .Unassigned, .Disconnected, .DisconnectedManually:
             return "connect"
-        default:
+        case .Connected, .Connecting, .Scanning, .Notifying:
             return "disconnect"
         }
     }
     
     // MARK: - Notifications and badge icon
+    
     func notificationForGlucoseMeasurements(_ trendMeasurements: [Measurement] ) {
         
         let currentGlucose = trendMeasurements[0].glucose
@@ -541,38 +538,74 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             (shortPrediction > 0 && (shortPrediction < 66.0 || shortPrediction > 180.0)) ||
             (abs(longDelta) > 30.0 && abs(shortDelta) > 30.0)) && showNotification {
             
-            let alertBody = String(format: "%0.0f --> %0.0f (%0.0f), Delta: %0.0f (%0.0f)", arguments: [currentGlucose, longPrediction, shortPrediction, longDelta, shortDelta])
-            let notification = notificationWithAlertBody(alertBody)
-            UIApplication.shared.scheduleLocalNotification(notification)
+
+            let body = String(format: "%0.0f --> %0.0f (%0.0f), Delta: %0.0f (%0.0f)", arguments: [currentGlucose, longPrediction, shortPrediction, longDelta, shortDelta])
+            let content = self.notificationContentForBloodSugarWarning(body)
+            let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.5, repeats: false)
+            let request = UNNotificationRequest(identifier: "LocalNotification", content: content, trigger: timeTrigger)
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    // Do something with error
+                    print("Error, blood sugar notification could not be triggered due to: \(error)")
+                } else {
+                    // Request was added successfully
+                    print("triggered blood sugar notification")
+                }
+            }
             
-            
-            // hide notification for 10 minutes
+            // timer to hide notification for 10 minutes
             showNotification = false
             notificationTimer = Timer.scheduledTimer(timeInterval: TimeInterval(10.0*60.0), target: self,  selector: #selector(BloodSugarTableViewController.notificationTimerFired), userInfo: nil, repeats: false)
         }
         //        UIApplication.sharedApplication().cancelAllLocalNotifications()
         
-        UIApplication.shared.applicationIconBadgeNumber = Int(round(longPrediction))
+        self.triggerNotificationContentForBadgeIcon(value: Int(round(longPrediction)))
     }
+    
+    
+    func triggerNotificationContentForBadgeIcon(value: Int) {
+        
+        UIApplication.shared.applicationIconBadgeNumber = value
+
+//        let content = UNMutableNotificationContent()
+//        content.badge = NSNumber(value: value)
+//
+//        let timeTrigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
+//        let request = UNNotificationRequest(identifier: "Badge", content: content, trigger: timeTrigger)
+//        UNUserNotificationCenter.current().add(request) { error in
+//            if let error = error {
+//                // Do something with error
+//                print("Error, badge notification could not be triggered due to \(error)")
+//            } else {
+//                // Request was added successfully
+//                print("triggered badge notification")
+//            }
+//        }
+    }
+    
+    
+    /// Returns a UNMutableNotificationContent with a body
+    ///
+    /// - parameter body: body to be displayd
+    ///
+    /// - returns: the notification content
+    func   notificationContentForBloodSugarWarning(_ body: String) -> UNMutableNotificationContent {
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Glukose beachten"
+        content.subtitle = "Notification Subtitle"
+        content.body = body
+        //        content.badge = 1
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "GLUCOSE_WARNING_CATEGORY"
+        content.userInfo = ["UUID": "123456789" ] // assign a unique identifier to the notification so that we can retrieve it later
+        return content
+    }
+    
     
     func notificationTimerFired() {
         showNotification = true
     }
-    
-    func notificationWithAlertBody(_ alertBody: String) -> UILocalNotification {
-        let notification = UILocalNotification()
-        notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
-        notification.alertTitle = "Glukose beachten"
-        notification.fireDate = nil // fire instantly
-        notification.soundName = UILocalNotificationDefaultSoundName // play default sound
-        notification.userInfo = ["UUID": "123456789" ] // assign a unique identifier to the notification so that we can retrieve it later
-        notification.category = "TODO_CATEGORY"
-
-        notification.alertBody = alertBody // text that will be displayed in the notification
-        return notification
-    }
-    
-
 }
 
 

@@ -61,8 +61,8 @@ class AdjustmentsTableViewController: UITableViewController, UITextFieldDelegate
             fatalError("Fatal Error in \(#file): textField not handled in switch case")
             break
         }
-        // update table view
         
+        // update table view
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateBloodSugarTableViewController"), object: self)
         
         resignFirstResponder()

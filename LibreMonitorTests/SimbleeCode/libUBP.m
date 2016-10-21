@@ -222,7 +222,7 @@ bool UBP_queuePacketTransmission(unsigned short packetIdentifier, UBP_TxFlags tx
             return false;  // Return false if we couldn't escape the content because it was going to overflow the output buffer
         }
     }
-    // FIXME: 2016-06-27: this was missing in the original code
+    // 2016-06-27: this was missing in the original code
     return true;
 }
 

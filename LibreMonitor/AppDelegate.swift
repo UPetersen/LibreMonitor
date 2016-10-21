@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -17,6 +18,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+     
+        
+        // Allow local notifications for iOS 10
+        let center = UNUserNotificationCenter.current()
+        let options: UNAuthorizationOptions = [.alert, .badge, .sound]
+        center.requestAuthorization(options: options) { (granted, error) in
+            if granted {
+//                application.registerForRemoteNotifications()
+            }
+        }
+        
+        // Do not show a badge icon value unless data has been received
+        UIApplication.shared.applicationIconBadgeNumber = 0 // hide badge number
+   
         
         // Override point for customization after application launch.
 //        let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -40,13 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 
                 // Set core data stack in view controller
                 bloodSugarTableViewController.coreDataStack = coreDataStack
-                
             }
         }
-        
-        // Allow local notifications and a badge on the app icon
-        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
-        UIApplication.shared.applicationIconBadgeNumber = 0 // hide badge number
         
         return true
     }
