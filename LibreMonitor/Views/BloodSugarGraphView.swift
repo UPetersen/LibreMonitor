@@ -79,13 +79,28 @@ class BloodSugarGraphView: LineChartView {
         self.xAxis.valueFormatter = dateValueFormatter
 
         // Display the last 8 hours (no matter of the date range of the data to be plotted)
-        let axisMaximum = Date().timeIntervalSince1970
-        self.xAxis.axisMaximum = axisMaximum
-//        self.xAxis.axisMinimum = axisMaximum - 8.0 * 3600.0 // 8 hours backwards
-//        self.xAxis.resetCustomAxisMin() // reset to let user pan/zoom over the whole range of data
-        self.moveViewToX(axisMaximum - 8.0 * 3600.0)
+
+        let oldXAxisMaximum = self.xAxis.axisMaximum          // i.e. date when the chart was refreshed last time
+        let highestXValue = lineChartData.xMax                // i.e. date of last scan (or sample)
+        self.xAxis.axisMaximum = Date().timeIntervalSince1970 // set maximum to current date
+
         
-//        self.notifyDataSetChanged()
+        // Adjust zoom and x-offset
+        if self.xAxis.axisMaximum - highestXValue > 10.0 * 60.0 {
+            // if last sample was more than 10 minutes ago, zoom out such that all the last 8 hours are displayed. The rest of the data can be displayed e.g. by paning
+            self.fitScreen()
+            let xTimeRange = self.xAxis.axisMaximum - self.xAxis.axisMinimum
+            let eightHours = 8.0 * 3600.0
+            let scaleX = xTimeRange / eightHours
+            let xOffset = xTimeRange - eightHours
+            self.zoom(scaleX: CGFloat(scaleX), scaleY: 1, x: CGFloat(xOffset), y: 0)
+        } else {
+            // otherwise keep zoom ratio but shift line to the left about the amount of time since the last date the chart was refresehd
+            let offsetXMaximum = self.xAxis.axisMaximum - oldXAxisMaximum
+            self.zoom(scaleX: 1, scaleY: 1, x: CGFloat(offsetXMaximum), y: 0)
+        }
+        
+        self.notifyDataSetChanged()
     }
     
     

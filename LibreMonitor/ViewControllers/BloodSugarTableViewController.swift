@@ -180,16 +180,14 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0: return "Verbindung"
-        case 1: return "Allgemeine Daten"
+        case 0: return "Connection"
+        case 1: return "General data"
         case 2:
             let seconds = (NSDate() as NSDate).timeIntervalSince(timeOfLastScan).truncatingRemainder(dividingBy: 60.0)
             let minutes = (Date().timeIntervalSince(timeOfLastScan) - seconds) / 60.0
-            let time = timeFormatter.string(from: timeOfLastScan)
-            let date = dateFormatter.string(from: timeOfLastScan)
-            return String(format: "Grafik von \(time) Uhr, \(date), vor %2.0f:%02.0f min", arguments: [minutes, seconds])
-        case 3: return "Letzte 15 Minuten"
-        case 4: return "Letzte acht Stunden"
+            return String(format: "Graph from %2.0f:%02.0f minutes ago", arguments: [minutes, seconds])
+        case 3: return "Last 15 minutes"
+        case 4: return "Last eight hours"
         case 5: return "Neue Letzte 15 Minuten"
         case 6: return "Neue Letzte 8 Stunden"
         default: return nil
@@ -206,11 +204,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         case .connectionData:
             switch (indexPath as NSIndexPath).row {
             case 0:
-                cell.textLabel?.text = "Simblee-Status"
+                cell.textLabel?.text = "Simblee status"
                 cell.detailTextLabel?.text = simbleeManager.state.rawValue
                 cell.backgroundColor = colorForConnectionState()
             case 1:
-                cell.textLabel?.text = "Letzter Scan:"
+                cell.textLabel?.text = "Last scan:"
                 if let sennsorData = sensorData {
                     cell.detailTextLabel?.text = String(format: "am \(dateFormatter.string(from: sennsorData.date as Date)), um \(timeFormatter.string(from: sennsorData.date as Date)) Uhr, in %.2f s",
                                                         arguments: [transmissionDuration])
@@ -228,7 +226,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         case .generalData:
             switch (indexPath as NSIndexPath).row {
             case 0:
-                cell.textLabel?.text = "BM019-ID"
+                cell.textLabel?.text = "BM019 ID"
                 cell.detailTextLabel?.text = deviceID
             case 1:
                 var crcString = String()
@@ -240,7 +238,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     crcString = ", nil"
                     color = UIColor.lightGray
                 }
-                cell.textLabel?.text = "Sensor-SN"
+                cell.textLabel?.text = "Sensor SN"
                 if let sensor = sensor {
                     cell.detailTextLabel?.text =  sensor.serialNumber + crcString // + " (" + sensor.prettyUid  + ")"
                 } else {
@@ -250,7 +248,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 
                 
             case 2:
-                cell.textLabel?.text = "Umgebung"
+                cell.textLabel?.text = "Environment"
                 cell.detailTextLabel?.text = String(format: "%3.1f V", arguments: [batteryVoltage]) + ", " + temperatureString
                 if batteryVoltage < 3.0 {
                     cell.backgroundColor = UIColor.orange
@@ -258,7 +256,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             case 3:
                 cell.textLabel?.text = "Blocks"
                 if let sennsorData = sensorData {
-                    cell.detailTextLabel?.text = "Trend: \(sennsorData.nextTrendBlock), History: \(sennsorData.nextHistoryBlock), Minutes: \(sennsorData.minutesSinceStart)"
+                    cell.detailTextLabel?.text = "Trend: \(sennsorData.nextTrendBlock), history: \(sennsorData.nextHistoryBlock), minutes: \(sennsorData.minutesSinceStart)"
                 }
             case 4:
                 cell.textLabel?.text = "Glucose"
@@ -269,7 +267,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
                     let longPrediction = currentGlucose + longDelta
                     let shortPrediction = currentGlucose + shortDelta
-                    cell.detailTextLabel?.text = String(format: "%0.0f, Delta: %0.0f (%0.0f), Prognose: %0.0f (%0.0f)", arguments: [currentGlucose, longDelta, shortDelta, longPrediction, shortPrediction])
+                    cell.detailTextLabel?.text = String(format: "%0.0f, Delta: %0.0f (%0.0f), Prognosis: %0.0f (%0.0f)", arguments: [currentGlucose, longDelta, shortDelta, longPrediction, shortPrediction])
                     if longPrediction < 70.0 || shortPrediction < 70.0 || longPrediction > 180.0 || shortPrediction > 180.0 || (abs(longDelta) > 30.0 && abs(shortDelta) > 30.0) {
                         cell.detailTextLabel?.textColor = UIColor.red
                     } else {
@@ -278,17 +276,17 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 }
 
             case 5:
-                cell.textLabel?.text = "Sensorstart vor"
+                cell.textLabel?.text = "Sensor started"
                 if let sennsorData = sensorData {
                     let minutes = sennsorData.minutesSinceStart
                     let days = Int( Double(minutes) / 24.0 / 60.0 )
                     let hours = Int( Double(minutes) / 60.0 ) - days*24
                     let minutesRest = minutes - days*24*60 - hours*60
-                    cell.detailTextLabel?.text = String(format: "%d Tage(n), %d Stunde(n), %d Minute(n)", arguments: [days, hours, minutesRest])
+                    cell.detailTextLabel?.text = String(format: "%d day(s), %d hour(s) and %d minute(s) ago", arguments: [days, hours, minutesRest])
                 }
 //                cell.detailTextLabel?.text = startOfSensorString
             case 6:
-                cell.textLabel?.text = "Sensorstatus"
+                cell.textLabel?.text = "Sensor status"
                 if let sennsorData = sensorData {
                     cell.detailTextLabel?.text = sennsorData.state.description
                 } else {
