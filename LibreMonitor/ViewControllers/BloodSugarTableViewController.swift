@@ -210,8 +210,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             case 1:
                 cell.textLabel?.text = "Last scan:"
                 if let sennsorData = sensorData {
-                    cell.detailTextLabel?.text = String(format: "am \(dateFormatter.string(from: sennsorData.date as Date)), um \(timeFormatter.string(from: sennsorData.date as Date)) Uhr, in %.2f s",
-                                                        arguments: [transmissionDuration])
+                    cell.detailTextLabel?.text = String(format: "on \(dateFormatter.string(from: sennsorData.date as Date)), at \(timeFormatter.string(from: sennsorData.date as Date)) o'clock, in %.2f s", arguments: [transmissionDuration])
                     
                     if Date().timeIntervalSince(sennsorData.date as Date) > 240.0 {
                         cell.backgroundColor = UIColor.red
