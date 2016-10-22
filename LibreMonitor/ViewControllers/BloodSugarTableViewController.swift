@@ -104,6 +104,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         super.viewWillDisappear(true)
     }
     
+    
     func didTapConnectButton() {
         switch (simbleeManager.state) {
         case .Unassigned:
