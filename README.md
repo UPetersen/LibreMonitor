@@ -10,11 +10,6 @@ This code is published for the purpose that others can contribute and help to im
 LibreMonitor has no affiliation of any kind with Abbott. This is a DIY project for research purposes. The code provided here might provide wrong results. You will have to build your own device and are responsible for the results. Use at your own risk.  
 
 
-##Suggested readings
-
-[Blog by Pierre Vandevenne](http://type1tennis.blogspot.de) with information on the internals of the Freestyle Libre and suggestions on how to choose slope and offset. Without his work all this would probably not have been possible.
-
-
 ##What you need to build a LibreMonitor
 
 ####Hardware
@@ -39,6 +34,11 @@ Wire the parts as in the following diagram (courtesy to [libxMike](https://githu
 ![libremonitorwirediagramm](https://cloud.githubusercontent.com/assets/10375483/19703622/c866a0d0-9b04-11e6-9471-8056324664b5.jpg)
 
 It is suggested to mount and test everything on a breadboard before soldering the final device. You can save a lot of space by cutting of the black part of the stacks for Pins GPIO2 to GPIO6, push them through the pin holes of the BM019 and then solder the parts together. Furthermore, it is suggested to cut of the male parts of the other stack range of the Simblee and to bend the black part by 90 degrees. Thus you can still plug in the USB Programming Shield (RFD22121) but save space. See pictures of another device, small, but without lipo charger and switch.
+
+
+##Suggested readings
+
+[Blog by Pierre Vandevenne](http://type1tennis.blogspot.de) with information on the internals of the Freestyle Libre and suggestions on how to choose slope and offset. Without his work all this would probably not have been possible.
 
 
 ##Similar projects
