@@ -15,15 +15,6 @@ LibreMonitor has no affiliation of any kind with Abbott. This is a DIY project f
 [Blog by Pierre Vandevenne](http://type1tennis.blogspot.de) with information on the internals of the Freestyle Libre and suggestions on how to choose slope and offset. Without his work all this would probably not have been possible.
 
 
-##Similar projects
-
-* [LimiTTer](https://github.com/JoernL/LimiTTer). Similar device, but data is sent to [xDrip+](https://github.com/jamorham/xDrip-plus) Android app.
-
-* [Freestyle Libre Alarm](https://github.com/pimpimmi/LibreAlarm/wiki). Uses as Sony smart watch to read date from the Freestyle Libre and send it to and Android phone.
-
-* [Bluereader](https://www.startnext.com/bluereader) project by [Sandra Kessler](http://unendlichkeit.net/wordpress/) who got funding to build a small neat device. 
-
-
 ##What you need to build a LibreMonitor
 
 ####Hardware
@@ -45,8 +36,18 @@ Parts needed for a LibreMonitor are
 
 Wire the parts as in the following diagram (courtesy to [libxMike](https://github.com/libxmike?tab=following)). 
 
-
+![libremonitorwirediagramm](https://cloud.githubusercontent.com/assets/10375483/19703622/c866a0d0-9b04-11e6-9471-8056324664b5.jpg)
 
 It is suggested to mount and test everything on a breadboard before soldering the final device. You can save a lot of space by cutting of the black part of the stacks for Pins GPIO2 to GPIO6, push them through the pin holes of the BM019 and then solder the parts together. Furthermore, it is suggested to cut of the male parts of the other stack range of the Simblee and to bend the black part by 90 degrees. Thus you can still plug in the USB Programming Shield (RFD22121) but save space. See pictures of another device, small, but without lipo charger and switch.
+
+
+##Similar projects
+
+* [LimiTTer](https://github.com/JoernL/LimiTTer). Similar device, but data is sent to [xDrip+](https://github.com/jamorham/xDrip-plus) Android app.
+
+* [Freestyle Libre Alarm](https://github.com/pimpimmi/LibreAlarm/wiki). Uses as Sony smart watch to read date from the Freestyle Libre and send it to and Android phone.
+
+* [Bluereader](https://www.startnext.com/bluereader) project by [Sandra Kessler](http://unendlichkeit.net/wordpress/) who got funding to build a small neat device. 
+
 
 ##More information to follow soon.
