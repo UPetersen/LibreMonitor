@@ -33,8 +33,15 @@ Wire the parts as in the following diagram (courtesy to [libxMike](https://githu
 
 ![libremonitorwirediagramm](https://cloud.githubusercontent.com/assets/10375483/19703622/c866a0d0-9b04-11e6-9471-8056324664b5.jpg)
 
-It is suggested to mount and test everything on a breadboard before soldering the final device. You can save a lot of space by cutting of the black part of the stacks for Pins GPIO2 to GPIO6, push them through the pin holes of the BM019 and then solder the parts together. Furthermore, it is suggested to cut of the male parts of the other stack range of the Simblee and to bend the black part by 90 degrees. Thus you can still plug in the USB Programming Shield (RFD22121) but save space. See pictures of another device, small, but without lipo charger and switch.
+It is suggested to mount and test everything on a breadboard before soldering the final device. Below are pictures of another LibreMonitor device without lipo charger. As you can see, one can save a lot of space by cutting of the black part of the stacks for Pins GPIO2 to GPIO6, push them through the pin holes of the BM019 and then solder the parts together. Therefore you also have to cut of the stack pins on the other side, too. Furthermore, it is suggested to bend the black part of the other stacks by 90 degrees. Thus you can still plug in the USB Programming Shield (RFD22121) but save some space. 
 
+![libremonitor2_1](https://cloud.githubusercontent.com/assets/10375483/19740419/e9ae9602-9bbe-11e6-98ad-f616d21ae129.jpeg)
+![libremonitor2_2](https://cloud.githubusercontent.com/assets/10375483/19740420/e9ce57d0-9bbe-11e6-8a48-0faff5641c39.jpeg)
+
+Another device, this time with a lipo charger:
+
+![libremonitor3_1](https://cloud.githubusercontent.com/assets/10375483/19740504/2d73afbc-9bbf-11e6-8e18-ec32464d08ed.jpeg)
+![libremonitor3_2](https://cloud.githubusercontent.com/assets/10375483/19741238/30e8c438-9bc0-11e6-9f30-f5035daf4913.jpeg)
 
 ##Suggested readings
 
