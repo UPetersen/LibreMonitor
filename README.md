@@ -18,13 +18,9 @@ Parts needed for a LibreMonitor are
 
 * [BM019 NFC module](http://www.solutions-cubed.com/bm019/) capable of ISO/IEC 15693 commands. Possible sources are [Solutions Cubed LLC](http://www.solutions-cubed.com/bm019/), [Warbutech](http://www.warburtech.co.uk/products/modules/solutions.cubed.bm019.serial.to.nfc.converter/) or 
 [Robotshop](http://www.robotshop.com/eu/en/serial-to-nfc-converter-module.html).
-
 * [Simblee](https://www.simblee.com) or [RFDuino](http://www.rfduino.com) and a corresponding USB Programming Shield. I recommend to get a startet kit. See their Webites for Distributors.
-
 * Lipo, e.g. [this one](http://www.exp-tech.de/polymer-lithium-ion-battery-110mah-5687) (100 mAh is fine for a full day).
-
 * Lipo charger (optional), e.g. [this](https://www.adafruit.com/product/1304) or [this](https://www.adafruit.com/products/1904) from adafruit. 
-
 * Switch (optional but helpfull if you mount a lipo charger).
 
 #### Wiring
