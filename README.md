@@ -16,7 +16,7 @@ LibreMonitor has no affiliation of any kind with Abbott. This is a DIY project f
 
 Parts needed for a LibreMonitor are
 
-* [BM019 NFC-Module](http://www.solutions-cubed.com/bm019/) capable of ISO/IEC 15693 commands. Possible sources are [Solutions Cubed LLC](http://www.solutions-cubed.com/bm019/), [Warbutech](http://www.warburtech.co.uk/products/modules/solutions.cubed.bm019.serial.to.nfc.converter/) or 
+* [BM019 NFC module](http://www.solutions-cubed.com/bm019/) capable of ISO/IEC 15693 commands. Possible sources are [Solutions Cubed LLC](http://www.solutions-cubed.com/bm019/), [Warbutech](http://www.warburtech.co.uk/products/modules/solutions.cubed.bm019.serial.to.nfc.converter/) or 
 [Robotshop](http://www.robotshop.com/eu/en/serial-to-nfc-converter-module.html).
 
 * [Simblee](https://www.simblee.com) or [RFDuino](http://www.rfduino.com) and a corresponding USB Programming Shield. I recommend to get a startet kit. See their Webites for Distributors.
@@ -31,17 +31,42 @@ Parts needed for a LibreMonitor are
 
 Wire the parts as in the following diagram (courtesy to [libxMike](https://github.com/libxmike?tab=following)). 
 
-![libremonitorwirediagramm](https://cloud.githubusercontent.com/assets/10375483/19703622/c866a0d0-9b04-11e6-9471-8056324664b5.jpg)
+
+<img src="https://cloud.githubusercontent.com/assets/10375483/19703622/c866a0d0-9b04-11e6-9471-8056324664b5.jpg" width="500">
+
 
 It is suggested to mount and test everything on a breadboard before soldering the final device. Below are pictures of another LibreMonitor device without lipo charger. As you can see, one can save a lot of space by cutting of the black part of the stacks for Pins GPIO2 to GPIO6, push them through the pin holes of the BM019 and then solder the parts together. Therefore you also have to cut of the stack pins on the other side, too. Furthermore, it is suggested to bend the black part of the other stacks by 90 degrees. Thus you can still plug in the USB Programming Shield (RFD22121) but save some space. 
 
-![libremonitor2_1](https://cloud.githubusercontent.com/assets/10375483/19740419/e9ae9602-9bbe-11e6-98ad-f616d21ae129.jpeg)
-![libremonitor2_2](https://cloud.githubusercontent.com/assets/10375483/19740420/e9ce57d0-9bbe-11e6-8a48-0faff5641c39.jpeg)
+
+<img src="https://cloud.githubusercontent.com/assets/10375483/19740419/e9ae9602-9bbe-11e6-98ad-f616d21ae129.jpeg" width="300">
+<img src="https://cloud.githubusercontent.com/assets/10375483/19740420/e9ce57d0-9bbe-11e6-8a48-0faff5641c39.jpeg" width="300">
+
+
 
 Another device, this time with a lipo charger:
 
-![libremonitor3_1](https://cloud.githubusercontent.com/assets/10375483/19740504/2d73afbc-9bbf-11e6-8e18-ec32464d08ed.jpeg)
-![libremonitor3_2](https://cloud.githubusercontent.com/assets/10375483/19741238/30e8c438-9bc0-11e6-9f30-f5035daf4913.jpeg)
+
+<img src="https://cloud.githubusercontent.com/assets/10375483/19740504/2d73afbc-9bbf-11e6-8e18-ec32464d08ed.jpeg" width="300">
+<img src="https://cloud.githubusercontent.com/assets/10375483/19741238/30e8c438-9bc0-11e6-9f30-f5035daf4913.jpeg" width="300">
+
+
+####Software for the Simblee
+
+The software to program the Simblee is standard Arduino code. It consists of LibreMonitor.ino and the library contained in LibreMonitorArduinoLibrary.zip. Refer to the [Simblee quick start guide](https://www.simblee.com/Simblee_Quickstart_Guide_v1.0.pdf) on the [Simblee website](https://www.simblee.com) on how to program the Simblee. If you wired your LibreMonitor as described above don't forget to reconfigure the SPI pins of the Simblee in the variant.h file (see the wiring information in LibreMonitor.ino for more information on this)
+
+
+##iOS application
+
+The iOS application requires Xcode 8, swift 3.0 and iOS 10. Download the Xcode project. Run [cocopoads](https://cocoapods.org) to install the [charts](https://github.com/danielgindi/Charts) library, needed for the blood sugar graph. Build the application and run it on the phone and start it. If you want to receive notifications for high or low glucose values and have a badge icon displayed, allow for the corresponding settings, when asked. Once the app is running set values for slope and offset (e.g. 0.13 and -20, press the corresponding row to get into the settings view). Connect to your Simblee by pressing "connect". Once the Simblee ist detected and connected the "Simblee status" should change to "Notifying" and be green. Place the LibreMonitor device above your Freestyle Libre and after no more than two minutes the data should be displayed or refreshed. See the scrrenshots below. 
+
+
+<img src="https://cloud.githubusercontent.com/assets/10375483/19742181/19d18f24-9bc4-11e6-999d-449edba439b9.PNG" width="300">
+<img src="https://cloud.githubusercontent.com/assets/10375483/19742182/19f6b10a-9bc4-11e6-9c88-f850625fdbd4.PNG" width="300">
+
+
+<img src="https://cloud.githubusercontent.com/assets/10375483/19742183/19f9efbe-9bc4-11e6-81a4-9bed01c2f865.PNG" width="300">
+<img src="https://cloud.githubusercontent.com/assets/10375483/19742184/19fcf272-9bc4-11e6-8cd8-d02139f3616b.PNG" width="300">
+
 
 ##Suggested readings
 
