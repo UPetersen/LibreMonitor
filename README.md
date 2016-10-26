@@ -71,9 +71,10 @@ The iOS application requires Xcode 8, swift 3.0 and iOS 10. Download the Xcode p
 
 ##Similar projects
 
-* [LimiTTer](https://github.com/JoernL/LimiTTer). Similar device, but data is sent to [xDrip+](https://github.com/jamorham/xDrip-plus) Android app.
-* [Freestyle Libre Alarm](https://github.com/pimpimmi/LibreAlarm/wiki). Uses as Sony smart watch to read date from the Freestyle Libre and send it to and Android phone.
-* [Bluereader](https://www.startnext.com/bluereader) project by [Sandra Kessler](http://unendlichkeit.net/wordpress/) who got funding to build a small neat device. 
+* [LimiTTer](https://github.com/JoernL/LimiTTer). Similar device, but data is sent to [xDrip+](https://github.com/jamorham/xDrip-plus), an Android app.
+* [Freestyle Libre Alarm](https://github.com/pimpimmi/LibreAlarm/wiki). Uses as Sony smart watch to read data from the Freestyle Libre and send it to an Android phone.
+* [Bluereader](https://www.startnext.com/bluereader) project by [Sandra Kessler](http://unendlichkeit.net/wordpress/) who got funding to build a small neat device. I intend to adapt this project to work with bluereader once the first devices are available.
+* [Android reader application](https://github.com/vicktor/FreeStyleLibre-NFC-Reader) by Viktor Bautista that was helpful at the beginning of this work.
 
 
 ##More information to follow soon.
