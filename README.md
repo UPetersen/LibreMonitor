@@ -64,6 +64,22 @@ The iOS application requires Xcode 8, swift 3.0 and iOS 10. Download the Xcode p
 <img src="https://cloud.githubusercontent.com/assets/10375483/19742184/19fcf272-9bc4-11e6-8cd8-d02139f3616b.PNG" width="300">
 
 
+####Some explanations 
+
+The "Glucose" row shows the current glucose value and two "delta values" that show how the glucose is about to develop (linear extrapolation for the next fifteen minutes). The first delta value is the difference of the current and the oldest minute-value, the delta value in braces is the difference of the current glucose value and the glucose value from 8 minutes ago, multiplied by two. The two "prognosis" glucose values are calculated by adding the delta values to the current glucose value. Glucose is calculated from the raw value as follows:
+
+	glucose = raw * slope + offset
+
+The "Last 15 minutes" and "Last eight hours" sections display the glucose values, corresponding date, the raw value, the 6 bytes of data as read from the Freestyle Libre sensor and some other test data. 
+
+
+####Trouble shooting
+
+* If a crc is wrong, most likely the device is not located near enough to the Freestyle Libre sensor.
+* If the data is not refreshed, disconnect and reconnect.
+* If the device cannot be connected, check wether bluetooth is switched on.
+
+
 ##Suggested readings
 
 [Blog by Pierre Vandevenne](http://type1tennis.blogspot.de) with information on the internals of the Freestyle Libre and suggestions on how to choose slope and offset. Without his work all this would probably not have been possible.
@@ -75,6 +91,3 @@ The iOS application requires Xcode 8, swift 3.0 and iOS 10. Download the Xcode p
 * [Freestyle Libre Alarm](https://github.com/pimpimmi/LibreAlarm/wiki). Uses as Sony smart watch to read data from the Freestyle Libre and send it to an Android phone.
 * [Bluereader](https://www.startnext.com/bluereader) project by [Sandra Kessler](http://unendlichkeit.net/wordpress/) who got funding to build a small neat device. I intend to adapt this project to work with bluereader once the first devices are available.
 * [Android reader application](https://github.com/vicktor/FreeStyleLibre-NFC-Reader) by Viktor Bautista that was helpful at the beginning of this work.
-
-
-##More information to follow soon.
