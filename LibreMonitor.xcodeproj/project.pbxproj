@@ -13,7 +13,6 @@
 		C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1D1DB1801D00237E7D /* libUBP.m */; };
 		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
 		C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */; };
-		C6822D701DB13F2200D08393 /* MainOld.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6822D6E1DB13F2200D08393 /* MainOld.storyboard */; };
 		C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6822D711DB13F2200D08393 /* Assets.xcassets */; };
 		C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */; };
 		C6822D801DB13F2200D08393 /* LibreMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D7F1DB13F2200D08393 /* LibreMonitorTests.swift */; };
@@ -79,7 +78,6 @@
 		C6822D621DB13F2200D08393 /* LibreMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6822D651DB13F2200D08393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6822D681DB13F2200D08393 /* LibreMonitor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LibreMonitor.xcdatamodel; sourceTree = "<group>"; };
-		C6822D6F1DB13F2200D08393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainOld.storyboard; sourceTree = "<group>"; };
 		C6822D711DB13F2200D08393 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C6822D741DB13F2200D08393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C6822D761DB13F2200D08393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -216,7 +214,6 @@
 				C6822DAF1DB1617400D08393 /* Model */,
 				C6822DA01DB1614C00D08393 /* Bluetooth */,
 				C6822D651DB13F2200D08393 /* AppDelegate.swift */,
-				C6822D6E1DB13F2200D08393 /* MainOld.storyboard */,
 				C61C296B1DB16C60009A5885 /* Main.storyboard */,
 				C6822D711DB13F2200D08393 /* Assets.xcassets */,
 				C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */,
@@ -439,7 +436,6 @@
 			files = (
 				C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */,
 				C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */,
-				C6822D701DB13F2200D08393 /* MainOld.storyboard in Resources */,
 				C61C296C1DB16C60009A5885 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,14 +662,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C6822D6E1DB13F2200D08393 /* MainOld.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C6822D6F1DB13F2200D08393 /* Base */,
-			);
-			name = MainOld.storyboard;
-			sourceTree = "<group>";
-		};
 		C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
