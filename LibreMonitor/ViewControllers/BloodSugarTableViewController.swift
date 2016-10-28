@@ -423,7 +423,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     do {
                         let fetchedBloodGlucoses = try coreDataStack.managedObjectContext.fetch(request)
                         
-                        // loop over all and check if new data exists and store the new data if not yet existent
+                        // Loop over all and check if new data exists and store the new data if not yet existent
                         historyMeasurements.forEach({measurement in
                             
                             var storeMeasurement = true
@@ -431,14 +431,16 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                             // Check if there is already a record stored for the same time
                             for bloodGlucose in fetchedBloodGlucoses {
 
-                                // store value if dates are less than two mintues apart from each other (in either direction)
+                                // Store value if dates are less than two mintues apart from each other (in either direction)
                                 if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 2.0 * 60.0 {
                                     storeMeasurement = false
                                     break
                                 }
                             }
-                            // store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                            if storeMeasurement && measurement.glucose > bloodGlucoseOffset && measurement.glucose > 0.0 {
+                            // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
+                            // if storeMeasurement && (measurement.glucose > bloodGlucoseOffset) && (measurement.glucose > 0.0) {
+                            // Weird xcode 8.1 error enforces to reverse the comparison
+                            if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
                                 if let glucose = NSEntityDescription.insertNewObject(forEntityName: "BloodGlucose", into: coreDataStack.managedObjectContext) as? BloodGlucose {
                                     glucose.date = measurement.date as NSDate?
                                     glucose.bytes = measurement.byteString

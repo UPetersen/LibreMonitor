@@ -84,7 +84,8 @@ class SLIPBuffer {
 		var previousEndByteIndex = NSNotFound
         for endByteIndex in endByteIndices {
             
-            print(String(endByteIndex.description))
+//            print(String(endByteIndex.description))
+            print(String(endByteIndex.description) as Any)
             
             if (previousEndByteIndex != NSNotFound) {
                 
