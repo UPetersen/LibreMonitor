@@ -423,7 +423,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     do {
                         let fetchedBloodGlucoses = try coreDataStack.managedObjectContext.fetch(request)
                         
-                        // Loop over all and check if new data exists and store the new data if not yet existent
+                        // Loop over all and check if new data exists and store the new data if not yet existent 
                         historyMeasurements.forEach({measurement in
                             
                             var storeMeasurement = true
