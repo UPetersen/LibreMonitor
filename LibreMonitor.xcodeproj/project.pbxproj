@@ -41,6 +41,8 @@
 		C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */; };
 		C6822DDB1DB1631D00D08393 /* HeaderData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */; };
 		C6822DDC1DB1631D00D08393 /* HeaderData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */; };
+		C6DDBDB91DC511FF0048D275 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DDBDB81DC511FF0048D275 /* HealthManager.swift */; };
+		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
 		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
 		F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */; };
 /* End PBXBuildFile section */
@@ -115,6 +117,9 @@
 		C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sensor+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeaderData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeaderData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C6DDBDB81DC511FF0048D275 /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthManager.swift; path = Model/HealthManager.swift; sourceTree = "<group>"; };
+		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
 		D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECBB8DB6FD66440727AC6903 /* Pods-LibreMonitorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */,
+				C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +171,7 @@
 		C12F12DE60464196E06F6804 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C6DDBDBA1DC512410048D275 /* HealthKit.framework */,
 				EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */,
 				402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */,
 				887C2B24AC9C0E842F9CE127 /* Pods_LibreMonitorUITests.framework */,
@@ -208,6 +215,7 @@
 		C6822D641DB13F2200D08393 /* LibreMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */,
 				C6822DC61DB162D600D08393 /* ModelCoreData */,
 				C6822DBF1DB161B300D08393 /* Views */,
 				C6822DBA1DB1619100D08393 /* ViewControllers */,
@@ -264,6 +272,7 @@
 		C6822DAF1DB1617400D08393 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C6DDBDB81DC511FF0048D275 /* HealthManager.swift */,
 				C6822DB01DB1618400D08393 /* CRC.swift */,
 				C6822DB11DB1618400D08393 /* LibreSensor.swift */,
 				C6822DB21DB1618400D08393 /* Measurement.swift */,
@@ -389,6 +398,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.HealthKit = {
 								enabled = 1;
 							};
 						};
@@ -622,6 +634,7 @@
 				C6822DB51DB1618400D08393 /* CRC.swift in Sources */,
 				C6822DAE1DB1616300D08393 /* SLIPBuffer.swift in Sources */,
 				C6822DAB1DB1616300D08393 /* NSData+CRC8.m in Sources */,
+				C6DDBDB91DC511FF0048D275 /* HealthManager.swift in Sources */,
 				C6822DAA1DB1616300D08393 /* Data_types+Extensions.swift in Sources */,
 				C6822DD91DB1631D00D08393 /* Sensor+CoreDataClass.swift in Sources */,
 			);
@@ -775,6 +788,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -793,6 +807,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
