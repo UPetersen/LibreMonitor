@@ -34,6 +34,10 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     var timeInMinutesSinceStartOfSensor = 0
     var timeOfLastScan = Date()
     var transmissionDuration = TimeInterval()
+    var nfcReadingDuration = TimeInterval() // receiving system information data -> receiving battery voltage
+    var bluetoothTransmissionDuration = TimeInterval()  // receiving battery voltage -> receiving IDN-Data
+    var nfcReadingStart = Date()
+    var bluetoothTransmissionStart = Date()
     var timeOfTransmissionStart = Date()
     
     
@@ -211,7 +215,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             case 1:
                 cell.textLabel?.text = "Last scan:"
                 if let sennsorData = sensorData {
-                    cell.detailTextLabel?.text = String(format: "on \(dateFormatter.string(from: sennsorData.date as Date)), at \(timeFormatter.string(from: sennsorData.date as Date)) o'clock, in %.2f s", arguments: [transmissionDuration])
+                    cell.detailTextLabel?.text = String(format: "on \(dateFormatter.string(from: sennsorData.date as Date)), at \(timeFormatter.string(from: sennsorData.date as Date)) o'clock, in %.2f s (%.2f+%.2f)", arguments: [transmissionDuration, nfcReadingDuration, bluetoothTransmissionDuration])
                     
                     if Date().timeIntervalSince(sennsorData.date as Date) > 240.0 {
                         cell.backgroundColor = UIColor.red
@@ -284,7 +288,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     let minutesRest = minutes - days*24*60 - hours*60
                     cell.detailTextLabel?.text = String(format: "%d day(s), %d hour(s) and %d minute(s) ago", arguments: [days, hours, minutesRest])
                 }
-//                cell.detailTextLabel?.text = startOfSensorString
             case 6:
                 cell.textLabel?.text = "Sensor status"
                 if let sennsorData = sensorData {
@@ -308,8 +311,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 cell.textLabel?.text = String(format: "%0.1f mg/dl", measurements[index].glucose)
                 
                 let rawString = String(format: "%0d", measurements[index].rawValue)
-//                let temp =  (Int(measurements[index].bytes[4] & 0x0F) << 6) + Int(measurements[index].bytes[3]) >> 2
-//                let hugo = Int(measurements[index].bytes[3] & 3)
                 let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])
                 let hugo = Int(measurements[index].bytes[3])
                 cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
@@ -324,8 +325,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 cell.textLabel?.text = String(format: "%0.1f mg/dl", measurements[index].glucose)
                 
                 let rawString = String(format: "%0d", measurements[index].rawValue)
-//                let temp =  (Int(measurements[index].bytes[4] & 0x0F) << 6) + Int(measurements[index].bytes[3]) >> 2
-//                let hugo = Int(measurements[index].bytes[3] & 3)
                 let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])
                 let hugo = Int(measurements[index].bytes[3])
                 cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
@@ -376,6 +375,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
             
             timeOfTransmissionStart = Date()
+            nfcReadingStart = Date()
             deviceID = "-"
             
             print(payloadData.debugDescription)
@@ -395,6 +395,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             tableView.reloadData()
             
         case 0x2005: // Battery
+            
+            nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
+            bluetoothTransmissionStart = Date()
             
             var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
             
@@ -483,6 +486,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             timeOfLastScan = Date()
             
             transmissionDuration = Date().timeIntervalSince(timeOfTransmissionStart)
+            bluetoothTransmissionDuration = Date().timeIntervalSince(bluetoothTransmissionStart)
             
             // Convention: the idn data is the last packet sent from RFDuino within a cycle, thus reload table view after having received it
             tableView.reloadData()

@@ -113,7 +113,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
         }
     }
     
-    // MARK: - Mehods
+    // MARK: - Methods
     
     override init() {
         super.init()
