@@ -20,7 +20,8 @@
 	return [NSData CRC8ChecksumFromBuffer:buffer bytesToRead:self.length];
 }
 
-+ (signed char)CRC8ChecksumFromBuffer:(signed char *)dataBuffer bytesToRead:(signed char)bytesToRead {
+//+ (signed char)CRC8ChecksumFromBuffer:(signed char *)dataBuffer bytesToRead:(signed char)bytesToRead {
++ (signed char)CRC8ChecksumFromBuffer:(signed char *)dataBuffer bytesToRead:(uint16_t)bytesToRead {  // changed to uint16_t by Uwi on 2016-12-26
 	
     signed char  crc;
     uint16_t loop_count;

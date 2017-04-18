@@ -36,58 +36,6 @@ class LibreMonitorTests: XCTestCase, SLIPBufferDelegate  {
         XCTAssert(2 == 2, "the message is it is false")
     }
     
-    
-    
-    // Delegate function for test purposes that receives the data (as received via bluetooth) and stores data in local properties
-    func slipBufferReceivedPayload(_ payloadData: Data, payloadIdentifier: UInt16, txFlags: UInt8) {
-        slipBufferPayloadData = payloadData
-        slipBufferPayloadIdentifier = payloadIdentifier
-        slipBufferTxFlags = txFlags
-        print("Payload is: " + slipBufferPayloadData.debugDescription)
-    }
-    
-    // Test complete transmission of a packet of bytes with SLIP, see https://de.wikipedia.org/wiki/Serial_Line_Internet_Protocol
-    func transmission(forPayload payload: [UInt8], packetIdentifier: UInt16) {
-        
-        // Connect simblee
-        SimbleeBLE_onConnect()
-        
-        // 1. escape the payload using SLIP
-        
-        let dataPayload =  Data(bytes: UnsafePointer<UInt8>(payload), count: payload.count)  // convert to NSData
-        
-        let count = dataPayload.count / MemoryLayout<Int8>.size
-        var cCharArray = [CChar](repeating: 0, count: count)          // c-char array, format to be transmitted
-        (dataPayload as NSData).getBytes(&cCharArray, length: count)                  // read into the c-char array
-        
-        // queue the packet and escape data if necessary according to SLIP, transmit and check for success
-        let success = UBP_queuePacketTransmission(packetIdentifier, UBP_TxFlagIsRPC, cCharArray, UInt16(payload.count))
-        XCTAssert(success, "Failed to queue packet with SLIP")
-        
-        // 2. get the escaped payload as transmitted from transmission buffer
-        
-        var txBuffer = [CChar](repeating: 0, count: 64)
-        var txBufferLength: Int32 = 0
-        getTxBuffer(&txBuffer, &txBufferLength)
-        //        let escapedDataPayload = Data(bytes: UnsafePointer<UInt8>(txBuffer), count: Int(txBufferLength))
-        let escapedDataPayload = Data(bytes: UnsafeRawPointer(txBuffer), count: Int(txBufferLength))
-        
-        print("Original data: " + dataPayload.debugDescription)
-        print("Excaped  data: " + escapedDataPayload.debugDescription)
-        
-        // 3. receive escaped data payload and unescape again. The unescaped data is stored in local properties
-        let slipBuffer = SLIPBuffer()
-        slipBuffer.delegate = self
-        slipBuffer.appendEscapedBytes(escapedDataPayload)
-        
-        XCTAssertEqual(slipBufferPayloadData, dataPayload, "Transmitted and received payload are not equal")
-        XCTAssertEqual(slipBufferPayloadIdentifier, packetIdentifier, "Transmitted and received identifier are not equal")
-        
-        // Disconnect simblee (resets the buffer)
-        SimbleeBLE_onDisconnect()
-        
-    }
-    
     func testTransmission() {
         // Test the crc calculation for some known cases of bytes
         //
@@ -122,7 +70,69 @@ class LibreMonitorTests: XCTestCase, SLIPBufferDelegate  {
         for bytes in bytesArray {
             transmission(forPayload: bytes, packetIdentifier: UInt16(1234))
         }
+
+        for testData in BluetoothTestData.data() {
+//            let range = testData.startIndex...testData.index(testData.startIndex, offsetBy: 244) // okay values on laat: 7; 201; 253; 255; not okay values:
+            let aString = testData.replacingOccurrences(of: " ", with: "")
+            let bytes = stringToBytes(aString)
+            transmission(forPayload: bytes, packetIdentifier: UInt16(9999))
+        }
+        
+    }   
+    
+    // Delegate function for test purposes that receives the data (as received via bluetooth) and stores data in local properties
+    func slipBufferReceivedPayload(_ payloadData: Data, payloadIdentifier: UInt16, txFlags: UInt8) {
+        slipBufferPayloadData = payloadData
+        slipBufferPayloadIdentifier = payloadIdentifier
+        slipBufferTxFlags = txFlags
+        print("Payload is: " + slipBufferPayloadData.debugDescription)
     }
+
+    
+    
+    // Test complete transmission of a packet of bytes with SLIP, see https://de.wikipedia.org/wiki/Serial_Line_Internet_Protocol
+    func transmission(forPayload payload: [UInt8], packetIdentifier: UInt16) {
+        
+        // Connect simblee
+        SimbleeBLE_onConnect()
+        
+        // 1. escape the payload using SLIP
+        
+        let dataPayload =  Data(bytes: UnsafePointer<UInt8>(payload), count: payload.count)  // convert to NSData
+        
+        let count = dataPayload.count / MemoryLayout<Int8>.size
+        var cCharArray = [CChar](repeating: 0, count: count)          // c-char array, format to be transmitted
+        (dataPayload as NSData).getBytes(&cCharArray, length: count)                  // read into the c-char array
+        
+        // queue the packet and escape data if necessary according to SLIP, transmit and check for success
+        let success = UBP_queuePacketTransmission(packetIdentifier, UBP_TxFlagIsRPC, cCharArray, UInt16(payload.count))
+        XCTAssert(success, "Failed to queue packet with SLIP")
+        
+        // 2. get the escaped payload as transmitted from transmission buffer
+        
+        var txBuffer = [CChar](repeating: 0, count:440) /// Warning: This should not be hardcoded
+        var txBufferLength: Int32 = 0
+        getTxBuffer(&txBuffer, &txBufferLength)
+        //        let escapedDataPayload = Data(bytes: UnsafePointer<UInt8>(txBuffer), count: Int(txBufferLength))
+        let escapedDataPayload = Data(bytes: UnsafeRawPointer(txBuffer), count: Int(txBufferLength))
+        
+        print("Original data: " + dataPayload.debugDescription)
+        print("Excaped  data: " + escapedDataPayload.debugDescription)
+        
+        // 3. receive escaped data payload and unescape again. The unescaped data is stored in local properties
+        let slipBuffer = SLIPBuffer()
+        slipBuffer.delegate = self
+        slipBuffer.appendEscapedBytes(escapedDataPayload)
+        
+        XCTAssertEqual(slipBufferPayloadData, dataPayload, "Transmitted and received payload are not equal")
+        XCTAssertEqual(slipBufferPayloadIdentifier, packetIdentifier, "Transmitted and received identifier are not equal")
+        
+        // Disconnect simblee (resets the buffer)
+        SimbleeBLE_onDisconnect()
+        
+    }
+    
+
     
     
     // MARK: crc test code
@@ -164,7 +174,7 @@ class LibreMonitorTests: XCTestCase, SLIPBufferDelegate  {
         var bytesToTransfer = bytes
         let bytesToTransferLength = bytes.count - 1
         
-        let calculatedCrc: UInt8 = CRC8(&bytesToTransfer, UInt8(bytesToTransferLength))
+        let calculatedCrc: UInt8 = CRC8(&bytesToTransfer, UInt16(bytesToTransferLength))
         
         let embeddedCrc = bytes[bytes.count-1]
         
@@ -202,6 +212,33 @@ class LibreMonitorTests: XCTestCase, SLIPBufferDelegate  {
         self.measure {
             // Put the code you want to measure the time of here.
         }
+    }
+    
+    
+    
+    
+    
+    
+    
+    func stringToBytes(_ theString: String) -> [UInt8] {
+        
+        let length = theString.lengthOfBytes(using: String.Encoding.utf8)
+        guard length % 2 == 0 else {
+            print("Error in \(#function): String does not have an even number of characters and is thus not a valid string of pairs of characters where each pair represents a byte.")
+            return [0]
+        }
+        
+        var theBytes = [UInt8]()
+        for index in stride(from: 0, to: length, by: 2) {
+            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
+            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
+            let range = aIndex..<bIndex
+            //            let range = Range(start: aIndex, end: bIndex)
+            let string = String(theString.substring(with: range))
+            let aByte = UInt8(string!, radix: 16)
+            theBytes.append(aByte!)
+        }
+        return theBytes
     }
     
 }

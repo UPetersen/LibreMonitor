@@ -14,4 +14,5 @@
 typedef uint8_t byte;
 
 
-byte CRC8(void *data_in, byte number_of_bytes_to_read);
+//byte CRC8(void *data_in, byte number_of_bytes_to_read);
+byte CRC8(void *data_in, uint16_t number_of_bytes_to_read); // fixed bug that made app crashed with data longer than 256 bytes

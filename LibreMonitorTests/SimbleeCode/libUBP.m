@@ -6,7 +6,8 @@
 
 // Build-time configurations
 //#define BUFFER_LENGTH 64 // Uwe changed this on 2016-01-04
-#define BUFFER_LENGTH 400 // Uwe changed this on 2016-07-24
+//#define BUFFER_LENGTH 400 // Uwe changed this on 2016-07-24
+#define BUFFER_LENGTH 440 // Uwe changed this on 2016-12-25
 #define TX_CHUNK_SIZE 20
 #define PACKET_ID_SIZE 2
 
@@ -231,7 +232,11 @@ int _UBP_makeEscapedCopy(const char *inputBuffer, unsigned short inputBufferLeng
     unsigned int bytesCopied = 0;
     const char *inputBytes = inputBuffer;  // Cast here to avoid compiler warnings later
     
-    for (char i = 0; i < inputBufferLength; i++) {  // For each byte to append
+
+    // 2016-07-24: changed i from char to int to avoid buffer over flow that had happend for more numbers larger than 256
+    //for (char i = 0; i < inputBufferLength; i++) {  // For each byte to append
+    for (int i = 0; i < inputBufferLength; i++) {  // For each byte to append
+//        printf("i = %i", (int) i);
         
         // Escape any control characters. Refer to Serial Line IP (SLIP) spec.
         char aByte = *(inputBytes + i);

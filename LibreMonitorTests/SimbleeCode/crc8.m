@@ -14,7 +14,8 @@
 #define CRC8INIT  0x00
 #define CRC8POLY  0x18      // 0X18 = X^8+X^5+X^4+X^0
 
-byte CRC8(void *bytes, byte number_of_bytes_to_read) {
+//byte CRC8(void *bytes, byte number_of_bytes_to_read) {
+byte CRC8(void *bytes, uint16_t number_of_bytes_to_read) {// fixed bug that made app crashed with data longer than 256 bytes
     
     byte *data_in = (byte*) bytes;
     byte  crc;

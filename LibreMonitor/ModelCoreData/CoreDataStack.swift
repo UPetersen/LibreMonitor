@@ -51,7 +51,7 @@ class CoreDataStack: NSObject {
     
     lazy var applicationDocumentsDirectory: URL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "UPP.LibreMonitor" in the application's documents Application Support directory.
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        var urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1]
     }()
     
@@ -109,7 +109,5 @@ class CoreDataStack: NSObject {
             }
         }
     }
-
-    
     
 }

@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9F659E798C0CD22711C55DE6 /* Pods_LibreMonitorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887C2B24AC9C0E842F9CE127 /* Pods_LibreMonitorUITests.framework */; };
+		C60178961E3E7FE5008FCF3A /* BluetoothTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60178951E3E7FE5008FCF3A /* BluetoothTestData.swift */; };
 		C61C296C1DB16C60009A5885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C61C296B1DB16C60009A5885 /* Main.storyboard */; };
+		C65E6DA21E45070800A85E0E /* TransmissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E6DA11E45070800A85E0E /* TransmissionTests.swift */; };
 		C6652F1E1DB1801D00237E7D /* crc8.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1B1DB1801D00237E7D /* crc8.m */; };
 		C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1D1DB1801D00237E7D /* libUBP.m */; };
 		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
@@ -41,7 +43,6 @@
 		C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */; };
 		C6822DDB1DB1631D00D08393 /* HeaderData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */; };
 		C6822DDC1DB1631D00D08393 /* HeaderData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */; };
-		C6DDBDB91DC511FF0048D275 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DDBDB81DC511FF0048D275 /* HealthManager.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
 		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
 		F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */; };
@@ -70,7 +71,9 @@
 		771CB977837C430DB5630E78 /* Pods-LibreMonitor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.release.xcconfig"; sourceTree = "<group>"; };
 		887C2B24AC9C0E842F9CE127 /* Pods_LibreMonitorUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitorUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C01D6FD2C7EC8B142986E40 /* Pods-LibreMonitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.debug.xcconfig"; sourceTree = "<group>"; };
+		C60178951E3E7FE5008FCF3A /* BluetoothTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTestData.swift; sourceTree = "<group>"; };
 		C61C296B1DB16C60009A5885 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C65E6DA11E45070800A85E0E /* TransmissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransmissionTests.swift; sourceTree = "<group>"; };
 		C6652F1A1DB1801D00237E7D /* crc8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc8.h; path = SimbleeCode/crc8.h; sourceTree = "<group>"; };
 		C6652F1B1DB1801D00237E7D /* crc8.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = crc8.m; path = SimbleeCode/crc8.m; sourceTree = "<group>"; };
 		C6652F1C1DB1801D00237E7D /* libUBP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libUBP.h; path = SimbleeCode/libUBP.h; sourceTree = "<group>"; };
@@ -117,7 +120,6 @@
 		C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sensor+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeaderData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeaderData+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C6DDBDB81DC511FF0048D275 /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HealthManager.swift; path = Model/HealthManager.swift; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
 		D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -235,8 +237,10 @@
 		C6822D7E1DB13F2200D08393 /* LibreMonitorTests */ = {
 			isa = PBXGroup;
 			children = (
+				C60178951E3E7FE5008FCF3A /* BluetoothTestData.swift */,
 				C6822D7F1DB13F2200D08393 /* LibreMonitorTests.swift */,
 				C6822DC41DB161F900D08393 /* LibreMonitorTestSensorData.swift */,
+				C65E6DA11E45070800A85E0E /* TransmissionTests.swift */,
 				C6652F121DB17FC100237E7D /* SimbleeCode */,
 				C6652F201DB1812C00237E7D /* LibreMonitorTests-Bridging-Header.h */,
 				C6822D811DB13F2200D08393 /* Info.plist */,
@@ -272,7 +276,6 @@
 		C6822DAF1DB1617400D08393 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C6DDBDB81DC511FF0048D275 /* HealthManager.swift */,
 				C6822DB01DB1618400D08393 /* CRC.swift */,
 				C6822DB11DB1618400D08393 /* LibreSensor.swift */,
 				C6822DB21DB1618400D08393 /* Measurement.swift */,
@@ -388,13 +391,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Uwe Petersen";
 				TargetAttributes = {
 					C6822D611DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 26F6YWJYL8;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -634,7 +637,6 @@
 				C6822DB51DB1618400D08393 /* CRC.swift in Sources */,
 				C6822DAE1DB1616300D08393 /* SLIPBuffer.swift in Sources */,
 				C6822DAB1DB1616300D08393 /* NSData+CRC8.m in Sources */,
-				C6DDBDB91DC511FF0048D275 /* HealthManager.swift in Sources */,
 				C6822DAA1DB1616300D08393 /* Data_types+Extensions.swift in Sources */,
 				C6822DD91DB1631D00D08393 /* Sensor+CoreDataClass.swift in Sources */,
 			);
@@ -644,8 +646,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C60178961E3E7FE5008FCF3A /* BluetoothTestData.swift in Sources */,
 				C6822DC51DB161F900D08393 /* LibreMonitorTestSensorData.swift in Sources */,
 				C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */,
+				C65E6DA21E45070800A85E0E /* TransmissionTests.swift in Sources */,
 				C6652F1E1DB1801D00237E7D /* crc8.m in Sources */,
 				C6822D801DB13F2200D08393 /* LibreMonitorTests.swift in Sources */,
 			);
@@ -785,7 +789,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C01D6FD2C7EC8B142986E40 /* Pods-LibreMonitor.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
@@ -804,7 +808,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 771CB977837C430DB5630E78 /* Pods-LibreMonitor.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
