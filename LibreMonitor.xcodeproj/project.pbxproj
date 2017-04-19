@@ -43,6 +43,9 @@
 		C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */; };
 		C6822DDB1DB1631D00D08393 /* HeaderData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */; };
 		C6822DDC1DB1631D00D08393 /* HeaderData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */; };
+		C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */; };
+		C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */; };
+		C68AA76E1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
 		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
 		F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */; };
@@ -120,6 +123,9 @@
 		C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sensor+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeaderData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeaderData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedResultsTableViewController.swift; path = ViewControllers/FetchedResultsTableViewController.swift; sourceTree = "<group>"; };
+		C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlucoseCDTVC.swift; sourceTree = "<group>"; };
+		C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITableViewDataSource+NSFetchedResultsController.swift"; path = "ViewControllers/UITableViewDataSource+NSFetchedResultsController.swift"; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
 		D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -288,8 +294,11 @@
 		C6822DBA1DB1619100D08393 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */,
+				C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */,
 				C6822DBB1DB161AB00D08393 /* AdjustmentsTableViewController.swift */,
 				C6822DBC1DB161AB00D08393 /* BloodSugarTableViewController.swift */,
+				C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -391,7 +400,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Uwe Petersen";
 				TargetAttributes = {
 					C6822D611DB13F2200D08393 = {
@@ -499,7 +508,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		7ABA004F1E59594A6108DE52 /* [CP] Embed Pods Frameworks */ = {
@@ -589,7 +598,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		BDD349C2E88A839DFD7221CD /* [CP] Check Pods Manifest.lock */ = {
@@ -604,7 +613,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -615,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
+				C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */,
 				C6822DC81DB162E900D08393 /* CoreDataStack.swift in Sources */,
 				C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */,
 				C6822DD81DB1631D00D08393 /* Reader+CoreDataProperties.swift in Sources */,
@@ -622,6 +632,8 @@
 				C6822DDC1DB1631D00D08393 /* HeaderData+CoreDataProperties.swift in Sources */,
 				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
+				C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */,
+				C68AA76E1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift in Sources */,
 				C6822DB61DB1618400D08393 /* LibreSensor.swift in Sources */,
 				C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */,
 				C6822DD61DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift in Sources */,
@@ -731,7 +743,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -776,7 +788,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -795,6 +807,7 @@
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -814,6 +827,7 @@
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";

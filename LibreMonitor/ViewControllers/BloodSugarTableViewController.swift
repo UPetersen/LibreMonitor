@@ -172,16 +172,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 0 {
-            didTapConnectButton()
-        } else if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 2 {
-            // ChangeBloodGlucoseAdjustments
-            performSegue(withIdentifier: "ChangeBloodGlucoseAdjustments", sender: self)
-        }
-    }
-    
+
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
@@ -215,7 +206,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             case 1:
                 cell.textLabel?.text = "Last scan:"
                 if let sennsorData = sensorData {
-                    cell.detailTextLabel?.text = String(format: "on \(dateFormatter.string(from: sennsorData.date as Date)), at \(timeFormatter.string(from: sennsorData.date as Date)) o'clock, in %.2f s (%.2f+%.2f)", arguments: [transmissionDuration, nfcReadingDuration, bluetoothTransmissionDuration])
+                    cell.detailTextLabel?.text = String(format: "\(dateFormatter.string(from: sennsorData.date as Date)), at \(timeFormatter.string(from: sennsorData.date as Date)), in %.2f s (%.2f+%.2f NFC/Bluetooth)", arguments: [transmissionDuration, nfcReadingDuration, bluetoothTransmissionDuration])
                     
                     if Date().timeIntervalSince(sennsorData.date as Date) > 240.0 {
                         cell.backgroundColor = UIColor.red
@@ -344,10 +335,38 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     
     // MARK: - Navigation
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 0 {
+//            didTapConnectButton()
+//        } else if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 2 {
+//            // ChangeBloodGlucoseAdjustments
+//            performSegue(withIdentifier: "ChangeBloodGlucoseAdjustments", sender: self)
+//        }
+        
+        switch Section(rawValue: indexPath.section)! {
+        case .connectionData:
+            if indexPath.row == 0 {
+                didTapConnectButton()
+            } else if indexPath.row == 2 {
+                performSegue(withIdentifier: "ChangeBloodGlucoseAdjustments", sender: self) // ChangeBloodGlucoseAdjustments
+            }
+        case .trendData, .historyData:
+            performSegue(withIdentifier: "showGlucoseCDTVC", sender: self)
+        default:
+            break
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("Prepare for segue")
         if segue.identifier == "ChangeBloodGlucoseAdjustments" {
             print("Segue ChangeBloodGlucoseAdjustments")
+        } else if segue.identifier == "showGlucoseCDTVC",  let nc = segue.destination as? UINavigationController {
+            if let vc = nc.topViewController as? GlucoseCDTVC {
+                vc.coreDataStack = coreDataStack
+            }
         }
     }
     

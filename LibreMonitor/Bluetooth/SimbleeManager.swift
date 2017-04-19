@@ -159,7 +159,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        print("didDiscoverPeripheral with name \(peripheral.name)")
+        print("didDiscoverPeripheral with name \(String(describing: peripheral.name))")
         
         self.peripheral = peripheral
         connect()
