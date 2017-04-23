@@ -73,7 +73,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         // Do any additional setup after loading the view, typically from a nib.
         // self.navigationItem.leftBarButtonItem = self.editButtonItem()
         simbleeManager.delegate = self
-        self.title = "LibreMonitor"
+//        self.title = "LibreMonitor"
+        self.navigationItem.title = "LibreMonitor"
         
         let connectButtonTitle = connectButtonTitleForState(simbleeManager.state)
         let conncectButton = UIBarButtonItem(title: connectButtonTitle, style: .plain, target: self, action: #selector(BloodSugarTableViewController.didTapConnectButton))
@@ -338,13 +339,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 0 {
-//            didTapConnectButton()
-//        } else if (indexPath as NSIndexPath).section == 0 && (indexPath as NSIndexPath).row == 2 {
-//            // ChangeBloodGlucoseAdjustments
-//            performSegue(withIdentifier: "ChangeBloodGlucoseAdjustments", sender: self)
-//        }
-        
         switch Section(rawValue: indexPath.section)! {
         case .connectionData:
             if indexPath.row == 0 {
@@ -363,10 +357,14 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         print("Prepare for segue")
         if segue.identifier == "ChangeBloodGlucoseAdjustments" {
             print("Segue ChangeBloodGlucoseAdjustments")
-        } else if segue.identifier == "showGlucoseCDTVC",  let nc = segue.destination as? UINavigationController {
-            if let vc = nc.topViewController as? GlucoseCDTVC {
+        } else if segue.identifier == "showGlucoseCDTVC" {
+            if let vc = segue.destination as? GlucoseCDTVC {
                 vc.coreDataStack = coreDataStack
             }
+//        } else if segue.identifier == "showGlucoseCDTVC",  let nc = segue.destination as? UINavigationController {
+//            if let vc = nc.topViewController as? GlucoseCDTVC {
+//                vc.coreDataStack = coreDataStack
+//            }
         }
     }
     

@@ -17,13 +17,12 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
     }
     var fetchedResultsController: NSFetchedResultsController<BloodGlucose>?
 
-    
-    @IBAction func cancelButtonPressed(_ sender: Any) {
-        presentingViewController?.dismiss(animated: true, completion: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
     
-    private func updateUI() {
+     func updateUI() {
         
         let context = coreDataStack.managedObjectContext
         let request: NSFetchRequest<BloodGlucose> = BloodGlucose.fetchRequest()
@@ -40,6 +39,8 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
     }
     
     
+    // MARK: - TableView DataSource
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "glucoseCell", for: indexPath)
         if let bloodGlucose = fetchedResultsController?.object(at: indexPath) {
@@ -49,8 +50,20 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if let bloodGlucose = fetchedResultsController?.object(at: indexPath) {
+                coreDataStack.managedObjectContext.delete(bloodGlucose)
+            }
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        }
+    }
+    
+    
+    // MARK: - TableView Delegate
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 20
+        return 30
     }
 }
