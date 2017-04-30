@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "514444017.635865"
+            timestampString = "515265591.94541"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "385"
+            endingLineNumber = "385"
             landmarkName = "simbleeManagerReceivedMessage(_:txFlags:payloadData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "514403922.294209"
+            timestampString = "515265591.94541"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -217,14 +217,76 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "514408281.293065"
+            filePath = "LibreMonitor/AppDelegate.swift"
+            timestampString = "515270167.01337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "prepare(for:sender:)"
-            landmarkType = "7">
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "managedObjectModel"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LibreMonitor.AppDelegate.persistentContainer.getter : __ObjC.NSPersistentContainer"
+                  moduleName = "LibreMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Uwe/Desktop/Development/Apple/LibreMonitor/LibreMonitor/AppDelegate.swift"
+                  timestampString = "515273788.21289"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "176">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LibreMonitor.AppDelegate.persistentContainer.setter : __ObjC.NSPersistentContainer"
+                  moduleName = "LibreMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Uwe/Desktop/Development/Apple/LibreMonitor/LibreMonitor/AppDelegate.swift"
+                  timestampString = "515273788.215327"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "65">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LibreMonitor.AppDelegate.(persistentContainer.getter : __ObjC.NSPersistentContainer).(closure #1)"
+                  moduleName = "LibreMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Uwe/Desktop/Development/Apple/LibreMonitor/LibreMonitor/AppDelegate.swift"
+                  timestampString = "515273788.218163"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LibreMonitor.AppDelegate.init () -&gt; LibreMonitor.AppDelegate"
+                  moduleName = "LibreMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Uwe/Desktop/Development/Apple/LibreMonitor/LibreMonitor/AppDelegate.swift"
+                  timestampString = "515273788.220699"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "47">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

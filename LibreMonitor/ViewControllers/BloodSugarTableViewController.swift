@@ -15,7 +15,8 @@ import UserNotifications
 
 class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
     
-    var coreDataStack = CoreDataStack()
+//    var coreDataStack = CoreDataStack()
+    var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
     
     var sensorData: SensorData?
@@ -354,17 +355,13 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("Prepare for segue")
         if segue.identifier == "ChangeBloodGlucoseAdjustments" {
             print("Segue ChangeBloodGlucoseAdjustments")
         } else if segue.identifier == "showGlucoseCDTVC" {
             if let vc = segue.destination as? GlucoseCDTVC {
-                vc.coreDataStack = coreDataStack
-            }
-//        } else if segue.identifier == "showGlucoseCDTVC",  let nc = segue.destination as? UINavigationController {
-//            if let vc = nc.topViewController as? GlucoseCDTVC {
 //                vc.coreDataStack = coreDataStack
-//            }
+                vc.persistentContainer = persistentContainer!
+            }
         }
     }
     
@@ -441,7 +438,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     
                     let request = BloodGlucose.fetchRequest() as NSFetchRequest<BloodGlucose>
                     do {
-                        let fetchedBloodGlucoses = try coreDataStack.managedObjectContext.fetch(request)
+//                        let fetchedBloodGlucoses = try coreDataStack.managedObjectContext.fetch(request)
+                        let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
                         
                         // Loop over all and check if new data exists and store the new data if not yet existent 
                         historyMeasurements.forEach({measurement in
@@ -449,7 +447,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                             var storeMeasurement = true
                             
                             // Check if there is already a record stored for the same time
-                            for bloodGlucose in fetchedBloodGlucoses {
+                            for bloodGlucose in fetchedBloodGlucoses! {
 
                                 // Store value if dates are less than two mintues apart from each other (in either direction)
                                 if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 2.0 * 60.0 {
@@ -459,13 +457,15 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                             }
                             // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
                             if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
-                                let glucose = BloodGlucose(context: coreDataStack.managedObjectContext)
+//                                let glucose = BloodGlucose(context: coreDataStack.managedObjectContext)
+                                let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
                                 glucose.bytes = measurement.byteString
                                 glucose.value = measurement.glucose
                                 glucose.dateString = dateFormatter.string(from: measurement.date as Date)
                             }
                         })
-                        coreDataStack.saveContext()
+//                        coreDataStack.saveContext()
+                        try? persistentContainer?.viewContext.save()
  
                     } catch {
                         fatalError("Failed to fetch BloodGlucose: \(error)")

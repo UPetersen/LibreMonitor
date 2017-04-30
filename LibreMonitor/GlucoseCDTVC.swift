@@ -12,31 +12,37 @@ import CoreData
 
 class GlucoseCDTVC: FetchedResultsTableViewController {
     
-    var coreDataStack = CoreDataStack() {
+    var persistentContainer: NSPersistentContainer?  {
         didSet { updateUI() }
     }
+    
+//    var coreDataStack = CoreDataStack() {
+//        didSet { updateUI() }
+//    }
     var fetchedResultsController: NSFetchedResultsController<BloodGlucose>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItems?.append(editButtonItem) 
+        self.navigationItem.rightBarButtonItems?.append(editButtonItem)
 //        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
      func updateUI() {
         
-        let context = coreDataStack.managedObjectContext
-        let request: NSFetchRequest<BloodGlucose> = BloodGlucose.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(
-            key: "dateString",
-            ascending: false,
-            selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
-        )]
-        request.predicate = nil // all 
-        fetchedResultsController = NSFetchedResultsController<BloodGlucose>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController?.delegate = self
-        try? fetchedResultsController?.performFetch()
-        tableView.reloadData()
+//        let context = coreDataStack.managedObjectContext
+        if let context = persistentContainer?.viewContext {
+            let request: NSFetchRequest<BloodGlucose> = BloodGlucose.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(
+                key: "dateString",
+                ascending: false,
+                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+                )]
+            request.predicate = nil // all
+            fetchedResultsController = NSFetchedResultsController<BloodGlucose>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchedResultsController?.delegate = self
+            try? fetchedResultsController?.performFetch()
+            tableView.reloadData()
+        }
     }
     
     
@@ -54,7 +60,8 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if let bloodGlucose = fetchedResultsController?.object(at: indexPath) {
-                coreDataStack.managedObjectContext.delete(bloodGlucose)
+//                coreDataStack.managedObjectContext.delete(bloodGlucose)
+                persistentContainer?.viewContext.delete(bloodGlucose)
             }
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -82,18 +89,23 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
                     let indexPath = tableView.indexPath(for: cell),
                     let bloodGlucose = fetchedResultsController?.object(at: indexPath)
                 {
-                    coreDataStack.managedObjectContext.undoManager = UndoManager()
-                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
+                    persistentContainer?.viewContext.undoManager = UndoManager()
+                    persistentContainer?.viewContext.undoManager?.beginUndoGrouping()
+//                    coreDataStack.managedObjectContext.undoManager = UndoManager()
+//                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
                     vc.bloodGlucose = bloodGlucose
                 }
             case "addBloodGlucose":
                 if  let navController = segue.destination as? UINavigationController,
                     let vc = navController.topViewController as? BloodGlucoseEntryEditTableViewController
                 {
-                    coreDataStack.managedObjectContext.undoManager = UndoManager()
-                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
+                    persistentContainer?.viewContext.undoManager = UndoManager()
+                    persistentContainer?.viewContext.undoManager?.beginUndoGrouping()
+//                    coreDataStack.managedObjectContext.undoManager = UndoManager()
+//                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
 
-                    let bloodGlucose = BloodGlucose(context: coreDataStack.managedObjectContext)
+                    let bloodGlucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
+//                    let bloodGlucose = BloodGlucose(context: coreDataStack.managedObjectContext)
 //                    bloodGlucose.date = Date() as NSDate
                     
                     vc.bloodGlucose = bloodGlucose
