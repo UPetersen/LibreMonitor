@@ -11,5 +11,9 @@ import CoreData
 
 
 public class BloodGlucose: NSManagedObject {
+    
+    public override func awakeFromInsert() {
+        date = Date() as NSDate
+    }
 
 }

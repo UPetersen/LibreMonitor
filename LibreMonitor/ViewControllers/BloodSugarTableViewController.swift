@@ -458,15 +458,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                                 }
                             }
                             // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                            // if storeMeasurement && (measurement.glucose > bloodGlucoseOffset) && (measurement.glucose > 0.0) {
-                            // Weird xcode 8.1 error enforces to reverse the comparison
                             if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
-                                if let glucose = NSEntityDescription.insertNewObject(forEntityName: "BloodGlucose", into: coreDataStack.managedObjectContext) as? BloodGlucose {
-                                    glucose.date = measurement.date as NSDate?
-                                    glucose.bytes = measurement.byteString
-                                    glucose.value = measurement.glucose
-                                    glucose.dateString = dateFormatter.string(from: measurement.date as Date)
-                                }
+                                let glucose = BloodGlucose(context: coreDataStack.managedObjectContext)
+                                glucose.bytes = measurement.byteString
+                                glucose.value = measurement.glucose
+                                glucose.dateString = dateFormatter.string(from: measurement.date as Date)
                             }
                         })
                         coreDataStack.saveContext()
@@ -475,7 +471,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                         fatalError("Failed to fetch BloodGlucose: \(error)")
                     }
                 }
-                
                 
             } else {
                 trendMeasurements = nil

@@ -19,6 +19,7 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.rightBarButtonItems?.append(editButtonItem) 
 //        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
@@ -63,7 +64,44 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
     
     // MARK: - TableView Delegate
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+
+    
+    // MARK: - Navigation
+
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let identifier = segue.identifier {
+            
+            switch identifier {
+            case "editBloodGlucose":
+                if  let navController = segue.destination as? UINavigationController,
+                    let vc = navController.topViewController as? BloodGlucoseEntryEditTableViewController,
+                    let cell = sender as? UITableViewCell,
+                    let indexPath = tableView.indexPath(for: cell),
+                    let bloodGlucose = fetchedResultsController?.object(at: indexPath)
+                {
+                    coreDataStack.managedObjectContext.undoManager = UndoManager()
+                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
+                    vc.bloodGlucose = bloodGlucose
+                }
+            case "addBloodGlucose":
+                if  let navController = segue.destination as? UINavigationController,
+                    let vc = navController.topViewController as? BloodGlucoseEntryEditTableViewController
+                {
+                    coreDataStack.managedObjectContext.undoManager = UndoManager()
+                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
+
+                    let bloodGlucose = BloodGlucose(context: coreDataStack.managedObjectContext)
+//                    bloodGlucose.date = Date() as NSDate
+                    
+                    vc.bloodGlucose = bloodGlucose
+                }
+            default: break
+            }
+        
+        }
     }
+    
 }
