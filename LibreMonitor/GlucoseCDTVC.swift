@@ -12,9 +12,7 @@ import CoreData
 
 class GlucoseCDTVC: FetchedResultsTableViewController {
     
-    var persistentContainer: NSPersistentContainer?  {
-        didSet { updateUI() }
-    }
+    var persistentContainer: NSPersistentContainer?
     
 //    var coreDataStack = CoreDataStack() {
 //        didSet { updateUI() }
@@ -22,6 +20,7 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
     var fetchedResultsController: NSFetchedResultsController<BloodGlucose>?
 
     override func viewDidLoad() {
+        updateUI()
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItems?.append(editButtonItem)
 //        self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -106,7 +105,7 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
 
                     let bloodGlucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
 //                    let bloodGlucose = BloodGlucose(context: coreDataStack.managedObjectContext)
-//                    bloodGlucose.date = Date() as NSDate
+                    bloodGlucose.date = Date() as NSDate
                     
                     vc.bloodGlucose = bloodGlucose
                 }

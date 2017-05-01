@@ -360,7 +360,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         } else if segue.identifier == "showGlucoseCDTVC" {
             if let vc = segue.destination as? GlucoseCDTVC {
 //                vc.coreDataStack = coreDataStack
-                vc.persistentContainer = persistentContainer!
+                vc.persistentContainer = persistentContainer
             }
         }
     }
@@ -461,7 +461,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                                 let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
                                 glucose.bytes = measurement.byteString
                                 glucose.value = measurement.glucose
-                                glucose.dateString = dateFormatter.string(from: measurement.date as Date)
+                                glucose.date = measurement.date as NSDate
+                                glucose.dateString = dateFormatter.string(from: measurement.date)
                             }
                         })
 //                        coreDataStack.saveContext()
