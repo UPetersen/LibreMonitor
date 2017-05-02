@@ -13,29 +13,22 @@ import CoreData
 class GlucoseCDTVC: FetchedResultsTableViewController {
     
     var persistentContainer: NSPersistentContainer?
-    
-//    var coreDataStack = CoreDataStack() {
-//        didSet { updateUI() }
-//    }
     var fetchedResultsController: NSFetchedResultsController<BloodGlucose>?
+    var dateFormatter = DateFormatter()
 
     override func viewDidLoad() {
-        updateUI()
         super.viewDidLoad()
+        dateFormatter.dateFormat = "yyyy-MM-dd    HH:mm:ss"
+        dateFormatter.locale = NSLocale.current
+        updateUI()
         self.navigationItem.rightBarButtonItems?.append(editButtonItem)
-//        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
      func updateUI() {
         
-//        let context = coreDataStack.managedObjectContext
         if let context = persistentContainer?.viewContext {
             let request: NSFetchRequest<BloodGlucose> = BloodGlucose.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(
-                key: "dateString",
-                ascending: false,
-                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
-                )]
+            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
             request.predicate = nil // all
             fetchedResultsController = NSFetchedResultsController<BloodGlucose>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
             fetchedResultsController?.delegate = self
@@ -51,7 +44,9 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "glucoseCell", for: indexPath)
         if let bloodGlucose = fetchedResultsController?.object(at: indexPath) {
             cell.textLabel?.text = bloodGlucose.value.description
-            cell.detailTextLabel?.text = bloodGlucose.dateString ?? " "
+            if let date = bloodGlucose.date {
+                cell.detailTextLabel?.text = dateFormatter.string(from: date as Date)
+            }
         }
         return cell
     }
@@ -59,7 +54,6 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if let bloodGlucose = fetchedResultsController?.object(at: indexPath) {
-//                coreDataStack.managedObjectContext.delete(bloodGlucose)
                 persistentContainer?.viewContext.delete(bloodGlucose)
             }
         } else if editingStyle == .insert {
@@ -73,8 +67,6 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
 
     
     // MARK: - Navigation
-
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -90,8 +82,6 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
                 {
                     persistentContainer?.viewContext.undoManager = UndoManager()
                     persistentContainer?.viewContext.undoManager?.beginUndoGrouping()
-//                    coreDataStack.managedObjectContext.undoManager = UndoManager()
-//                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
                     vc.bloodGlucose = bloodGlucose
                 }
             case "addBloodGlucose":
@@ -100,19 +90,14 @@ class GlucoseCDTVC: FetchedResultsTableViewController {
                 {
                     persistentContainer?.viewContext.undoManager = UndoManager()
                     persistentContainer?.viewContext.undoManager?.beginUndoGrouping()
-//                    coreDataStack.managedObjectContext.undoManager = UndoManager()
-//                    coreDataStack.managedObjectContext.undoManager?.beginUndoGrouping()
 
                     let bloodGlucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
-//                    let bloodGlucose = BloodGlucose(context: coreDataStack.managedObjectContext)
                     bloodGlucose.date = Date() as NSDate
                     
                     vc.bloodGlucose = bloodGlucose
                 }
             default: break
             }
-        
         }
     }
-    
 }

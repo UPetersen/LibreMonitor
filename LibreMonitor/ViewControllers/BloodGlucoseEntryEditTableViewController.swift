@@ -40,7 +40,8 @@ class BloodGlucoseEntryEditTableViewController: UITableViewController {
         bloodGlucoseNumber = (bloodGlucose?.value ?? 0) as NSNumber
         
         if let bloodGlucose = bloodGlucose,
-            let date = bloodGlucose.date {
+            let date = bloodGlucose.date
+        {
             datePicker.date = date as Date
             dateLabel.text = DateFormatter.localizedString(from: date as Date, dateStyle: .short, timeStyle: .short)
             
@@ -93,7 +94,6 @@ class BloodGlucoseEntryEditTableViewController: UITableViewController {
 
 
     // MARK: - Navigation
-    
     
     @IBAction func undoButtonPressed(_ sender: UIBarButtonItem) {
         bloodGlucose?.managedObjectContext?.undoManager?.endUndoGrouping()

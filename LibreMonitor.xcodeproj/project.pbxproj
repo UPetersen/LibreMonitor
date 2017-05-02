@@ -35,7 +35,6 @@
 		C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DC01DB161C700D08393 /* BloodSugarGraphView.swift */; };
 		C6822DC31DB161C700D08393 /* BloodSugarGraphViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DC11DB161C700D08393 /* BloodSugarGraphViewTableViewCell.swift */; };
 		C6822DC51DB161F900D08393 /* LibreMonitorTestSensorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DC41DB161F900D08393 /* LibreMonitorTestSensorData.swift */; };
-		C6822DC81DB162E900D08393 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DC71DB162E900D08393 /* CoreDataStack.swift */; };
 		C6822DD51DB1631D00D08393 /* BloodGlucose+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DCB1DB1631D00D08393 /* BloodGlucose+CoreDataClass.swift */; };
 		C6822DD61DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DCC1DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift */; };
 		C6822DD71DB1631D00D08393 /* Reader+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DCD1DB1631D00D08393 /* Reader+CoreDataClass.swift */; };
@@ -116,7 +115,6 @@
 		C6822DC01DB161C700D08393 /* BloodSugarGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodSugarGraphView.swift; path = Views/BloodSugarGraphView.swift; sourceTree = "<group>"; };
 		C6822DC11DB161C700D08393 /* BloodSugarGraphViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodSugarGraphViewTableViewCell.swift; path = Views/BloodSugarGraphViewTableViewCell.swift; sourceTree = "<group>"; };
 		C6822DC41DB161F900D08393 /* LibreMonitorTestSensorData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreMonitorTestSensorData.swift; sourceTree = "<group>"; };
-		C6822DC71DB162E900D08393 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = ModelCoreData/CoreDataStack.swift; sourceTree = "<group>"; };
 		C6822DCB1DB1631D00D08393 /* BloodGlucose+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BloodGlucose+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6822DCC1DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BloodGlucose+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6822DCD1DB1631D00D08393 /* Reader+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reader+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -326,7 +324,6 @@
 				C6822DD01DB1631D00D08393 /* Sensor+CoreDataProperties.swift */,
 				C6822DD11DB1631D00D08393 /* HeaderData+CoreDataClass.swift */,
 				C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */,
-				C6822DC71DB162E900D08393 /* CoreDataStack.swift */,
 			);
 			name = ModelCoreData;
 			sourceTree = "<group>";
@@ -628,7 +625,6 @@
 			files = (
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
 				C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */,
-				C6822DC81DB162E900D08393 /* CoreDataStack.swift in Sources */,
 				C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */,
 				C6822DD81DB1631D00D08393 /* Reader+CoreDataProperties.swift in Sources */,
 				C6822DD51DB1631D00D08393 /* BloodGlucose+CoreDataClass.swift in Sources */,

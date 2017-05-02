@@ -15,7 +15,6 @@ import UserNotifications
 
 class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
     
-//    var coreDataStack = CoreDataStack()
     var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
     
@@ -359,7 +358,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             print("Segue ChangeBloodGlucoseAdjustments")
         } else if segue.identifier == "showGlucoseCDTVC" {
             if let vc = segue.destination as? GlucoseCDTVC {
-//                vc.coreDataStack = coreDataStack
                 vc.persistentContainer = persistentContainer
             }
         }
@@ -415,9 +413,22 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
             
+            
+            // TODO: continue refactoring
+            // Test stuff for refactoring
+            let hugo = emil(bytes: payloadData)
+            print("The Battery payload with hugo is \(hugo.voltage) and \(hugo.temperature)")
+            let schorsch = BatteryDataType(bytes: payloadData)
+            print("The Battery payload with schorsch is \(schorsch.voltage) and \(schorsch.temperature)")
+            
+            
+            
+            
+            
             (payloadData as NSData).getBytes(&batteryDataPayload, length:payloadData.count)
             batteryVoltage = Double(batteryDataPayload.voltage)
             temperatureString = String(format: "%4.1f °C", arguments: [batteryDataPayload.temperature])
+            
             
         case 0x1007: // all data bytes (all 344 bytes, i.e. 43 blocks)
             print("received all data bytes packet")
@@ -430,7 +441,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 historyMeasurements = sennsorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                 notificationForGlucoseMeasurements(trendMeasurements!)
 
-                if let historyMeasurements = historyMeasurements  ,  sennsorData.hasValidBodyCRC && sennsorData.hasValidHeaderCRC && sennsorData.state == .ready {
+                if let historyMeasurements = historyMeasurements,  sennsorData.hasValidBodyCRC && sennsorData.hasValidHeaderCRC && sennsorData.state == .ready {
                    
                     // fetch all records that are newer than the oldest history measurement of the new data
                     let dateFormatter = DateFormatter()
@@ -438,7 +449,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                     
                     let request = BloodGlucose.fetchRequest() as NSFetchRequest<BloodGlucose>
                     do {
-//                        let fetchedBloodGlucoses = try coreDataStack.managedObjectContext.fetch(request)
                         let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
                         
                         // Loop over all and check if new data exists and store the new data if not yet existent 
@@ -449,7 +459,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                             // Check if there is already a record stored for the same time
                             for bloodGlucose in fetchedBloodGlucoses! {
 
-                                // Store value if dates are less than two mintues apart from each other (in either direction)
+                                // Store value if dates are less than two minutes apart from each other (in either direction)
                                 if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 2.0 * 60.0 {
                                     storeMeasurement = false
                                     break
@@ -457,7 +467,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                             }
                             // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
                             if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
-//                                let glucose = BloodGlucose(context: coreDataStack.managedObjectContext)
                                 let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
                                 glucose.bytes = measurement.byteString
                                 glucose.value = measurement.glucose
@@ -465,8 +474,12 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                                 glucose.dateString = dateFormatter.string(from: measurement.date)
                             }
                         })
-//                        coreDataStack.saveContext()
-                        try? persistentContainer?.viewContext.save()
+                        do {
+                            try persistentContainer?.viewContext.save()
+                        } catch  {
+                            print("failed to save context")
+                        }
+//                        try? persistentContainer?.viewContext.save()
  
                     } catch {
                         fatalError("Failed to fetch BloodGlucose: \(error)")
@@ -623,7 +636,23 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     func notificationTimerFired() {
         showNotification = true
     }
+    
+    func emil(bytes:  Data) -> BatteryDataType {
+        var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
+        (bytes as NSData).getBytes(&batteryDataPayload, length:bytes.count)
+        return batteryDataPayload
+    }
+    
 }
+
+extension BatteryDataType {
+     init(bytes:  Data) {
+        self.init()
+        (bytes as NSData).getBytes(&self, length:bytes.count)
+    }
+}
+
+
 
 
 

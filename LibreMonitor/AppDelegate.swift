@@ -15,7 +15,6 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-//    var coreDataStack = CoreDataStack()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -55,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 let bloodSugarTableViewController = navigationController.topViewController as! BloodSugarTableViewController
                 
                 // Set core data stack in view controller
-//                bloodSugarTableViewController.coreDataStack = coreDataStack
                 bloodSugarTableViewController.persistentContainer = self.persistentContainer
             }
         }
@@ -90,22 +88,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Saves changes in the application's managed object context before the application terminates.
         print("In applicationWillTerminate")
         self.saveContext()
-//        coreDataStack.saveContext()
     }
 
 
     
-    
-    
     // MARK: - Core Data stack
-  
-//    // UPetersen, 2017-04-30: not needed for new setup, but used here to work with the model already used before the change to persistentContainer
-//    lazy var managedObjectModel: NSManagedObjectModel = {
-//        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-//        let modelURL = Bundle.main.url(forResource: "LibreMonitor", withExtension: "momd")!
-//        return NSManagedObjectModel(contentsOf: modelURL)!
-//    }()
-
     
     lazy var persistentContainer: NSPersistentContainer = {
         /*
@@ -115,7 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
          error conditions that could cause the creation of the store to fail.
          */
         let container = NSPersistentContainer(name: "LibreMonitor")
-//        let container = NSPersistentContainer(name: "LibreMonitor", managedObjectModel: self.managedObjectModel)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
