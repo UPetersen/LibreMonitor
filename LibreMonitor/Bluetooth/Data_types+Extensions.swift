@@ -60,6 +60,17 @@ extension SystemInformationDataType {
     }
 }
 
+extension BatteryDataType {
+    //    init(bytes:  Data) {
+    //        self.init()
+    //        (bytes as NSData).getBytes(&self, length:bytes.count)
+    //    }
+    init(data: Data) {
+        self.init()
+        self = data.withUnsafeBytes { $0.pointee }
+    }
+}
+
 
 //extension RawDataType {
 //    func byteString() -> String {

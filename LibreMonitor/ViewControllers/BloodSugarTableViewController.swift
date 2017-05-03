@@ -411,23 +411,10 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
             bluetoothTransmissionStart = Date()
             
-            var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
-            
-            
-            // TODO: continue refactoring
-            // Test stuff for refactoring
-            let hugo = emil(bytes: payloadData)
-            print("The Battery payload with hugo is \(hugo.voltage) and \(hugo.temperature)")
-            let schorsch = BatteryDataType(bytes: payloadData)
-            print("The Battery payload with schorsch is \(schorsch.voltage) and \(schorsch.temperature)")
-            
-            
-            
-            
-            
-            (payloadData as NSData).getBytes(&batteryDataPayload, length:payloadData.count)
-            batteryVoltage = Double(batteryDataPayload.voltage)
-            temperatureString = String(format: "%4.1f °C", arguments: [batteryDataPayload.temperature])
+            let battery = BatteryDataType(data: payloadData)
+
+            batteryVoltage = Double(battery.voltage)
+            temperatureString = String(format: "%4.1f °C", arguments: [battery.temperature])
             
             
         case 0x1007: // all data bytes (all 344 bytes, i.e. 43 blocks)
@@ -636,21 +623,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     func notificationTimerFired() {
         showNotification = true
     }
-    
-    func emil(bytes:  Data) -> BatteryDataType {
-        var batteryDataPayload = BatteryDataType(voltage: 0, temperature: 0)
-        (bytes as NSData).getBytes(&batteryDataPayload, length:bytes.count)
-        return batteryDataPayload
-    }
-    
 }
 
-extension BatteryDataType {
-     init(bytes:  Data) {
-        self.init()
-        (bytes as NSData).getBytes(&self, length:bytes.count)
-    }
-}
 
 
 
