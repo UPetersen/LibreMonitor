@@ -10,90 +10,76 @@ import Foundation
 
 extension IDNDataType {
     
-    func deviceIDString() -> String {
-        
-        var _self = self  // make a copy of self to be able to access it via a pointer (does not work on self itself)
-        
-        // Extrakt device ID by creating an array from the tuple
-        
-        let deviceIDString = withUnsafePointer(to: &_self.deviceID, { (ptr) -> String? in
-            
-            let uint8Ptr = unsafeBitCast(ptr, to: UnsafePointer<UInt8>.self)
-            
-            var deviceIDString: String = String(format: "%02X", arguments: [uint8Ptr[0]])
-            for index in 1...12 {
-                deviceIDString += String(format: ":%02X", arguments: [uint8Ptr[index]])
-            }
-            return deviceIDString
-        })
-        
-        print(deviceIDString!)
-        
-        return deviceIDString ?? "no device id"
+    var idArray: [UInt8] {
+        var tmp = self.deviceID
+        // reference: https://forums.developer.apple.com/thread/72120
+        return [UInt8](UnsafeBufferPointer(start: &tmp.0, count: MemoryLayout.size(ofValue: tmp)))
     }
-}
-
-
-extension SystemInformationDataType {
     
-    func uidString() -> String {
+    var idString: String {
+        let stringArray = self.idArray.map({String(format: "%02X", $0)})
+        return stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} )
+    }
+
+    public var description: String {
         
-        var _self = self  // make a copy of self to be able to access it via a pointer (does not work on self itself)
-        
-        // Extrakt UID by creating an array from the tuple
-        
-        let uidString = withUnsafePointer(to: &_self.uid, { (ptr) -> String? in
-            
-            let uint8Ptr = unsafeBitCast(ptr, to: UnsafePointer<UInt8>.self)
-            
-            var uidString: String = String(format: "%02X", arguments: [uint8Ptr[0]])
-            for index in 1...7 {
-                uidString += String(format: "%02X", arguments: [uint8Ptr[index]])
-//                uidString += String(format: ":%02X", arguments: [uint8Ptr[index]])
-            }
-            return uidString
-        })
-        
-        print(uidString!)
-        
-        return uidString ?? "no uid"
+        var theString = String()
+        theString.append(String("IDNDataType:\n"))
+        theString.append(String(format: "  ResultCode: %02X\n", arguments: [self.resultCode]))
+        theString.append("  Device id: \(idString)\n")
+        return theString
     }
 }
 
-extension BatteryDataType {
-    //    init(bytes:  Data) {
-    //        self.init()
-    //        (bytes as NSData).getBytes(&self, length:bytes.count)
-    //    }
-    init(data: Data) {
+
+extension SystemInformationDataType: CustomStringConvertible {
+    
+    var uidArray: [UInt8] {
+        var tmp = self.uid
+        // reference: https://forums.developer.apple.com/thread/72120
+        return [UInt8](UnsafeBufferPointer(start: &tmp.0, count: MemoryLayout.size(ofValue: tmp)))
+    }
+    
+    var uidString: String {
+        let stringArray = self.uidArray.map({String(format: "%02X", $0)})
+        return stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} )
+    }
+
+    public var description: String {
+
+        var theString = String()
+        theString.append("SystemInformationDataType:\n")
+        theString.append(String(format: "  Result code %02X\n", arguments: [self.resultCode]))
+        theString.append(String(format: "  Response flags %02X\n", arguments: [self.responseFlags]))
+        theString.append(String(format: "  Info flags %02X\n", arguments: [self.infoFlags]))
+        theString.append(String(format: "  Error code %02X\n", arguments: [self.errorCode]))
+        theString.append("  Uid String: \(uidString)\n")
+        return theString
+    }
+}
+
+// Extensions for initialization with bytes as received via bluetooth
+extension BatteryDataType:           initializableWithBytes { }
+extension SystemInformationDataType: initializableWithBytes { }
+extension IDNDataType:               initializableWithBytes { }
+extension AllBytesDataType:          initializableWithBytes { }
+
+
+/// Protocol with default implementation for initializer with bytes as received via bluetoth.
+protocol initializableWithBytes {
+    init()
+    init(bytes: Data)
+}
+
+/// Extension with default initializer for bytes
+extension initializableWithBytes {
+    /// Init with bytes as received via bluetooth.
+    ///
+    /// - Parameter bytes: the bytes
+    init(bytes: Data) {
         self.init()
-        self = data.withUnsafeBytes { $0.pointee }
+        self = bytes.withUnsafeBytes { $0.pointee }
     }
 }
 
-
-//extension RawDataType {
-//    func byteString() -> String {
-//        
-//        var _self = self  // make a copy of self to be able to access it via a pointer (does not work on self itself)
-//        
-//        // Extrakt UID by creating an array from the tuple
-//        
-//        let byteString = withUnsafePointer(&_self.bytes, { (ptr) -> String? in
-//            
-//            let uint8Ptr = unsafeBitCast(ptr, UnsafePointer<UInt8>.self)
-//            
-//            var byteString: String = String(format: "%02X", arguments: [uint8Ptr[0]])
-//            for index in 1...5 {
-//                byteString += String(format: "%02X", arguments: [uint8Ptr[index]])
-//                //                uidString += String(format: ":%02X", arguments: [uint8Ptr[index]])
-//            }
-//            return byteString
-//        })
-//        
-//        print(byteString!)
-//        
-//        return byteString ?? "no bytes"
-//    }
-//}
 

@@ -380,7 +380,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         print("Received SLIP payload with ID = \(messageIdentifier)")
+        print(payloadData.debugDescription)
 
+        
         switch messageIdentifier {
         case 0x2002: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
             
@@ -390,28 +392,24 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             nfcReadingStart = Date()
             deviceID = "-"
             
-            print(payloadData.debugDescription)
             
-            var systemInformationData = SystemInformationDataType(uid: (0, 0, 0, 0, 0, 0, 0, 0), resultCode: 0, responseFlags: 0, infoFlags: 0, errorCode: 0)
-            (payloadData as NSData).getBytes(&systemInformationData, length: payloadData.count)      // get payload data into corresponding memory -> tuples
-            
-            print(String(format: "result code %02X", arguments: [systemInformationData.resultCode]))
-            print(String(format: "response flags %02X", arguments: [systemInformationData.responseFlags]))
-            print(String(format: "info flags %02X", arguments: [systemInformationData.infoFlags]))
-            print(String(format: "error code %02X", arguments: [systemInformationData.errorCode]))
-            
-            let uidString = systemInformationData.uidString()
+            let systemInformationData = SystemInformationDataType(bytes: payloadData)
+            let uidString = systemInformationData.uidString
             sensor = LibreSensor(withUID: uidString)
             
+            print(systemInformationData.description)
+
             //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
             tableView.reloadData()
+            
+
             
         case 0x2005: // Battery
             
             nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
             bluetoothTransmissionStart = Date()
             
-            let battery = BatteryDataType(data: payloadData)
+            let battery = BatteryDataType(bytes: payloadData)
 
             batteryVoltage = Double(battery.voltage)
             temperatureString = String(format: "%4.1f °C", arguments: [battery.temperature])
@@ -422,7 +420,12 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 
             var bytes = [UInt8](repeating: 0, count: 344)
             (payloadData as NSData).getBytes(&bytes, length: 344)
+//            let bytes =
+            
             sensorData = SensorData(bytes: bytes, date: Date())
+            
+            
+            
             if let sennsorData = sensorData {
                 trendMeasurements = sennsorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                 historyMeasurements = sennsorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
@@ -482,28 +485,19 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
         case 0x2001: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
             
-            // Convention: IDN data is the last packet sent via bluetooth
+            let idnData = IDNDataType(bytes: payloadData)
+            let deviceIDString = idnData.idString
             
-            print(payloadData.debugDescription)
-            
-            var idnData = IDNDataType(resultCode: 0, deviceID: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), romCRC: (0, 0))
-            (payloadData as NSData).getBytes(&idnData, length: payloadData.count)      // get payload data into corresponding memory -> tuples
-            
-            print(String(format: "resultCode %02X", arguments: [idnData.resultCode]))
-            
-            let deviceIDString = idnData.deviceIDString()
-            print(deviceIDString)
+            print(idnData.description)
             
             self.deviceID = deviceIDString
             
             timeOfLastScan = Date()
-            
             transmissionDuration = Date().timeIntervalSince(timeOfTransmissionStart)
             bluetoothTransmissionDuration = Date().timeIntervalSince(bluetoothTransmissionStart)
             
             // Convention: the idn data is the last packet sent from RFDuino within a cycle, thus reload table view after having received it
             tableView.reloadData()
-            
             
         default:
             break
