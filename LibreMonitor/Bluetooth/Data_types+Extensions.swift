@@ -58,11 +58,72 @@ extension SystemInformationDataType: CustomStringConvertible {
     }
 }
 
+
+extension Transmission: CustomStringConvertible {
+    
+    var nfcIsReady: Bool {
+        if nfcState == UInt8(1) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var sensorUIDArray: [UInt8] {
+        var tmp = self.sensorUID
+        // reference: https://forums.developer.apple.com/thread/72120
+        return [UInt8](UnsafeBufferPointer(start: &tmp.0, count: MemoryLayout.size(ofValue: tmp)))
+    }
+    
+    var sensorUIDString: String {
+        let stringArray = self.sensorUIDArray.map({String(format: "%02X", $0)})
+        return stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} )
+    }
+
+    var deviceIDArray: [UInt8] {
+        var tmp = self.deviceID
+        // reference: https://forums.developer.apple.com/thread/72120
+        return [UInt8](UnsafeBufferPointer(start: &tmp.0, count: MemoryLayout.size(ofValue: tmp)))
+    }
+
+    var deviceIDString: String {
+        let stringArray = self.deviceIDArray.map({String(format: "%02X", $0)})
+        return stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} )
+    }
+    
+    public var description: String {
+       
+//        emilt.nfcState = 0
+//        emilt.voltage
+//        emilt.sensorUID
+//        emilt.sensorUIDresultCode
+//        emilt.sensorUIDerrorCode
+//        emilt.deviceID
+//        emilt.deviceIDresultCode
+//        emilt.fram
+        
+        var theString = String()
+        theString.append("Transmission:\n")
+        theString.append(String(format: "  NFC state %d\n", arguments: [self.nfcState]))
+//        theString.append(String(format: "  Result code %02X\n", arguments: [self.resultCode]))
+//        theString.append(String(format: "  Result code %02X\n", arguments: [self.resultCode]))
+//        theString.append(String(format: "  Result code %02X\n", arguments: [self.resultCode]))
+//        theString.append(String(format: "  Result code %02X\n", arguments: [self.resultCode]))
+//        theString.append(String(format: "  Response flags %02X\n", arguments: [self.responseFlags]))
+//        theString.append(String(format: "  Info flags %02X\n", arguments: [self.infoFlags]))
+//        theString.append(String(format: "  Error code %02X\n", arguments: [self.errorCode]))
+//        theString.append("  Uid String: \(uidString)\n")
+        return theString
+    }
+}
+
 // Extensions for initialization with bytes as received via bluetooth
 extension BatteryDataType:           initializableWithBytes { }
 extension SystemInformationDataType: initializableWithBytes { }
 extension IDNDataType:               initializableWithBytes { }
 extension AllBytesDataType:          initializableWithBytes { }
+extension NFCState:                  initializableWithBytes { }
+extension Transmission:              initializableWithBytes { }
 
 
 /// Protocol with default implementation for initializer with bytes as received via bluetoth.
@@ -71,7 +132,7 @@ protocol initializableWithBytes {
     init(bytes: Data)
 }
 
-/// Extension with default initializer for bytes
+/// Protocol extension with default initializer for bytes
 extension initializableWithBytes {
     /// Init with bytes as received via bluetooth.
     ///

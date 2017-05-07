@@ -46,6 +46,7 @@
 		C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */; };
 		C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */; };
 		C68AA76E1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */; };
+		C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B537B41EBF6852000456B3 /* constands+Extensions.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
 		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
 		F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */; };
@@ -126,6 +127,7 @@
 		C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedResultsTableViewController.swift; path = ViewControllers/FetchedResultsTableViewController.swift; sourceTree = "<group>"; };
 		C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlucoseCDTVC.swift; sourceTree = "<group>"; };
 		C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITableViewDataSource+NSFetchedResultsController.swift"; path = "ViewControllers/UITableViewDataSource+NSFetchedResultsController.swift"; sourceTree = "<group>"; };
+		C6B537B41EBF6852000456B3 /* constands+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "constands+Extensions.swift"; path = "Bluetooth/constands+Extensions.swift"; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
 		D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				C6822DA11DB1616300D08393 /* constants.h */,
+				C6B537B41EBF6852000456B3 /* constands+Extensions.swift */,
 				C6822DA21DB1616300D08393 /* data_types.h */,
 				C6822DA31DB1616300D08393 /* Data_types+Extensions.swift */,
 				C6822DA41DB1616300D08393 /* NSData+CRC8.h */,
@@ -624,6 +627,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
+				C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */,
 				C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */,
 				C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */,
 				C6822DD81DB1631D00D08393 /* Reader+CoreDataProperties.swift in Sources */,

@@ -383,8 +383,18 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         print(payloadData.debugDescription)
 
         
-        switch messageIdentifier {
-        case 0x2002: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
+        guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else { return }
+
+        print(receivedDataType)
+        
+        switch receivedDataType {
+        case .NFC_STATE:
+            
+            let nfcState = NFCState(bytes: payloadData)
+            print("Received NFC state: \(nfcState)")
+            
+        
+        case .SYSTEM_INFORMATION_DATA: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
             
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
             
@@ -401,10 +411,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 
             //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
             tableView.reloadData()
-            
 
             
-        case 0x2005: // Battery
+        case .BATTERY_DATA: // Battery
             
             nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
             bluetoothTransmissionStart = Date()
@@ -415,12 +424,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             temperatureString = String(format: "%4.1f °C", arguments: [battery.temperature])
             
             
-        case 0x1007: // all data bytes (all 344 bytes, i.e. 43 blocks)
+        case .ALL_BYTES: // all data bytes (all 344 bytes, i.e. 43 blocks)
             print("received all data bytes packet")
 
             var bytes = [UInt8](repeating: 0, count: 344)
             (payloadData as NSData).getBytes(&bytes, length: 344)
-//            let bytes =
             
             sensorData = SensorData(bytes: bytes, date: Date())
             
@@ -483,7 +491,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             tableView.reloadData()
             
             
-        case 0x2001: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
+        case .IDN_DATA: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
             
             let idnData = IDNDataType(bytes: payloadData)
             let deviceIDString = idnData.idString
