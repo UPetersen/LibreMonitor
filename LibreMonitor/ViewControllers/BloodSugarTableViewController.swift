@@ -15,6 +15,8 @@ import UserNotifications
 
 class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
     
+    let localDebugNotificationTimeInterval = TimeInterval(135)
+    
     var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
     
@@ -70,10 +72,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        // self.navigationItem.leftBarButtonItem = self.editButtonItem()
         simbleeManager.delegate = self
-//        self.title = "LibreMonitor"
         self.navigationItem.title = "LibreMonitor"
         
         let connectButtonTitle = connectButtonTitleForState(simbleeManager.state)
@@ -370,8 +369,14 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         self.navigationItem.rightBarButtonItem?.title? = connectButtonTitleForState(state)
         
         switch state {
-        case .Unassigned, .Connecting, .Connected, .Scanning, .Disconnected, .DisconnectedManually:
+            
+        case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectedManually:
             self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
+            
+        case .Disconnected:
+            self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
+            NotificationManager.scheduleDebugNotification(message: "Disconnected at \(timeFormatter.string(from: Date()))", timeInterval: 135)
+            
         case .Notifying:
             break
         }
@@ -379,9 +384,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     }
     
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
+        
         print("Received SLIP payload with ID = \(messageIdentifier)")
         print(payloadData.debugDescription)
-
+        
+        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", timeInterval: localDebugNotificationTimeInterval)
         
         guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else { return }
 
@@ -390,6 +397,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         switch receivedDataType {
         case .NFC_STATE:
             
+            NotificationManager.scheduleDebugNotification(message: "Received NFC state at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+
             let nfcState = NFCState(bytes: payloadData)
             print("Received NFC state: \(nfcState)")
             
@@ -397,6 +406,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         case .SYSTEM_INFORMATION_DATA: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
             
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
+            
+            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+
             
             timeOfTransmissionStart = Date()
             nfcReadingStart = Date()
@@ -406,14 +418,18 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             let systemInformationData = SystemInformationDataType(bytes: payloadData)
             let uidString = systemInformationData.uidString
             sensor = LibreSensor(withUID: uidString)
-            
+            print("uidString: \(uidString)")
             print(systemInformationData.description)
+            print("Sensor: \(String(describing: sensor?.serialNumber)) und \(String(describing: sensor?.uid))")
 
             //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
             tableView.reloadData()
 
             
         case .BATTERY_DATA: // Battery
+            
+            NotificationManager.scheduleDebugNotification(message: "Received battery data at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+
             
             nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
             bluetoothTransmissionStart = Date()
@@ -425,6 +441,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             
         case .ALL_BYTES: // all data bytes (all 344 bytes, i.e. 43 blocks)
+            
+            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+            
             print("received all data bytes packet")
 
             var bytes = [UInt8](repeating: 0, count: 344)
@@ -432,6 +451,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             sensorData = SensorData(bytes: bytes, date: Date())
             
+            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date()) \(String(describing: sensorData))", timeInterval: localDebugNotificationTimeInterval)
             
             
             if let sennsorData = sensorData {
@@ -472,12 +492,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                                 glucose.dateString = dateFormatter.string(from: measurement.date)
                             }
                         })
-                        do {
-                            try persistentContainer?.viewContext.save()
-                        } catch  {
-                            print("failed to save context")
-                        }
-//                        try? persistentContainer?.viewContext.save()
+                        try? persistentContainer?.viewContext.save()
  
                     } catch {
                         fatalError("Failed to fetch BloodGlucose: \(error)")
@@ -493,12 +508,12 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
         case .IDN_DATA: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
             
+            NotificationManager.scheduleDebugNotification(message: "Received IDN at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+            
             let idnData = IDNDataType(bytes: payloadData)
-            let deviceIDString = idnData.idString
+            self.deviceID = idnData.idPrettyString
             
             print(idnData.description)
-            
-            self.deviceID = deviceIDString
             
             timeOfLastScan = Date()
             transmissionDuration = Date().timeIntervalSince(timeOfTransmissionStart)
@@ -507,8 +522,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             // Convention: the idn data is the last packet sent from RFDuino within a cycle, thus reload table view after having received it
             tableView.reloadData()
             
-        default:
-            break
         }
     }
     
@@ -586,20 +599,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         
         UIApplication.shared.applicationIconBadgeNumber = value
 
-//        let content = UNMutableNotificationContent()
-//        content.badge = NSNumber(value: value)
-//
-//        let timeTrigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
-//        let request = UNNotificationRequest(identifier: "Badge", content: content, trigger: timeTrigger)
-//        UNUserNotificationCenter.current().add(request) { error in
-//            if let error = error {
-//                // Do something with error
-//                print("Error, badge notification could not be triggered due to \(error)")
-//            } else {
-//                // Request was added successfully
-//                print("triggered badge notification")
-//            }
-//        }
     }
     
     
@@ -625,6 +624,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     func notificationTimerFired() {
         showNotification = true
     }
+    
 }
 
 

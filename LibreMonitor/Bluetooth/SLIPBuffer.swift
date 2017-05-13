@@ -42,7 +42,6 @@ class SLIPBuffer {
     ///
 	/// - parameter escapedData: data with escape bytes to be appended to the buffer
 	func appendEscapedBytes(_ escapedData: Data) {
-		
 		rxBuffer.append(escapedData)
 		scanRxBufferForFrames()
 	}

@@ -12,6 +12,8 @@ class LibreSensor {
     
     var uid: String
     
+    fileprivate let lookupTable = ["0","1","2","3","4","5","6","7","8","9","A","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","T","U","V","W","X","Y","Z"]
+    
     lazy var serialNumber: String = {
         
         // The serial number of the sensor can be derived from its uid.
@@ -19,7 +21,7 @@ class LibreSensor {
         // The numbers an letters of the serial number are coded a compressed scheme that uses only 32 numbers and letters,
         // by omitting the letters B, I, O and S. This information is stored in consecutive units of five bits.
         //
-        // The encding thus is as follows:
+        // The encoding thus is as follows:
         //   index: 0 1 2 3 4 5 6 7 8 9 10     11 12 13 14 15 16     17 18 19 20 21     22 23 24      25 26 27 28 29 30 31
         //   char:  0 1 2 3 4 5 6 7 8 9  A (B)  C  D  E  F  G  H (I)  J  K  L  M  N (O)  P  Q  R (S)   T  U  V  W  X  Y  Z
         //
@@ -57,7 +59,6 @@ class LibreSensor {
         //   3.) Prepend "0" at the beginning an thus receive "0M00009DHCR"
         
         
-        let lookupTable = ["0","1","2","3","4","5","6","7","8","9","A","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","T","U","V","W","X","Y","Z"]
         let uidString = self.uid.substring(from: self.uid.characters.index(self.uid.startIndex, offsetBy: 4)) // "E007A0000025905E" -> "A0000025905E"
         
         var serialNumber = ""
@@ -77,8 +78,8 @@ class LibreSensor {
                 let range = leftIndex..<rightIndex
                 let fiveBits = uidAsBinaryString.substring(with: range)
                 
-                if let theInt = Int(fiveBits, radix: 2) , theInt >= 0 && theInt < lookupTable.count {
-                    serialNumber += lookupTable[theInt] // "10100" -> 20 -> "M"
+                if let theInt = Int(fiveBits, radix: 2) , theInt >= 0 && theInt < self.lookupTable.count {
+                    serialNumber += self.lookupTable[theInt] // "10100" -> 20 -> "M"
                 }
             }
         }

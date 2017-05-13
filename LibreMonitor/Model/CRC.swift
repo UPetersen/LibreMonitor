@@ -39,14 +39,14 @@ final class Crc {
             }
         }
         
-        // reverse the bits (modification by Uwe Petersen, 2016-06-059
+        // reverse the bits (modification by Uwe Petersen, 2016-06-05)
         var reverseCrc = UInt16(0)
         for _ in 0..<16 {
             reverseCrc = reverseCrc << 1 | crc & 1
             crc >>= 1
         }
         
-        // swap bytes and return (modification by Uwe Petersen, 2016-06-059
+        // swap bytes and return (modification by Uwe Petersen, 2016-06-05)
         return reverseCrc.byteSwapped
     }
 

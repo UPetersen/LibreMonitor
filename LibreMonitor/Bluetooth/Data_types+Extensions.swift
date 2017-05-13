@@ -18,6 +18,11 @@ extension IDNDataType {
     
     var idString: String {
         let stringArray = self.idArray.map({String(format: "%02X", $0)})
+        return stringArray.reduce("", + )
+    }
+
+    var idPrettyString: String {
+        let stringArray = self.idArray.map({String(format: "%02X", $0)})
         return stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} )
     }
 
@@ -42,9 +47,14 @@ extension SystemInformationDataType: CustomStringConvertible {
     
     var uidString: String {
         let stringArray = self.uidArray.map({String(format: "%02X", $0)})
+        return stringArray.reduce("", + )
+    }
+    
+    var uidPrettyString: String {
+        let stringArray = self.uidArray.map({String(format: "%02X", $0)})
         return stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} )
     }
-
+    
     public var description: String {
 
         var theString = String()
@@ -53,7 +63,8 @@ extension SystemInformationDataType: CustomStringConvertible {
         theString.append(String(format: "  Response flags %02X\n", arguments: [self.responseFlags]))
         theString.append(String(format: "  Info flags %02X\n", arguments: [self.infoFlags]))
         theString.append(String(format: "  Error code %02X\n", arguments: [self.errorCode]))
-        theString.append("  Uid String: \(uidString)\n")
+        theString.append("  Uid string: \(uidString)\n")
+        theString.append("  Uid pretty string: \(uidPrettyString)\n")
         return theString
     }
 }

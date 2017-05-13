@@ -12,7 +12,7 @@ import UserNotifications
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -21,13 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
      
         
         // Allow local notifications for iOS 10
-        let center = UNUserNotificationCenter.current()
-        let options: UNAuthorizationOptions = [.alert, .badge, .sound]
-        center.requestAuthorization(options: options) { (granted, error) in
-            if granted {
-//                application.registerForRemoteNotifications()
-            }
-        }
+         NotificationManager.authorize(delegate: self)
         
         // Do not show a badge icon value unless data has been received
         UIApplication.shared.applicationIconBadgeNumber = 0 // hide badge number
