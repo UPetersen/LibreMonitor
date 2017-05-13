@@ -376,7 +376,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         case .Disconnected:
             self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
             NotificationManager.scheduleDebugNotification(message: "Disconnected at \(timeFormatter.string(from: Date()))", timeInterval: 135)
-            
+            UIApplication.shared.applicationIconBadgeNumber = 0  // Data not accurate any more -> remove badge icon
+
         case .Notifying:
             break
         }

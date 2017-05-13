@@ -55,8 +55,6 @@ struct NotificationManager {
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         
-        // Data not accurate any more -> remove badge icon
-        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     
