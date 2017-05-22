@@ -8,6 +8,7 @@
 //  Modified by Uwe Petersen
 
 import Foundation
+import UserNotifications
 
 let PacketIdentifierLength = MemoryLayout<UInt16>.size
 let PacketFlagsLength = MemoryLayout<UInt8>.size
@@ -73,6 +74,16 @@ class SLIPBuffer {
     ///
     func scanRxBufferForFrames() {
         
+        // TODO: remove this debugging part
+        defer {
+            NotificationManager.removePendingDebugNotification()
+        }
+        NotificationManager.scheduleDebugNotification(message: "in scanRCBufferForFrame", wait: 2)
+        
+        
+
+        
+        
         // get indices of all END bytes
         // TODO: idexesOfEndBytes is an Objective-C-extension of NSData. Reprogram this in Swift for data type "Data"
         guard let endByteIndices = NSData.init(data: rxBuffer).indexesOfEndBytes() else {
@@ -120,7 +131,15 @@ class SLIPBuffer {
 	/// - parameter escapedPacket: packet that still contains ESC and END bytes (as they were needed for the serial line internet protocol)
 	func decodeSLIPPacket(_ escapedPacket:Data) {
 		
-		// Remove SLIP escaping
+        
+        // TODO: remove this debugging part
+        defer {
+            NotificationManager.removePendingDebugNotification()
+        }
+        NotificationManager.scheduleDebugNotification(message: "in decodeSLIPPacket \(escapedPacket)", wait: 2)
+
+        
+        // Remove SLIP escaping
         guard let unescapedPacket = (escapedPacket as NSData).unescaped() else {
             return
         }

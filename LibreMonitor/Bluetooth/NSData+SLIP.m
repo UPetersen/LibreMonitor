@@ -39,6 +39,8 @@ const uint8_t escapedEscapeSequence[2] = {ESCAPE_BYTE, ESCAPED_ESCAPE_BYTE};
 
 - (NSData *)unescapedData {
 	
+
+    
 	NSMutableData *outputData = [[NSMutableData alloc] initWithData:self];
 
 	BOOL done = NO;

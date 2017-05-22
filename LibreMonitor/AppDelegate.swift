@@ -10,11 +10,14 @@ import UIKit
 import CoreBluetooth
 import UserNotifications
 import CoreData
+import os.log
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
+    
+    static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "AppDelegate")
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -37,7 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //        let controller = masterNavigationController.topViewController as! MasterViewController
 //        controller.managedObjectContext = self.persistentContainer.viewContext
         
-        print("In didFinishLaunchingWithOptions")
+//        print("In didFinishLaunchingWithOptions")
+        os_log("Application did finish launching with options", log: AppDelegate.bt_log, type: .default)
+
         
         let tabBarController = self.window?.rootViewController as! UITabBarController
         
@@ -52,35 +57,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             }
         }
         
+        var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        let fileName = "\(Date()).log"
+        let logFilePath = (documentsDirectory as NSString).appendingPathComponent(fileName)
+        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stderr)
+        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
+        
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        print("In applicationWillResignActive")
+        os_log("Application will resign active", log: AppDelegate.bt_log, type: .default)
+//        print("In applicationWillResignActive")
+        
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        print("In applicationDidEnterBackground")
+        os_log("Application did enter background", log: AppDelegate.bt_log, type: .default)
+//        print("In applicationDidEnterBackground")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        print("In applicationWillEnterForeground")
+        os_log("Application will enter foreground", log: AppDelegate.bt_log, type: .default)
+//        print("In applicationWillEnterForeground")
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        print("In applicationDidBecomeActive")
+        os_log("Application did become active", log: AppDelegate.bt_log, type: .default)
+//        print("In applicationDidBecomeActive")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        print("In applicationWillTerminate")
+        os_log("Application will terminate", log: AppDelegate.bt_log, type: .default)
+//        print("In applicationWillTerminate")
         self.saveContext()
     }
 
@@ -109,6 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
+                os_log("Persistend container could not be loaded", log: AppDelegate.bt_log, type: .error)
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
@@ -126,6 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
+                os_log("Manged object context could not be loaded", log: AppDelegate.bt_log, type: .error)
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }

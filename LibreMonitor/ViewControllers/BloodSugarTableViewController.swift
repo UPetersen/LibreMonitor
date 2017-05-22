@@ -11,11 +11,16 @@ import UIKit
 import CoreBluetooth
 import CoreData
 import UserNotifications
+import os.log
 
 
 class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
     
-    let localDebugNotificationTimeInterval = TimeInterval(135)
+    // MARK: - Properties
+    
+    static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "BloodSugarTableViewController")
+    
+    let localDebugNotificationTimetoWait = TimeInterval(135)
     
     var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
@@ -125,6 +130,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     
     func updateTableView() {
+        os_log("Update table view", log: BloodSugarTableViewController.bt_log, type: .default)
         self.tableView.reloadData()
     }
     
@@ -227,7 +233,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 var crcString = String()
                 var color = UIColor()
                 if let sensorData = sensorData {
-                    crcString += ", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)"
+                    crcString.append(", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
                     color = colorForSensorState( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) )
                 } else {
                     crcString = ", nil"
@@ -366,19 +372,22 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     // MARK: - SimbleeManagerDelegate 
     
     func simbleeManagerPeripheralStateChanged(_ state: SimbleeManagerState) {
+        os_log("Simblee manager peripheral state changed to %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: state.rawValue))
+
         self.navigationItem.rightBarButtonItem?.title? = connectButtonTitleForState(state)
         
         switch state {
             
         case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectedManually:
-            self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
+            UIApplication.shared.applicationIconBadgeNumber = 0  // Data not accurate any more -> remove badge icon
             
         case .Disconnected:
-            self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
-            NotificationManager.scheduleDebugNotification(message: "Disconnected at \(timeFormatter.string(from: Date()))", timeInterval: 135)
-            UIApplication.shared.applicationIconBadgeNumber = 0  // Data not accurate any more -> remove badge icon
+//            self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
+//            NotificationManager.scheduleDebugNotification(message: "Disconnected at \(timeFormatter.string(from: Date()))", timeInterval: 135)
+            NotificationManager.scheduleBluetoothDisconnectedNotification(wait: 100)
 
         case .Notifying:
+            NotificationManager.removePendingBluetoothDisconnectedNotification()
             break
         }
         tableView.reloadData()
@@ -386,10 +395,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         
-        print("Received SLIP payload with ID = \(messageIdentifier)")
-        print(payloadData.debugDescription)
-        
-        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+//        print("Received SLIP payload with ID = \(messageIdentifier)")
+//        print(payloadData.debugDescription)
+        os_log("Simblee manager received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
+
+//        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", wait: localDebugNotificationTimetoWait)
         
         guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else { return }
 
@@ -398,17 +408,19 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         switch receivedDataType {
         case .NFC_STATE:
             
-            NotificationManager.scheduleDebugNotification(message: "Received NFC state at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+//            NotificationManager.scheduleDebugNotification(message: "Received NFC state at \(Date())", wait: localDebugNotificationTimetoWait)
 
             let nfcState = NFCState(bytes: payloadData)
-            print("Received NFC state: \(nfcState)")
-            
+//            print("Received NFC state: \(nfcState)")
+            os_log("NFCState is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: nfcState.nfcReady))
+
+
         
         case .SYSTEM_INFORMATION_DATA: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
             
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
             
-            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+//            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", wait: localDebugNotificationTimetoWait)
 
             
             timeOfTransmissionStart = Date()
@@ -419,9 +431,10 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             let systemInformationData = SystemInformationDataType(bytes: payloadData)
             let uidString = systemInformationData.uidString
             sensor = LibreSensor(withUID: uidString)
-            print("uidString: \(uidString)")
-            print(systemInformationData.description)
-            print("Sensor: \(String(describing: sensor?.serialNumber)) und \(String(describing: sensor?.uid))")
+//            print("uidString: \(uidString)")
+//            print(systemInformationData.description)
+//            print("Sensor: \(String(describing: sensor?.serialNumber)) und \(String(describing: sensor?.uid))")
+            os_log("System information data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: systemInformationData.description))
 
             //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
             tableView.reloadData()
@@ -429,7 +442,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
         case .BATTERY_DATA: // Battery
             
-            NotificationManager.scheduleDebugNotification(message: "Received battery data at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+//            NotificationManager.scheduleDebugNotification(message: "Received battery data at \(Date())", wait: localDebugNotificationTimetoWait)
 
             
             nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
@@ -440,25 +453,36 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             batteryVoltage = Double(battery.voltage)
             temperatureString = String(format: "%4.1f °C", arguments: [battery.temperature])
             
+            os_log("Battery data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(battery.voltage) Volts and \(battery.temperature) °C"))
+
+            if battery.voltage < 3.5 {
+                NotificationManager.setLowBatteryNotification(voltage: Double(battery.voltage))
+            }
+            
             
         case .ALL_BYTES: // all data bytes (all 344 bytes, i.e. 43 blocks)
             
-            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+//            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date())", wait: localDebugNotificationTimetoWait)
             
-            print("received all data bytes packet")
+//            print("received all data bytes packet")
 
             var bytes = [UInt8](repeating: 0, count: 344)
             (payloadData as NSData).getBytes(&bytes, length: 344)
             
             sensorData = SensorData(bytes: bytes, date: Date())
+            os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
             
-            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date()) \(String(describing: sensorData))", timeInterval: localDebugNotificationTimeInterval)
+//            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date()) \(String(describing: sensorData))", wait: localDebugNotificationTimetoWait)
             
             
             if let sennsorData = sensorData {
                 trendMeasurements = sennsorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                 historyMeasurements = sennsorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
-                notificationForGlucoseMeasurements(trendMeasurements!)
+
+                //                notificationForGlucoseMeasurements(trendMeasurements!)
+                if let trendMeasurements = trendMeasurements {
+                    setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
+                }
 
                 if let historyMeasurements = historyMeasurements,  sennsorData.hasValidBodyCRC && sennsorData.hasValidHeaderCRC && sennsorData.state == .ready {
                    
@@ -509,12 +533,14 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
         case .IDN_DATA: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
             
-            NotificationManager.scheduleDebugNotification(message: "Received IDN at \(Date())", timeInterval: localDebugNotificationTimeInterval)
+//            NotificationManager.scheduleDebugNotification(message: "Received IDN at \(Date())", wait: localDebugNotificationTimetoWait)
             
             let idnData = IDNDataType(bytes: payloadData)
             self.deviceID = idnData.idPrettyString
             
-            print(idnData.description)
+//            print(idnData.description)
+            os_log("Idn data data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: idnData.description))
+
             
             timeOfLastScan = Date()
             transmissionDuration = Date().timeIntervalSince(timeOfTransmissionStart)
@@ -548,6 +574,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     }
     
     func connectButtonTitleForState(_ state: SimbleeManagerState) -> String {
+        
         switch state {
         case .Unassigned, .Disconnected, .DisconnectedManually:
             return "connect"
@@ -558,11 +585,36 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     // MARK: - Notifications and badge icon
     
+    func setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: [Measurement] ) {
+
+        let currentGlucose = trendMeasurements[0].glucose
+        let longDelta = currentGlucose - trendMeasurements[15].glucose
+        let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
+        let longPrediction = currentGlucose + longDelta
+        let shortPrediction = currentGlucose + shortDelta
+        
+        // Show high blood glucose alert if conditions are reached
+        if (longPrediction > 180.0) || (shortPrediction > 180.0) || (longDelta > 30.0 && shortDelta > 30.0) {
+            
+            let body = String(format: "%0.0f --> %0.0f (%0.0f), Delta: %0.0f (%0.0f)", arguments: [currentGlucose, longPrediction, shortPrediction, longDelta, shortDelta])
+            NotificationManager.setBloodGlucoseHighOrLowNotification(title: "High Glucose", body: body)
+            
+        } else if (longPrediction > 0 && longPrediction < 60.0 ) || (shortPrediction > 0 && shortPrediction < 66.0 ) || (longDelta < -30.0 && shortDelta < -30.0) {
+            
+            let body = String(format: "%0.0f --> %0.0f (%0.0f), Delta: %0.0f (%0.0f)", arguments: [currentGlucose, longPrediction, shortPrediction, longDelta, shortDelta])
+            NotificationManager.setBloodGlucoseHighOrLowNotification(title: "Low Glucose", body: body)
+        }
+
+        // TODO: put this in own function, but not in this function. Mayby own struct for predictions. And enum within with .downdown and that stuff.
+        UIApplication.shared.applicationIconBadgeNumber = Int(round(longPrediction))
+    }
+    
+
     func notificationForGlucoseMeasurements(_ trendMeasurements: [Measurement] ) {
         
         let currentGlucose = trendMeasurements[0].glucose
         let longDelta = currentGlucose - trendMeasurements[15].glucose
-        let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
+        let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 32.0 / 15.0 // * 2.0 * 16.0/15.0
         let longPrediction = currentGlucose + longDelta
         let shortPrediction = currentGlucose + shortDelta
         
@@ -594,6 +646,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         
         self.triggerNotificationContentForBadgeIcon(value: Int(round(longPrediction)))
     }
+    
+    
     
     
     func triggerNotificationContentForBadgeIcon(value: Int) {
