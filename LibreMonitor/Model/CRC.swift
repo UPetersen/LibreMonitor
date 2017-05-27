@@ -60,7 +60,7 @@ final class Crc {
     /// - returns: true if crc is valid
     static func hasValidCrc16InFirstTwoBytes(_ bytes: [UInt8]) -> Bool {
         
-        print(Array(bytes.dropFirst(2)))
+//        print(Array(bytes.dropFirst(2)))
         let calculatedCrc = Crc.crc16(Array(bytes.dropFirst(2)), seed: 0xffff)
         let enclosedCrc =  (UInt16(bytes[0]) << 8) | UInt16(bytes[1])
         

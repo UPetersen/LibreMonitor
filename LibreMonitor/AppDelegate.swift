@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //        let controller = masterNavigationController.topViewController as! MasterViewController
 //        controller.managedObjectContext = self.persistentContainer.viewContext
         
-//        print("In didFinishLaunchingWithOptions")
         os_log("Application did finish launching with options", log: AppDelegate.bt_log, type: .default)
 
         
@@ -54,6 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 
                 // Set core data stack in view controller
                 bloodSugarTableViewController.persistentContainer = self.persistentContainer
+                
+//                // Set simblee manager in view Controller
+//                let simbleeManager = SimbleeManager()
+//                bloodSugarTableViewController.simbleeManager = simbleeManager
             }
         }
         
@@ -71,7 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         os_log("Application will resign active", log: AppDelegate.bt_log, type: .default)
-//        print("In applicationWillResignActive")
         
     }
 
@@ -79,26 +81,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         os_log("Application did enter background", log: AppDelegate.bt_log, type: .default)
-//        print("In applicationDidEnterBackground")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         os_log("Application will enter foreground", log: AppDelegate.bt_log, type: .default)
-//        print("In applicationWillEnterForeground")
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         os_log("Application did become active", log: AppDelegate.bt_log, type: .default)
-//        print("In applicationDidBecomeActive")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         os_log("Application will terminate", log: AppDelegate.bt_log, type: .default)
-//        print("In applicationWillTerminate")
         self.saveContext()
     }
 

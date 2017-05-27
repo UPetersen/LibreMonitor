@@ -9,6 +9,7 @@
 
 import Foundation
 import UserNotifications
+import os.log
 
 let PacketIdentifierLength = MemoryLayout<UInt16>.size
 let PacketFlagsLength = MemoryLayout<UInt8>.size
@@ -21,6 +22,9 @@ protocol SLIPBufferDelegate {
 
 
 class SLIPBuffer {
+    
+    static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "SLIPBuffer")
+
 
     var rxBuffer = Data()
 	var delegate:SLIPBufferDelegate?
@@ -93,16 +97,20 @@ class SLIPBuffer {
         // Loop over the END bytes and search for a complete frame, i.e. a sequence of bytes as follows: [END ... at-least-two-bytes ... END]
 		var previousEndByteIndex = NSNotFound
         for endByteIndex in endByteIndices {
-            
-            print(String(endByteIndex.description) as Any)
+ 
+            os_log("End byte index is %{public}@", log: SLIPBuffer.bt_log, type: .default, String(describing: endByteIndex.description))
+
+//            print(String(endByteIndex.description) as Any)
             
             if (previousEndByteIndex != NSNotFound) {
                 
                 if endByteIndex - previousEndByteIndex > 2 {  // Contains at least one byte and checksum byte
                     
-                    print("Identified a potential SLIP frame")
+//                    print("Identified a potential SLIP frame")
+                    os_log("Identified a potential SLIP frame", log: SLIPBuffer.bt_log, type: .default)
+
                     
-                    print(self.rxBuffer.debugDescription)
+//                    print(self.rxBuffer.debugDescription)
                     
                     // Extact the frame (END byte at beginning and end are aleady removed)
                     let escapedPacket = self.rxBuffer.subdata(in: Range((previousEndByteIndex + 1)..<endByteIndex))
@@ -112,7 +120,8 @@ class SLIPBuffer {
                     
                 } else {
                     
-                    print("Ignoring improbable SLIP frame")
+//                    print("Ignoring improbable SLIP frame")
+                    os_log("Ignored an improbable SLIP frame", log: SLIPBuffer.bt_log, type: .default)
                 }
             }
             previousEndByteIndex = endByteIndex

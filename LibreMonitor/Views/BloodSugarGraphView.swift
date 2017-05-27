@@ -60,7 +60,7 @@ class BloodSugarGraphView: LineChartView {
         formatLineChartDataSet(historyLineChartDataSet)
         formatLineChartDataSet(trendLineChartDataSet)
         let lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet])
-        print(lineChartData.debugDescription)
+//        print(lineChartData.debugDescription)
         
         lineChartData.setValueFont(NSUIFont.systemFont(ofSize: CGFloat(9.0)))
         

@@ -94,7 +94,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     
     // MARK: - Properties
 
-    static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "Bluetooth")
+    static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "SimbleeManager")
 
     var centralManager: CBCentralManager!
     var peripheral: CBPeripheral?
@@ -129,7 +129,6 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     func scanForSimblee() {
         os_log("Scan for simblee while state %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue))
         if centralManager.state == .poweredOn {
-//            print ("Start scanning for Simblee")
             centralManager.scanForPeripherals(withServices: serviceUUIDs, options: nil)
             state = .Scanning
         }
@@ -145,7 +144,6 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     }
     
     func disconnectManually() {
-//        print("disconnectedManually with state \(state)")
         os_log("Disconnect manually while state %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue))
 
         switch state {
@@ -164,14 +162,14 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     // MARK: - CBCentralManagerDelegate
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-//        print("centralManagerDidUpdateState")
-        os_log("Central Manager did update state to %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: central.state))
+
+        os_log("Central Manager did update state to %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: central.state.rawValue))
 
         // TODO: maybe handle the case of bluetooth beeing switched of (and sometimes later) on again here by stopping and restarting scanning
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-//        print("didDiscoverPeripheral with name \(String(describing: peripheral.name))")
+
         os_log("Did discover peripheral while state %{public}@ with name: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name))
         
         self.peripheral = peripheral
@@ -179,7 +177,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-//        print("didConnectPeripheral")
+
         os_log("Did connect peripheral while state %{public}@ with name: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name))
         state = .Connected
         // Discover all Services. This might be helpful if writing is needed some time
@@ -187,7 +185,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-//        print("didFailToConnectPeripheral")
+
         os_log("Did fail to connect peripheral while state: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue))
         if let error = error {
             os_log("Did fail to connect peripheral error: %{public}@", log: SimbleeManager.bt_log, type: .error ,  "\(error.localizedDescription)")
@@ -197,7 +195,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
 
-//        print("didDisconnectPeripheral with state \(state)")
+
         os_log("Did disconnect peripheral while state: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue))
         if let error = error {
             os_log("Did disconnect peripheral error: %{public}@", log: SimbleeManager.bt_log, type: .error ,  "\(error.localizedDescription)")
@@ -226,7 +224,6 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
     
-//        print("didDiscoverServices")
         os_log("Did discover services", log: SimbleeManager.bt_log, type: .default)
         if let error = error {
             os_log("Did discover services error: %{public}@", log: SimbleeManager.bt_log, type: .error ,  "\(error.localizedDescription)")
@@ -234,11 +231,10 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
 
 
         if let services = peripheral.services {
-//            print("Discovered services on RFduino");
+
             for service in services {
                 peripheral.discoverCharacteristics(nil, for: service)
-//                print("Service: ")
-//                debugPrint(service.debugDescription)
+
                 os_log("Did discover service: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: service.debugDescription))
             }
         }
@@ -247,13 +243,10 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
 
-//        print("didDiscoverCharacteristicsForService");
         os_log("Did discover characteristics for service %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: peripheral.name))
 
         if let error = error {
-//            print("An error occured: \(error.localizedDescription)")
             os_log("Did discover characteristics for service error: %{public}@", log: SimbleeManager.bt_log, type: .error ,  "\(error.localizedDescription)")
-
         }
 
         if let characteristics = service.characteristics {
@@ -278,44 +271,36 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
                 if (characteristic.properties.intersection(.notify)) == .notify {
                     peripheral.setNotifyValue(true, for: characteristic)
                     os_log("Set notify value for this characteristic", log: SimbleeManager.bt_log, type: .default)
-
                 }
             }
         } else {
-//            print("Discovered characteristics on RFduino, but no characteristics listed. There must be some error.");
             os_log("Discovered characteristics, but no characteristics listed. There must be some error.", log: SimbleeManager.bt_log, type: .default)
         }
     }
 
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-//        print("didUpdateNotificationStateForCharacteristic")
+
         os_log("Did update notification state for characteristic: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: characteristic.debugDescription))
 
         if let error = error {
-//            print("An error occured: \(error.localizedDescription)")
             os_log("Peripheral did update notification state for characteristic: %{public}@", log: SimbleeManager.bt_log, type: .error ,  "\(error.localizedDescription)")
-
         }
         state = .Notifying
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-//        print("didUpdateValueForCharacteristic")
-        os_log("Did update notification state for characteristic: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: characteristic.debugDescription))
+        os_log("Did update value for characteristic: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: characteristic.debugDescription))
 
         if let error = error {
-//            print("Characteristic update error = \(error.localizedDescription)")
             os_log("Characteristic update error: %{public}@", log: SimbleeManager.bt_log, type: .error ,  "\(error.localizedDescription)")
             
         } else {
             if let value = characteristic.value {
-//                print("append escaped bytes: \(value)")
                 os_log("Updated value: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: characteristic.value?.debugDescription))
                 slipBuffer.appendEscapedBytes(value)
+                os_log("... after append escaped bytes", log: SimbleeManager.bt_log, type: .default)
             }
-//            print("... appended")
-            os_log("... appended value (escaped bytes) to slip buffer", log: SimbleeManager.bt_log, type: .default)
         }
     }
     
@@ -329,13 +314,11 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
         
         // Inform delegate
         if let delegate = delegate {
-//            print("inform slip buffer delegate")
             os_log("Inform slip buffer delegate", log: SimbleeManager.bt_log, type: .default)
             delegate.simbleeManagerReceivedMessage(payloadIdentifier, txFlags: txFlags, payloadData: payloadData)
         }
     }
     
-
 }
 
 

@@ -24,6 +24,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
+//    var simbleeManager: SimbleeManager?
     
     var sensorData: SensorData?
     var trendMeasurements: [Measurement]?
@@ -134,6 +135,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         self.tableView.reloadData()
     }
     
+    override func didReceiveMemoryWarning() {
+        os_log("Did receive memory warning", log: BloodSugarTableViewController.bt_log, type: .default)
+    }
 
     // MARK: - Table View
     
@@ -395,15 +399,16 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         
-//        print("Received SLIP payload with ID = \(messageIdentifier)")
-//        print(payloadData.debugDescription)
-        os_log("Simblee manager received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
+        os_log("Received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
 
 //        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", wait: localDebugNotificationTimetoWait)
         
-        guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else { return }
+        guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else {
+            os_log("Received message with unknown identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
+            return
+        }
 
-        print(receivedDataType)
+        os_log("Received data type: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: receivedDataType.rawValue))
         
         switch receivedDataType {
         case .NFC_STATE:
@@ -411,7 +416,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 //            NotificationManager.scheduleDebugNotification(message: "Received NFC state at \(Date())", wait: localDebugNotificationTimetoWait)
 
             let nfcState = NFCState(bytes: payloadData)
-//            print("Received NFC state: \(nfcState)")
             os_log("NFCState is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: nfcState.nfcReady))
 
 
@@ -420,8 +424,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
             
-//            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", wait: localDebugNotificationTimetoWait)
-
+            //            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", wait: localDebugNotificationTimetoWait)
+            NotificationManager.scheduleDebugNotification(message: "Received last data at \(Date().description)", wait: 250)
             
             timeOfTransmissionStart = Date()
             nfcReadingStart = Date()
@@ -431,9 +435,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             let systemInformationData = SystemInformationDataType(bytes: payloadData)
             let uidString = systemInformationData.uidString
             sensor = LibreSensor(withUID: uidString)
-//            print("uidString: \(uidString)")
-//            print(systemInformationData.description)
-//            print("Sensor: \(String(describing: sensor?.serialNumber)) und \(String(describing: sensor?.uid))")
             os_log("System information data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: systemInformationData.description))
 
             //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
@@ -464,8 +465,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
 //            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date())", wait: localDebugNotificationTimetoWait)
             
-//            print("received all data bytes packet")
-
             var bytes = [UInt8](repeating: 0, count: 344)
             (payloadData as NSData).getBytes(&bytes, length: 344)
             
@@ -538,8 +537,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             let idnData = IDNDataType(bytes: payloadData)
             self.deviceID = idnData.idPrettyString
             
-//            print(idnData.description)
-            os_log("Idn data data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: idnData.description))
+            os_log("Idn data is \n%{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: idnData.description))
 
             
             timeOfLastScan = Date()
@@ -549,7 +547,16 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             // Convention: the idn data is the last packet sent from RFDuino within a cycle, thus reload table view after having received it
             tableView.reloadData()
             
+//            // Test: Reset simblee manager to overcome core bluetooth error
+////            simbleeManager.disconnectManually()
+////            simbleeManager.state = .Disconnected
+//            simbleeManager = SimbleeManager()
+//            simbleeManager.delegate = self
+//            simbleeManager.scanForSimblee()
+//            tableView.reloadData()
+            
         }
+        os_log("Blood sugar table view controller handled message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
     }
     
     
@@ -632,9 +639,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 if let error = error {
                     // Do something with error
                     print("Error, blood sugar notification could not be triggered due to: \(error)")
+                    os_log("Error, blood sugar notification could not be triggered %{public}@", log: BloodSugarTableViewController.bt_log, type: .error, String(describing: error.localizedDescription))
+
                 } else {
                     // Request was added successfully
-                    print("triggered blood sugar notification")
+//                    print("triggered blood sugar notification")
                 }
             }
             
