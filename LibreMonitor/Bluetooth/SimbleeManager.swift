@@ -168,11 +168,10 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
         switch central.state {
         case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
             state = .Unassigned
-        default:
-            break
+        case .poweredOn:
+            scanForSimblee() // power was switched on, while app is running -> reconnect. Will not happen, if app is started while bluetooth was already powered on
         }
 
-        // TODO: maybe handle the case of bluetooth beeing switched of (and sometimes later) on again here by stopping and restarting scanning
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
