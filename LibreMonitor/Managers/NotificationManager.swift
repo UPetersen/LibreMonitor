@@ -39,6 +39,16 @@ struct NotificationManager {
     }
 
     
+    // MARK: - badge icon number
+    
+    /// Sets application badge icon
+    ///
+    /// - Parameter value: badge icon number. 0 ... nothing displayed
+    static func applicationIconBadgeNumber(value: Int) {
+        UIApplication.shared.applicationIconBadgeNumber = value
+    }
+
+    
     // MARK: - Local Notifications
     
     /// Bluetooth disconnected local notification.
@@ -114,7 +124,7 @@ struct NotificationManager {
         // Deliver notification only if there was no delivered notification within the last n minutes
         UNUserNotificationCenter.current().getDeliveredNotifications(completionHandler: {deliveredNotifcations in
             for deliveredNotifcation in deliveredNotifcations {
-                if deliveredNotifcation.request.identifier == Category.bloodGlucoseHighOrLow.rawValue, Date().timeIntervalSince(deliveredNotifcation.date) < 5.0 * 60.0 {
+                if deliveredNotifcation.request.identifier == Category.bloodGlucoseHighOrLow.rawValue, Date().timeIntervalSince(deliveredNotifcation.date) < 8.0 * 60.0 {
                     return // there is a delivered notification within the time frame, so just return (and thus do not add the new notification)
                 }
             }

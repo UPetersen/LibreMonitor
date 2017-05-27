@@ -382,7 +382,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         
         switch state {
         case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectingDueToButtonPress, .Disconnected:
-            UIApplication.shared.applicationIconBadgeNumber = 0  // Data not accurate any more -> remove badge icon
+            NotificationManager.applicationIconBadgeNumber(value: 0) // Data not accurate any more -> remove badge icon
             NotificationManager.scheduleBluetoothDisconnectedNotification(wait: 100)
         case .Notifying:
             NotificationManager.removePendingBluetoothDisconnectedNotification()
@@ -470,7 +470,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
                 trendMeasurements = sennsorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                 historyMeasurements = sennsorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
 
-                //                notificationForGlucoseMeasurements(trendMeasurements!)
                 if let trendMeasurements = trendMeasurements {
                     setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
                 }
@@ -597,81 +596,9 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         }
 
         // TODO: put this in own function, but not in this function. Mayby own struct for predictions. And enum within with .downdown and that stuff.
-        UIApplication.shared.applicationIconBadgeNumber = Int(round(longPrediction))
+        NotificationManager.applicationIconBadgeNumber(value: Int(round(longPrediction)))
     }
     
-
-    func notificationForGlucoseMeasurements(_ trendMeasurements: [Measurement] ) {
-        
-        let currentGlucose = trendMeasurements[0].glucose
-        let longDelta = currentGlucose - trendMeasurements[15].glucose
-        let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 32.0 / 15.0 // * 2.0 * 16.0/15.0
-        let longPrediction = currentGlucose + longDelta
-        let shortPrediction = currentGlucose + shortDelta
-        
-        // Show alert if conditions are reached
-        if ((longPrediction > 0 && (longPrediction < 60.0 || longPrediction > 180.0)) ||
-            (shortPrediction > 0 && (shortPrediction < 66.0 || shortPrediction > 180.0)) ||
-            (abs(longDelta) > 30.0 && abs(shortDelta) > 30.0)) && showNotification {
-            
-
-            let body = String(format: "%0.0f --> %0.0f (%0.0f), Delta: %0.0f (%0.0f)", arguments: [currentGlucose, longPrediction, shortPrediction, longDelta, shortDelta])
-            let content = self.notificationContentForBloodSugarWarning(body)
-            let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.5, repeats: false)
-            let request = UNNotificationRequest(identifier: "LocalNotification", content: content, trigger: timeTrigger)
-            UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
-                    // Do something with error
-                    print("Error, blood sugar notification could not be triggered due to: \(error)")
-                    os_log("Error, blood sugar notification could not be triggered %{public}@", log: BloodSugarTableViewController.bt_log, type: .error, String(describing: error.localizedDescription))
-
-                } else {
-                    // Request was added successfully
-//                    print("triggered blood sugar notification")
-                }
-            }
-            
-            // timer to hide notification for 10 minutes
-            showNotification = false
-            notificationTimer = Timer.scheduledTimer(timeInterval: TimeInterval(10.0*60.0), target: self,  selector: #selector(BloodSugarTableViewController.notificationTimerFired), userInfo: nil, repeats: false)
-        }
-        //        UIApplication.sharedApplication().cancelAllLocalNotifications()
-        
-        self.triggerNotificationContentForBadgeIcon(value: Int(round(longPrediction)))
-    }
-    
-    
-    
-    
-    func triggerNotificationContentForBadgeIcon(value: Int) {
-        
-        UIApplication.shared.applicationIconBadgeNumber = value
-
-    }
-    
-    
-    /// Returns a UNMutableNotificationContent with a body
-    ///
-    /// - parameter body: body to be displayd
-    ///
-    /// - returns: the notification content
-    func   notificationContentForBloodSugarWarning(_ body: String) -> UNMutableNotificationContent {
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Glukose beachten"
-        content.subtitle = "Notification Subtitle"
-        content.body = body
-        //        content.badge = 1
-        content.sound = UNNotificationSound.default()
-        content.categoryIdentifier = "GLUCOSE_WARNING_CATEGORY"
-        content.userInfo = ["UUID": "123456789" ] // assign a unique identifier to the notification so that we can retrieve it later
-        return content
-    }
-    
-    
-    func notificationTimerFired() {
-        showNotification = true
-    }
     
 }
 

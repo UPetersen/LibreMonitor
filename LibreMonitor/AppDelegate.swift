@@ -26,9 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Allow local notifications for iOS 10
          NotificationManager.authorize(delegate: self)
         
-        // Do not show a badge icon value unless data has been received
-        UIApplication.shared.applicationIconBadgeNumber = 0 // hide badge number
-   
         
         // Override point for customization after application launch.
 //        let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -93,7 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        
         os_log("Application will terminate", log: AppDelegate.bt_log, type: .default)
+        NotificationManager.applicationIconBadgeNumber(value: 0)
         self.saveContext()
     }
 
