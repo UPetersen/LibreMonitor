@@ -79,7 +79,7 @@ public enum SimbleeManagerState: String {
     case Unassigned = "Unassigned"
     case Scanning = "Scanning"
     case Disconnected = "Disconnected"
-    case DisconnectedManually = "Disconnected manually"
+    case DisconnectingDueToButtonPress = "Disconnecting due to button press"
     case Connecting = "Connecting"
     case Connected = "Connected"
     case Notifying = "Notifying"
@@ -148,7 +148,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
 
         switch state {
         case .Connected, .Connecting, .Notifying:
-            state = .DisconnectedManually  // to avoid reconnect in didDisconnetPeripheral
+            state = .DisconnectingDueToButtonPress  // to avoid reconnect in didDisconnetPeripheral
             centralManager.cancelPeripheralConnection(peripheral!)
         default:
             break
@@ -164,6 +164,13 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
 
         os_log("Central Manager did update state to %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: central.state.rawValue))
+        
+        switch central.state {
+        case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
+            state = .Unassigned
+        default:
+            break
+        }
 
         // TODO: maybe handle the case of bluetooth beeing switched of (and sometimes later) on again here by stopping and restarting scanning
     }
@@ -203,7 +210,7 @@ class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
 
         
         switch state {
-        case .DisconnectedManually:
+        case .DisconnectingDueToButtonPress:
             state = .Disconnected
         default:
             state = .Disconnected

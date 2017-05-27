@@ -53,19 +53,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 
                 // Set core data stack in view controller
                 bloodSugarTableViewController.persistentContainer = self.persistentContainer
-                
-//                // Set simblee manager in view Controller
-//                let simbleeManager = SimbleeManager()
-//                bloodSugarTableViewController.simbleeManager = simbleeManager
             }
         }
         
-        var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        let fileName = "\(Date()).log"
-        let logFilePath = (documentsDirectory as NSString).appendingPathComponent(fileName)
-        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stderr)
-        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
+//        // redirect os_log output to a file in documents directory
+//        var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//        let documentsDirectory = paths[0]
+//        let fileName = "\(Date()).log"
+//        let logFilePath = (documentsDirectory as NSString).appendingPathComponent(fileName)
+//        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stderr)
+//        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
         
         return true
     }

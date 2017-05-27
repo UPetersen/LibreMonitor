@@ -124,7 +124,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             simbleeManager.state = .Disconnected
         case .Connected, .Connecting, .Notifying:
             simbleeManager.disconnectManually()
-        case .Disconnected, .DisconnectedManually:
+        case .Disconnected, .DisconnectingDueToButtonPress:
             simbleeManager.connect()
         }
     }
@@ -381,18 +381,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         self.navigationItem.rightBarButtonItem?.title? = connectButtonTitleForState(state)
         
         switch state {
-            
-        case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectedManually:
+        case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectingDueToButtonPress, .Disconnected:
             UIApplication.shared.applicationIconBadgeNumber = 0  // Data not accurate any more -> remove badge icon
-            
-        case .Disconnected:
-//            self.triggerNotificationContentForBadgeIcon(value: 0)  // no badge number if not notifying
-//            NotificationManager.scheduleDebugNotification(message: "Disconnected at \(timeFormatter.string(from: Date()))", timeInterval: 135)
             NotificationManager.scheduleBluetoothDisconnectedNotification(wait: 100)
-
         case .Notifying:
             NotificationManager.removePendingBluetoothDisconnectedNotification()
-            break
         }
         tableView.reloadData()
     }
@@ -400,8 +393,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         
         os_log("Received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
-
-//        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", wait: localDebugNotificationTimetoWait)
+        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", wait: localDebugNotificationTimetoWait)
         
         guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else {
             os_log("Received message with unknown identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
@@ -425,7 +417,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
             
             //            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", wait: localDebugNotificationTimetoWait)
-            NotificationManager.scheduleDebugNotification(message: "Received last data at \(Date().description)", wait: 250)
+//            NotificationManager.scheduleDebugNotification(message: "Received last data at \(Date().description)", wait: 250)
             
             timeOfTransmissionStart = Date()
             nfcReadingStart = Date()
@@ -546,15 +538,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             // Convention: the idn data is the last packet sent from RFDuino within a cycle, thus reload table view after having received it
             tableView.reloadData()
-            
-//            // Test: Reset simblee manager to overcome core bluetooth error
-////            simbleeManager.disconnectManually()
-////            simbleeManager.state = .Disconnected
-//            simbleeManager = SimbleeManager()
-//            simbleeManager.delegate = self
-//            simbleeManager.scanForSimblee()
-//            tableView.reloadData()
-            
+                        
         }
         os_log("Blood sugar table view controller handled message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
     }
@@ -564,7 +548,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     
     func colorForConnectionState() -> UIColor {
         switch (simbleeManager.state) {
-        case .Unassigned, .Disconnected, .DisconnectedManually:
+        case .Unassigned, .Disconnected, .DisconnectingDueToButtonPress:
             return UIColor.red
         case .Scanning, .Connecting, .Connected:
             return UIColor(red: CGFloat(0.9), green: CGFloat(0.9), blue: CGFloat(1), alpha: CGFloat(1))
@@ -583,7 +567,7 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
     func connectButtonTitleForState(_ state: SimbleeManagerState) -> String {
         
         switch state {
-        case .Unassigned, .Disconnected, .DisconnectedManually:
+        case .Unassigned, .Disconnected, .DisconnectingDueToButtonPress:
             return "connect"
         case .Connected, .Connecting, .Scanning, .Notifying:
             return "disconnect"
