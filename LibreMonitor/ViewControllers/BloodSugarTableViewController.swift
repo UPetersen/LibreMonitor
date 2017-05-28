@@ -49,9 +49,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var dateFormatter = DateFormatter()
     var timeFormatter = DateFormatter()
     
-    var notificationTimer = Timer()
-    var showNotification = true
-    
     
     /// Enum for the sections of this table view
     fileprivate enum Section: Int {
