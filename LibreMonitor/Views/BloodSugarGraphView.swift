@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import Charts
 
-class BloodSugarGraphView: LineChartView {
+final class BloodSugarGraphView: LineChartView {
 
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?

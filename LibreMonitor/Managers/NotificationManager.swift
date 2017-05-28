@@ -18,12 +18,13 @@ struct NotificationManager {
         case someInfiniteLoop
         case lowBattery
         case bloodGlucoseHighOrLow
+        case dataTransferInterrupted
         case debug
     }
     
     static var timeFormatter: DateFormatter = {
         let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH.mm.ss"
+        timeFormatter.dateFormat = "HH:mm"
         return timeFormatter
     }()
     
@@ -98,7 +99,7 @@ struct NotificationManager {
     }
     
     
-    /// Blood glucose high of low notification
+    /// Blood glucose high or low notification
     ///
     /// - Parameters:
     ///   - title: notification title to display
@@ -107,7 +108,7 @@ struct NotificationManager {
         
         let content = UNMutableNotificationContent()
         content.title = title
-        content.subtitle = "Notification Subtitle"
+        content.subtitle = ""
         content.body = body
         content.sound = UNNotificationSound.default()
         
@@ -130,24 +131,36 @@ struct NotificationManager {
             }
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         })
-
-
     }
     
-//    static func notificationDeliveredRecently(withIn: TimeInterval, category: Category) -> UNNotification? {
-//        
-//        var notification: UNNotification? = nil
-//        // get delivered notifications for category
-//        UNUserNotificationCenter.current().getDeliveredNotifications(completionHandler: {deliveredNotifcations in
-//            for deliveredNotifcation in deliveredNotifcations {
-//                if deliveredNotifcation.request.identifier == category.rawValue, Date().timeIntervalSince(deliveredNotifcation.date) < 10.0*60.0 {
-//                    notification = deliveredNotifcation
-//                }
-//            }
-//        })
-//        return notification
-//    }
-//    
+    
+    /// Data transfer interrupted local notification.
+    ///
+    /// This notification is (re)scheduled each time data is received from the LibreMonitor device. Thus it will never fire if data is received continously. But if no data received for some "wait" time, the notification will fire.
+    /// - Parameter wait: time to wait until notification is fired
+    static func scheduleDataTransferInterruptedNotification(wait: TimeInterval) {
+        
+        let date = Date(timeInterval: -wait, since: Date())
+        let content = UNMutableNotificationContent()
+        content.title = "Data Transfer interrupted"
+        content.subtitle = ""
+        content.body = "Last data update was \(String(Int(wait))) s ago at \(timeFormatter.string(from: date)). Check transmitter and bluetooth connection."
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
+        
+        let request = UNNotificationRequest(
+            identifier: Category.dataTransferInterrupted.rawValue,
+            content: content,
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+
+    static func removePendingDataTransferInterruptedNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Category.dataTransferInterrupted.rawValue])
+    }
+
     
     // MARK: - Local Notifications used for debugging
     

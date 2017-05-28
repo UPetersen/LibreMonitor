@@ -14,17 +14,14 @@ import UserNotifications
 import os.log
 
 
-class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
+final class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelegate {
     
     // MARK: - Properties
     
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "BloodSugarTableViewController")
     
-    let localDebugNotificationTimetoWait = TimeInterval(135)
-    
     var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
-//    var simbleeManager: SimbleeManager?
     
     var sensorData: SensorData?
     var trendMeasurements: [Measurement]?
@@ -390,34 +387,28 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
         tableView.reloadData()
     }
     
+    
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         
         os_log("Received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
-        NotificationManager.scheduleDebugNotification(message: "Received Payload at \(Date())", wait: localDebugNotificationTimetoWait)
+        NotificationManager.scheduleDataTransferInterruptedNotification(wait: 150)
         
         guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else {
             os_log("Received message with unknown identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
             return
         }
-
         os_log("Received data type: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: receivedDataType.rawValue))
         
         switch receivedDataType {
         case .NFC_STATE:
-            
-//            NotificationManager.scheduleDebugNotification(message: "Received NFC state at \(Date())", wait: localDebugNotificationTimetoWait)
 
             let nfcState = NFCState(bytes: payloadData)
             os_log("NFCState is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: nfcState.nfcReady))
-
 
         
         case .SYSTEM_INFORMATION_DATA: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
             
             // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
-            
-            //            NotificationManager.scheduleDebugNotification(message: "Received system information at \(Date())", wait: localDebugNotificationTimetoWait)
-//            NotificationManager.scheduleDebugNotification(message: "Received last data at \(Date().description)", wait: 250)
             
             timeOfTransmissionStart = Date()
             nfcReadingStart = Date()
@@ -434,9 +425,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
 
             
         case .BATTERY_DATA: // Battery
-            
-//            NotificationManager.scheduleDebugNotification(message: "Received battery data at \(Date())", wait: localDebugNotificationTimetoWait)
-
             
             nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
             bluetoothTransmissionStart = Date()
@@ -455,16 +443,11 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
         case .ALL_BYTES: // all data bytes (all 344 bytes, i.e. 43 blocks)
             
-//            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date())", wait: localDebugNotificationTimetoWait)
-            
             var bytes = [UInt8](repeating: 0, count: 344)
             (payloadData as NSData).getBytes(&bytes, length: 344)
             
             sensorData = SensorData(bytes: bytes, date: Date())
             os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
-            
-//            NotificationManager.scheduleDebugNotification(message: "Received all bytes at \(Date()) \(String(describing: sensorData))", wait: localDebugNotificationTimetoWait)
-            
             
             if let sennsorData = sensorData {
                 trendMeasurements = sennsorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
@@ -522,8 +505,6 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             
             
         case .IDN_DATA: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
-            
-//            NotificationManager.scheduleDebugNotification(message: "Received IDN at \(Date())", wait: localDebugNotificationTimetoWait)
             
             let idnData = IDNDataType(bytes: payloadData)
             self.deviceID = idnData.idPrettyString
@@ -594,11 +575,8 @@ class BloodSugarTableViewController: UITableViewController, SimbleeManagerDelega
             let body = String(format: "%0.0f --> %0.0f (%0.0f), Delta: %0.0f (%0.0f)", arguments: [currentGlucose, longPrediction, shortPrediction, longDelta, shortDelta])
             NotificationManager.setBloodGlucoseHighOrLowNotification(title: "Low Glucose", body: body)
         }
-
-        // TODO: put this in own function, but not in this function. Mayby own struct for predictions. And enum within with .downdown and that stuff.
         NotificationManager.applicationIconBadgeNumber(value: Int(round(longPrediction)))
     }
-    
     
 }
 

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class BloodGlucoseEntryEditTableViewController: UITableViewController {
+final class BloodGlucoseEntryEditTableViewController: UITableViewController {
     
     var bloodGlucose: BloodGlucose?
     

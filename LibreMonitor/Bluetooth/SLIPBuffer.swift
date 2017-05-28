@@ -21,7 +21,7 @@ protocol SLIPBufferDelegate {
 }
 
 
-class SLIPBuffer {
+final class SLIPBuffer {
     
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "SLIPBuffer")
 

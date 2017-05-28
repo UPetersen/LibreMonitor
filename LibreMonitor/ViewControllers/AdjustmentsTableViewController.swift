@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AdjustmentsTableViewController: UITableViewController, UITextFieldDelegate {
+final class AdjustmentsTableViewController: UITableViewController, UITextFieldDelegate {
     
 
     let numberFormatter = NumberFormatter()

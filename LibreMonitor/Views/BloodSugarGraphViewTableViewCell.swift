@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 import Charts
 
-class BloodSugarGraphViewTableViewCell: UITableViewCell {
+final class BloodSugarGraphViewTableViewCell: UITableViewCell {
     
     
     // Just the outlets are needed here, for these UI elements to be accessible from the corresponding parent table view controller

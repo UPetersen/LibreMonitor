@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LibreSensor {
+final class LibreSensor {
     
     var uid: String
     

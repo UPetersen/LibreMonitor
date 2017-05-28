@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class GlucoseCDTVC: FetchedResultsTableViewController {
+final class GlucoseCDTVC: FetchedResultsTableViewController {
     
     var persistentContainer: NSPersistentContainer?
     var fetchedResultsController: NSFetchedResultsController<BloodGlucose>?

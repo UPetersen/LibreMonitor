@@ -90,7 +90,7 @@ protocol SimbleeManagerDelegate {
     func simbleeManagerReceivedMessage(_ messageIdentifier:UInt16, txFlags:UInt8, payloadData:Data)
 }
 
-class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, SLIPBufferDelegate {
+final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, SLIPBufferDelegate {
     
     // MARK: - Properties
 
