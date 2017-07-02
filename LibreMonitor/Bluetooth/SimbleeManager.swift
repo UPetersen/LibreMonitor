@@ -103,6 +103,7 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     fileprivate let serviceUUIDs:[CBUUID]? = [CBUUID(string: "2220")]
     
     var BLEScanDuration = 3.0
+    weak var timer: Timer?
     
     var delegate: SimbleeManagerDelegate? {
         didSet {
@@ -132,6 +133,15 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
             centralManager.scanForPeripherals(withServices: serviceUUIDs, options: nil)
             state = .Scanning
         }
+
+        // Set timer to check connection and reconnect if necessary
+        timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: false) {_ in
+            os_log("********** Reconnection timer fired in background **********", log: SimbleeManager.bt_log, type: .default)
+            if self.state != .Notifying {
+                self.scanForSimblee()
+                NotificationManager.scheduleDebugNotification(message: "Reconnection timer fired in background", wait: 0.5)
+            }
+        }
     }
     
     func connect() {
@@ -145,6 +155,8 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     
     func disconnectManually() {
         os_log("Disconnect manually while state %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue))
+        NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 3)
+//        _ = Timer(timeInterval: 150, repeats: false, block: {timer in NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 0.5)})
 
         switch state {
         case .Connected, .Connecting, .Notifying:
@@ -153,6 +165,8 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
         default:
             break
         }
+        
+        
 //        if state == .Connected || peripheral?.state == .Connecting {
 //            centralManager.cancelPeripheralConnection(peripheral!)
 //        }
@@ -169,10 +183,10 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
         case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
             state = .Unassigned
         case .poweredOn:
-            scanForSimblee() // power was switched on, while app is running -> reconnect. Will not happen, if app is started while bluetooth was already powered on
+            scanForSimblee() // power was switched on, while app is running -> reconnect.
         }
-
     }
+    
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
 
