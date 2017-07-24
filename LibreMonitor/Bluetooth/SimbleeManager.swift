@@ -139,7 +139,7 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
             os_log("********** Reconnection timer fired in background **********", log: SimbleeManager.bt_log, type: .default)
             if self.state != .Notifying {
                 self.scanForSimblee()
-                NotificationManager.scheduleDebugNotification(message: "Reconnection timer fired in background", wait: 0.5)
+//                NotificationManager.scheduleDebugNotification(message: "Reconnection timer fired in background", wait: 0.5)
             }
         }
     }
@@ -155,7 +155,7 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
     
     func disconnectManually() {
         os_log("Disconnect manually while state %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue))
-        NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 3)
+//        NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 3)
 //        _ = Timer(timeInterval: 150, repeats: false, block: {timer in NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 0.5)})
 
         switch state {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -448,7 +448,7 @@
 				};
 			};
 			buildConfigurationList = C6822D5D1DB13F2200D08393 /* Build configuration list for PBXProject "LibreMonitor" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (

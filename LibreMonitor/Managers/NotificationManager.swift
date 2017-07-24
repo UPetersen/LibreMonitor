@@ -19,6 +19,7 @@ struct NotificationManager {
         case lowBattery
         case bloodGlucoseHighOrLow
         case dataTransferInterrupted
+        case applicationTerminated
         case debug
     }
     
@@ -64,7 +65,7 @@ struct NotificationManager {
         content.badge = 0
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: true)
         let request = UNNotificationRequest(
             identifier: Category.bluetoothDisconnected.rawValue,
             content: content,
@@ -147,7 +148,7 @@ struct NotificationManager {
         content.body = "Last data update was \(String(Int(wait))) s ago at \(timeFormatter.string(from: date)). Check transmitter and bluetooth connection."
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: true)
         
         let request = UNNotificationRequest(
             identifier: Category.dataTransferInterrupted.rawValue,
@@ -156,11 +157,39 @@ struct NotificationManager {
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
-
+    
     static func removePendingDataTransferInterruptedNotification() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Category.dataTransferInterrupted.rawValue])
     }
-
+    
+    
+    /// Application terminated local notification.
+    ///
+    /// This notification is scheduled each time LibreMonitor is terminated. This aims at notifiying the user, if the app is terminated in the background. Currently the user will also be notified when he actively terminates the application
+    /// - Parameter wait: time to wait until notification is fired
+    static func scheduleApplicationTerminatedNotification(wait: TimeInterval) {
+        
+        let date = Date(timeInterval: -wait, since: Date())
+        let content = UNMutableNotificationContent()
+        content.title = "LibreMonitor terminated"
+        content.subtitle = ""
+        content.body = "LibreMonitor termiated at \(timeFormatter.string(from: date))."
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: true)
+        
+        let request = UNNotificationRequest(
+            identifier: Category.applicationTerminated.rawValue,
+            content: content,
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    static func removePendingApplicationTerminatedNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Category.applicationTerminated.rawValue])
+    }
+    
     
     // MARK: - Local Notifications used for debugging
     
@@ -187,7 +216,6 @@ struct NotificationManager {
             trigger: trigger
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        
     }
     
     static func removePendingDebugNotification() {

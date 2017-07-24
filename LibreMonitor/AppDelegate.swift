@@ -94,6 +94,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         os_log("Application will terminate", log: AppDelegate.bt_log, type: .default)
         NotificationManager.applicationIconBadgeNumber(value: 0)
         self.saveContext()
+        
+        // Terminate pending local notifications, especially those that are repeated
+        NotificationManager.removePendingDebugNotification()
+        NotificationManager.removePendingBluetoothDisconnectedNotification()
+        NotificationManager.removePendingDataTransferInterruptedNotification()
+        
+        // Post the notification that the application was terminated
+        NotificationManager.scheduleApplicationTerminatedNotification(wait: 10)
     }
 
 

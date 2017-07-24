@@ -387,7 +387,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         switch state {
         case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectingDueToButtonPress, .Disconnected:
             NotificationManager.applicationIconBadgeNumber(value: 0) // Data not accurate any more -> remove badge icon
-            NotificationManager.scheduleBluetoothDisconnectedNotification(wait: 100)
+            NotificationManager.scheduleBluetoothDisconnectedNotification(wait: 400)
         case .Notifying:
             NotificationManager.removePendingBluetoothDisconnectedNotification()
         }
@@ -398,7 +398,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         
         os_log("Received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
-        NotificationManager.scheduleDataTransferInterruptedNotification(wait: 150)
+        NotificationManager.scheduleDataTransferInterruptedNotification(wait: 400)
         
         guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else {
             os_log("Received message with unknown identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
