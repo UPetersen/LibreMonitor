@@ -19,13 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "AppDelegate")
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-     
         
         // Allow local notifications for iOS 10
          NotificationManager.authorize(delegate: self)
-        
         
         // Override point for customization after application launch.
 //        let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -68,7 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         os_log("Application will resign active", log: AppDelegate.bt_log, type: .default)
-        
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -103,7 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Post the notification that the application was terminated
         NotificationManager.scheduleApplicationTerminatedNotification(wait: 10)
     }
-
 
     
     // MARK: - Core Data stack
