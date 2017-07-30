@@ -82,7 +82,7 @@ final class SLIPBuffer {
         defer {
             NotificationManager.removePendingDebugNotification()
         }
-        NotificationManager.scheduleDebugNotification(message: "in scanRCBufferForFrame", wait: 2)
+        NotificationManager.scheduleDebugNotification(message: "in scanRxBufferForFrame", wait: 2)
         
         
 
@@ -145,8 +145,8 @@ final class SLIPBuffer {
         defer {
             NotificationManager.removePendingDebugNotification()
         }
-        NotificationManager.scheduleDebugNotification(message: "in decodeSLIPPacket \(escapedPacket)", wait: 2)
-
+//        NotificationManager.scheduleDebugNotification(message: "in decodeSLIPPacket \(escapedPacket)", wait: 2)
+        
         
         // Remove SLIP escaping
         guard let unescapedPacket = (escapedPacket as NSData).unescaped() else {
