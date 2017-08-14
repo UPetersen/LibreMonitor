@@ -39,7 +39,6 @@ struct NotificationManager {
             }
         }
     }
-
     
     // MARK: - badge icon number
     

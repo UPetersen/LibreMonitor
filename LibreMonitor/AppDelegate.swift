@@ -58,6 +58,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stderr)
         freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
         
+        
+//        public init(siteURL: URL, APISecret: String) {
+//            self.siteURL = siteURL
+//            self.apiSecret = APISecret
+//
+//            observingPumpEventsSince = lastStoredTreatmentTimestamp ?? Date(timeIntervalSinceNow: TimeInterval(hours: -24))
+//        }
+        
+        let theURL = URL(string: "https://nighscout.herokuapp.com")
+        let apiSecret = ""
+        let hugo = NightscoutUploader(siteURL: theURL!, APISecret: apiSecret)
+        hugo.uploadTestData()
+        
         return true
     }
 

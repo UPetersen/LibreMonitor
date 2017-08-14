@@ -25,7 +25,9 @@ final class LibreSensor {
         //   index: 0 1 2 3 4 5 6 7 8 9 10     11 12 13 14 15 16     17 18 19 20 21     22 23 24      25 26 27 28 29 30 31
         //   char:  0 1 2 3 4 5 6 7 8 9  A (B)  C  D  E  F  G  H (I)  J  K  L  M  N (O)  P  Q  R (S)   T  U  V  W  X  Y  Z
         //
-        // Example:
+//        8bd9043e67be0000a007e0 f307 fda7a80e030000
+//        8bd90475ce860000a007e0 f307 50548055050003
+        // Example:  75 ce 86 00 00 a0 07 e0
         //    Uid is E0 07 A0 00 00 25 90 5E, and the corresponding serial number is "0M00009DHCR"
         //           \   / \              /
         //            -+-   -----+--------

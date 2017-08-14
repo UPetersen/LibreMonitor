@@ -15,6 +15,20 @@
 		C65E6DA21E45070800A85E0E /* TransmissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E6DA11E45070800A85E0E /* TransmissionTests.swift */; };
 		C6652F1E1DB1801D00237E7D /* crc8.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1B1DB1801D00237E7D /* crc8.m */; };
 		C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1D1DB1801D00237E7D /* libUBP.m */; };
+		C66A495A1F40D7A70005DC78 /* NightscoutUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49591F40D7A70005DC78 /* NightscoutUploader.swift */; };
+		C66A49671F40D7CB0005DC78 /* NSUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A495B1F40D7C90005DC78 /* NSUserDefaults.swift */; };
+		C66A49681F40D7CB0005DC78 /* TimeFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A495C1F40D7C90005DC78 /* TimeFormat.swift */; };
+		C66A49691F40D7CB0005DC78 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A495D1F40D7CA0005DC78 /* TimeInterval.swift */; };
+		C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A495E1F40D7CA0005DC78 /* MessageBody.swift */; };
+		C66A496B1F40D7CB0005DC78 /* NightscoutEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A495F1F40D7CA0005DC78 /* NightscoutEntry.swift */; };
+		C66A496C1F40D7CB0005DC78 /* HKUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49601F40D7CA0005DC78 /* HKUnit.swift */; };
+		C66A496D1F40D7CB0005DC78 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49611F40D7CA0005DC78 /* Either.swift */; };
+		C66A496E1F40D7CB0005DC78 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49621F40D7CA0005DC78 /* NSData+Conversion.m */; };
+		C66A496F1F40D7CB0005DC78 /* NightscoutTreatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49631F40D7CA0005DC78 /* NightscoutTreatment.swift */; };
+		C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49661F40D7CB0005DC78 /* Crypto.m */; };
+		C66A49721F42252F0005DC78 /* uwi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49711F42252F0005DC78 /* uwi.swift */; };
+		C66A49781F4226F90005DC78 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49761F4226F80005DC78 /* ISO8601DateFormatter.m */; };
+		C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A497B1F4227860005DC78 /* NSDateFormatter.swift */; };
 		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
 		C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */; };
 		C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6822D711DB13F2200D08393 /* Assets.xcassets */; };
@@ -87,6 +101,23 @@
 		C6652F1D1DB1801D00237E7D /* libUBP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = libUBP.m; path = SimbleeCode/libUBP.m; sourceTree = "<group>"; };
 		C6652F201DB1812C00237E7D /* LibreMonitorTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreMonitorTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C6652F211DB181E900237E7D /* LibreMonitor-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreMonitor-Bridging-Header.h"; sourceTree = "<group>"; };
+		C66A49591F40D7A70005DC78 /* NightscoutUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutUploader.swift; sourceTree = "<group>"; };
+		C66A495B1F40D7C90005DC78 /* NSUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSUserDefaults.swift; sourceTree = "<group>"; };
+		C66A495C1F40D7C90005DC78 /* TimeFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFormat.swift; sourceTree = "<group>"; };
+		C66A495D1F40D7CA0005DC78 /* TimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
+		C66A495E1F40D7CA0005DC78 /* MessageBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBody.swift; sourceTree = "<group>"; };
+		C66A495F1F40D7CA0005DC78 /* NightscoutEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutEntry.swift; sourceTree = "<group>"; };
+		C66A49601F40D7CA0005DC78 /* HKUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKUnit.swift; sourceTree = "<group>"; };
+		C66A49611F40D7CA0005DC78 /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Either.swift; sourceTree = "<group>"; };
+		C66A49621F40D7CA0005DC78 /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
+		C66A49631F40D7CA0005DC78 /* NightscoutTreatment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutTreatment.swift; sourceTree = "<group>"; };
+		C66A49641F40D7CA0005DC78 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
+		C66A49651F40D7CB0005DC78 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
+		C66A49661F40D7CB0005DC78 /* Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypto.m; sourceTree = "<group>"; };
+		C66A49711F42252F0005DC78 /* uwi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uwi.swift; sourceTree = "<group>"; };
+		C66A49761F4226F80005DC78 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		C66A49771F4226F90005DC78 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		C66A497B1F4227860005DC78 /* NSDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatter.swift; sourceTree = "<group>"; };
 		C6822D621DB13F2200D08393 /* LibreMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6822D651DB13F2200D08393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6822D681DB13F2200D08393 /* LibreMonitor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LibreMonitor.xcdatamodel; sourceTree = "<group>"; };
@@ -210,6 +241,30 @@
 			name = SimbleeCode;
 			sourceTree = "<group>";
 		};
+		C66A49491F40CBAB0005DC78 /* NightscoutUploader */ = {
+			isa = PBXGroup;
+			children = (
+				C66A497B1F4227860005DC78 /* NSDateFormatter.swift */,
+				C66A49771F4226F90005DC78 /* ISO8601DateFormatter.h */,
+				C66A49761F4226F80005DC78 /* ISO8601DateFormatter.m */,
+				C66A49651F40D7CB0005DC78 /* Crypto.h */,
+				C66A49661F40D7CB0005DC78 /* Crypto.m */,
+				C66A49611F40D7CA0005DC78 /* Either.swift */,
+				C66A49601F40D7CA0005DC78 /* HKUnit.swift */,
+				C66A495E1F40D7CA0005DC78 /* MessageBody.swift */,
+				C66A495F1F40D7CA0005DC78 /* NightscoutEntry.swift */,
+				C66A49631F40D7CA0005DC78 /* NightscoutTreatment.swift */,
+				C66A49641F40D7CA0005DC78 /* NSData+Conversion.h */,
+				C66A49621F40D7CA0005DC78 /* NSData+Conversion.m */,
+				C66A495B1F40D7C90005DC78 /* NSUserDefaults.swift */,
+				C66A495C1F40D7C90005DC78 /* TimeFormat.swift */,
+				C66A495D1F40D7CA0005DC78 /* TimeInterval.swift */,
+				C66A49591F40D7A70005DC78 /* NightscoutUploader.swift */,
+				C66A49711F42252F0005DC78 /* uwi.swift */,
+			);
+			path = NightscoutUploader;
+			sourceTree = "<group>";
+		};
 		C6822D591DB13F2200D08393 = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +290,7 @@
 		C6822D641DB13F2200D08393 /* LibreMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				C66A49491F40CBAB0005DC78 /* NightscoutUploader */,
 				C6078B091EC7575600FEE6F7 /* Managers */,
 				C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */,
 				C6822DC61DB162D600D08393 /* ModelCoreData */,
@@ -637,30 +693,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C66A49681F40D7CB0005DC78 /* TimeFormat.swift in Sources */,
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
+				C66A49781F4226F90005DC78 /* ISO8601DateFormatter.m in Sources */,
 				C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */,
+				C66A49691F40D7CB0005DC78 /* TimeInterval.swift in Sources */,
 				C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */,
 				C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */,
 				C6822DD81DB1631D00D08393 /* Reader+CoreDataProperties.swift in Sources */,
 				C6822DD51DB1631D00D08393 /* BloodGlucose+CoreDataClass.swift in Sources */,
 				C6822DDC1DB1631D00D08393 /* HeaderData+CoreDataProperties.swift in Sources */,
+				C66A496E1F40D7CB0005DC78 /* NSData+Conversion.m in Sources */,
+				C66A49671F40D7CB0005DC78 /* NSUserDefaults.swift in Sources */,
+				C66A496B1F40D7CB0005DC78 /* NightscoutEntry.swift in Sources */,
 				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
+				C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */,
 				C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */,
+				C66A496F1F40D7CB0005DC78 /* NightscoutTreatment.swift in Sources */,
 				C68AA76E1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift in Sources */,
+				C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */,
 				C6822DB61DB1618400D08393 /* LibreSensor.swift in Sources */,
+				C66A495A1F40D7A70005DC78 /* NightscoutUploader.swift in Sources */,
 				C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */,
 				C6822DD61DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift in Sources */,
 				C6822DC31DB161C700D08393 /* BloodSugarGraphViewTableViewCell.swift in Sources */,
+				C66A49721F42252F0005DC78 /* uwi.swift in Sources */,
+				C66A496C1F40D7CB0005DC78 /* HKUnit.swift in Sources */,
 				C6822DB71DB1618400D08393 /* Measurement.swift in Sources */,
 				C6822DB91DB1618400D08393 /* SensorState.swift in Sources */,
 				C6822DDB1DB1631D00D08393 /* HeaderData+CoreDataClass.swift in Sources */,
 				C6822DD71DB1631D00D08393 /* Reader+CoreDataClass.swift in Sources */,
 				C6822DB81DB1618400D08393 /* SensorData.swift in Sources */,
 				C6822DBD1DB161AB00D08393 /* AdjustmentsTableViewController.swift in Sources */,
+				C66A496D1F40D7CB0005DC78 /* Either.swift in Sources */,
 				C6078B0F1EC76BE800FEE6F7 /* NotificationManager.swift in Sources */,
 				C6822DBE1DB161AB00D08393 /* BloodSugarTableViewController.swift in Sources */,
 				C61DA67D1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift in Sources */,
+				C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */,
 				C6822DAD1DB1616300D08393 /* SimbleeManager.swift in Sources */,
 				C6822DB51DB1618400D08393 /* CRC.swift in Sources */,
 				C6822DAE1DB1616300D08393 /* SLIPBuffer.swift in Sources */,
