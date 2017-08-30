@@ -39,9 +39,7 @@ final class BloodGlucoseEntryEditTableViewController: UITableViewController {
         
         bloodGlucoseNumber = (bloodGlucose?.value ?? 0) as NSNumber
         
-        if let bloodGlucose = bloodGlucose,
-            let date = bloodGlucose.date
-        {
+        if let bloodGlucose = bloodGlucose, let date = bloodGlucose.date {
             datePicker.date = date as Date
             dateLabel.text = DateFormatter.localizedString(from: date as Date, dateStyle: .short, timeStyle: .short)
             

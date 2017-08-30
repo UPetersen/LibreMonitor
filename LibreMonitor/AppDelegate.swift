@@ -42,12 +42,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         if let childViewControllers = tabBarController.viewControllers {
             
             for childViewController in childViewControllers where childViewController is UINavigationController {
-                let navigationController = childViewController as! UINavigationController
-                let bloodSugarTableViewController = navigationController.topViewController as! BloodSugarTableViewController
                 
-                // Set core data stack in view controller
-                bloodSugarTableViewController.persistentContainer = self.persistentContainer
+                let hugo = childViewController as! UINavigationController
+                print(hugo.topViewController ?? "no view controller available")
+                if let navigationController = childViewController as? UINavigationController, let bloodSugarTableViewController = navigationController.topViewController as? BloodSugarTableViewController {
+                    // Set core data stack in view controller where it is needed/used
+                    bloodSugarTableViewController.persistentContainer = self.persistentContainer
+                    print("changed")
+                }
             }
+//            for childViewController in childViewControllers where childViewController is UINavigationController {
+//                let navigationController = childViewController as! UINavigationController
+//                let bloodSugarTableViewController = navigationController.topViewController as! BloodSugarTableViewController
+//
+//                // Set core data stack in view controller
+//                bloodSugarTableViewController.persistentContainer = self.persistentContainer
+//            }
         }
         
         // redirect os_log output to a file in documents directory
@@ -59,17 +69,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
         
         
-//        public init(siteURL: URL, APISecret: String) {
-//            self.siteURL = siteURL
-//            self.apiSecret = APISecret
-//
-//            observingPumpEventsSince = lastStoredTreatmentTimestamp ?? Date(timeIntervalSinceNow: TimeInterval(hours: -24))
-//        }
-        
-        let theURL = URL(string: "https://nighscout.herokuapp.com")
-        let apiSecret = ""
-        let hugo = NightscoutUploader(siteURL: theURL!, APISecret: apiSecret)
-        hugo.uploadTestData()
+        // Test upload to Nightscout
+//        let theURL = URL(string: "https://nighscout.herokuapp.com")
+//        let apiSecret = ""
+//        let hugo = NightscoutUploader(siteURL: theURL!, APISecret: apiSecret)
+//        hugo.uploadTestData()
         
         return true
     }

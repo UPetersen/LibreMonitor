@@ -82,7 +82,7 @@ final class SLIPBuffer {
         defer {
             NotificationManager.removePendingDebugNotification()
         }
-        NotificationManager.scheduleDebugNotification(message: "in scanRxBufferForFrame", wait: 2)
+        NotificationManager.scheduleDebugNotification(message: "in scanRxBufferForFrame", wait: 120)
         
         
 

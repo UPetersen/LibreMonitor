@@ -490,6 +490,20 @@ public class NightscoutUploader {
 //        }
 //    }
     
+    // Uwe Petersen, 2017-08-30: Introduced as a more simple means to verify connection and credentials.
+     func verify(_ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        
+        self.checkAuth({ (error) in
+            if let error = error {
+                // self.isAuthorized = false
+                completion(false, error)
+            } else {
+                // self.isAuthorized = true
+                completion(true, nil)
+            }
+        })
+    }
+    
     public func checkAuth(_ completion: @escaping (Error?) -> Void) {
         
         let testURL = siteURL.appendingPathComponent(defaultNightscoutAuthTestPath)
