@@ -86,6 +86,9 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 //                    })
                 if success {
                     self.presentVerificationResultAlertController(title: "Verification successful", message: "Your nightscout account was veryfied successfully.")
+                    
+                    // TODO: Remove test here and implement regular data transfer
+                    uploader.uploadTestData()
                 } else {
                     if let error = error {
                         self.presentVerificationResultAlertController(title: "Verification error. ", message: "Your account could not be verified. \nError message:\n \"\(error.localizedDescription)\". \nCheck site URL, API secret and internet connection.")
