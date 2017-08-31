@@ -928,6 +928,7 @@ SOFTWARE.</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <sections>
                             <tableViewSection headerTitle="Calibration" id="RBe-By-JGo">
                                 <string key="footerTitle">"Raw" values of the sensor have to be transformed to a glucose euqivalent. Use offset and slope to adjust/calibrate the values as good as possible to those of the Freestyle Libre Reader. </string>
@@ -1154,6 +1155,7 @@ SOFTWARE.</string>
                         <connections>
                             <outlet property="dataSource" destination="m7s-K8-htK" id="sO5-xD-BEF"/>
                             <outlet property="delegate" destination="m7s-K8-htK" id="mam-0L-pDg"/>
+                            <outletCollection property="gestureRecognizers" destination="nDb-tu-OpZ" appends="YES" id="Ad3-bc-k4N"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="fM1-fW-xXd"/>
@@ -1168,6 +1170,11 @@ SOFTWARE.</string>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3La-lc-4iU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="nDb-tu-OpZ">
+                    <connections>
+                        <action selector="tapGestureRecognized:" destination="m7s-K8-htK" id="hJv-V5-3ED"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1652.1739130434785" y="2146.467391304348"/>
         </scene>

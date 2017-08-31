@@ -11,7 +11,6 @@ import UIKit
 
 final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
-    
     var numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -50,15 +49,21 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         nightscoutSiteTextField.text = UserDefaults.standard.string(forKey: "nightscoutSite")
         nightScoutAPISecretTextField.text = UserDefaults.standard.string(forKey: "nightscoutAPISecret")
     }
+
+    @IBAction func tapGestureRecognized(_ sender: UITapGestureRecognizer) {
+        self.view.endEditing(true) // resign keyoard
+    }
     
     
     @IBAction func uploadToNightscoutSwitchChanged(_ sender: UISwitch) {
+        self.view.endEditing(true) // resign keyboard
         UserDefaults.standard.set(sender.isOn, forKey: "uploadToNightscoutIsActivated")
     }
     
     @IBAction func verifyAccountButtonPressed(_ sender: UIButton) {
-        
+        self.view.endEditing(true) //resign keyboard
         spinner.startAnimating()
+        
         // This is kind of awkward: textfield editing does not end when pressing verify button, thus get the textField values here, too.
         UserDefaults.standard.set(nightscoutSiteTextField.text, forKey: "nightscoutSite")
         UserDefaults.standard.set(nightScoutAPISecretTextField.text, forKey: "nightscoutAPISecret")
@@ -89,7 +94,12 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             }
         }
     }
+    
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         switch textField {
@@ -108,7 +118,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         return true
     }
 
-    
     func handleNumericTextFieldInput(_ textField: UITextField) {
         guard let aNumber = numberFormatter.number(from: textField.text!) else {
             displayAlertForTextField(textField)
@@ -129,8 +138,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         
         // update table view
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateBloodSugarTableViewController"), object: self)
-        
-//        resignFirstResponder()
     }
     
     // MARK: - Convenience methods
