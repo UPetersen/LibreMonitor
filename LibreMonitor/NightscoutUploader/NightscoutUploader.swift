@@ -134,6 +134,21 @@ public class NightscoutUploader {
 //        return timestamp
 //    }
 
+    
+    /**
+     Enqueues pump glucose events for upload, with automatic retry management.
+     
+     - parameter events:    An array of timestamped glucose events. Only sensor glucose data will be uploaded.
+     - parameter source:    The device identifier to display in Nightscout
+     */
+    public func processFreestyleLibreHistoryEntries(nightscoutEntries: [NightscoutEntry]) {
+        for nightscoutEntry in nightscoutEntries {
+            entries.append(nightscoutEntry)
+        }
+        self.flushEntries()
+    }
+
+    
     /// Attempts to upload nightscout treatment objects.
     /// This method will not retry if the network task failed.
     ///

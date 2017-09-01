@@ -22,6 +22,9 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     
     var persistentContainer: NSPersistentContainer?
     var simbleeManager = SimbleeManager()
+    var uploader: NightscoutUploader?
+    private(set) var nightscoutEntries = [NightscoutEntry]()
+
     
     var sensorData: SensorData?
     var trendMeasurements: [Measurement]?
@@ -74,6 +77,9 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         super.viewDidLoad()
         simbleeManager.delegate = self
         self.navigationItem.title = "LibreMonitor"
+        if let site = UserDefaults.standard.string(forKey: "nightscoutSite"), let siteURL = URL.init(string: site), let apiSecret = UserDefaults.standard.string(forKey: "nightscoutAPISecret") {
+            uploader = NightscoutUploader(siteURL: siteURL, APISecret: apiSecret)
+        }
         
         let connectButtonTitle = connectButtonTitleForState(simbleeManager.state)
         let conncectButton = UIBarButtonItem(title: connectButtonTitle, style: .plain, target: self, action: #selector(BloodSugarTableViewController.didTapConnectButton))
@@ -495,8 +501,16 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                 glucose.value = measurement.glucose
                                 glucose.date = measurement.date as NSDate
                                 glucose.dateString = dateFormatter.string(from: measurement.date)
+
+                                // Prepare for nightscout
+                                nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
                             }
                         })
+                        // send to nightscout
+                        if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {
+                            uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
+                            nightscoutEntries = []
+                        }
                         try? persistentContainer?.viewContext.save()
  
                     } catch {
