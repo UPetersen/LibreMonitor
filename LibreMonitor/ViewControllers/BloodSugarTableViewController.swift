@@ -598,8 +598,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         }
         NotificationManager.applicationIconBadgeNumber(value: Int(round(longPrediction)))
         
-        // Show corresponding app icon
-        NotificationManager.setAlternativeAppIconForGlucoseDelta(longDelta)
+//        // Show corresponding app icon
+//        NotificationManager.setAlternativeAppIconForGlucoseDelta(longDelta)
     }
     
 }
