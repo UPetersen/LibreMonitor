@@ -597,6 +597,9 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             NotificationManager.setBloodGlucoseHighOrLowNotification(title: "Low Glucose", body: body)
         }
         NotificationManager.applicationIconBadgeNumber(value: Int(round(longPrediction)))
+        
+        // Show corresponding app icon
+        NotificationManager.setAlternativeAppIconForGlucoseDelta(longDelta)
     }
     
 }

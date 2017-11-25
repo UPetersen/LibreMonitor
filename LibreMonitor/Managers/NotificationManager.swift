@@ -221,5 +221,31 @@ struct NotificationManager {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Category.debug.rawValue])
     }
     
+    
+    // MARK: - Set alternative app icon
+    static func setAlternativeAppIconForGlucoseDelta(_ delta: Double) {
+        
+        let completionHandler: ((Error?) -> Void)? = {
+            error in
+            if let error = error {
+                print(error)
+            } else {
+                print("Icon should have changed to \("iconConstant60")")
+            }
+        }
+        if -15.0 <= delta && delta <= 15.0 {
+            UIApplication.shared.setAlternateIconName("iconConstant60", completionHandler: completionHandler)
+        } else if -30.0 <= delta && delta < -15.0 {
+            UIApplication.shared.setAlternateIconName("iconDown60", completionHandler: completionHandler)
+        } else if 15.0 < delta && delta <= 30.0 {
+            UIApplication.shared.setAlternateIconName("iconUp60", completionHandler: completionHandler)
+        } else if delta < -30.0 {
+            UIApplication.shared.setAlternateIconName("iconDownDown60", completionHandler: completionHandler)
+        } else if 30.0 < delta {
+            UIApplication.shared.setAlternateIconName("iconUpUp60", completionHandler: completionHandler)
+        }
+    }
+
+    
 }
 

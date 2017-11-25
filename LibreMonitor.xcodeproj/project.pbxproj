@@ -60,6 +60,18 @@
 		C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */; };
 		C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */; };
 		C68AA76E1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */; };
+		C690FD2E1FC9FB53003E1E99 /* icon60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD2C1FC9F0CC003E1E99 /* icon60@2x.png */; };
+		C690FD2F1FC9FB5A003E1E99 /* icon60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD2D1FC9F0CC003E1E99 /* icon60@3x.png */; };
+		C690FD301FC9FB5A003E1E99 /* iconConstant60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD271FC9F021003E1E99 /* iconConstant60@2x.png */; };
+		C690FD311FC9FB5A003E1E99 /* iconConstant60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD281FC9F021003E1E99 /* iconConstant60@3x.png */; };
+		C690FD321FC9FB5A003E1E99 /* iconDown60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD221FC9F020003E1E99 /* iconDown60@2x.png */; };
+		C690FD331FC9FB5A003E1E99 /* iconDown60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD2A1FC9F021003E1E99 /* iconDown60@3x.png */; };
+		C690FD341FC9FB5A003E1E99 /* iconDownDown60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD231FC9F020003E1E99 /* iconDownDown60@2x.png */; };
+		C690FD351FC9FB5A003E1E99 /* iconDownDown60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD2B1FC9F021003E1E99 /* iconDownDown60@3x.png */; };
+		C690FD361FC9FB5A003E1E99 /* iconUp60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD241FC9F021003E1E99 /* iconUp60@2x.png */; };
+		C690FD371FC9FB5A003E1E99 /* iconUp60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD261FC9F021003E1E99 /* iconUp60@3x.png */; };
+		C690FD381FC9FB5A003E1E99 /* iconUpUp60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD291FC9F021003E1E99 /* iconUpUp60@2x.png */; };
+		C690FD391FC9FB5A003E1E99 /* iconUpUp60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD251FC9F021003E1E99 /* iconUpUp60@3x.png */; };
 		C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B537B41EBF6852000456B3 /* constands+Extensions.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
 		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
@@ -157,6 +169,18 @@
 		C68AA7671EA7D52E0010C43C /* FetchedResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedResultsTableViewController.swift; path = ViewControllers/FetchedResultsTableViewController.swift; sourceTree = "<group>"; };
 		C68AA76B1EA7D5AB0010C43C /* GlucoseCDTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlucoseCDTVC.swift; sourceTree = "<group>"; };
 		C68AA76D1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITableViewDataSource+NSFetchedResultsController.swift"; path = "ViewControllers/UITableViewDataSource+NSFetchedResultsController.swift"; sourceTree = "<group>"; };
+		C690FD221FC9F020003E1E99 /* iconDown60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDown60@2x.png"; sourceTree = "<group>"; };
+		C690FD231FC9F020003E1E99 /* iconDownDown60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDownDown60@2x.png"; sourceTree = "<group>"; };
+		C690FD241FC9F021003E1E99 /* iconUp60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconUp60@2x.png"; sourceTree = "<group>"; };
+		C690FD251FC9F021003E1E99 /* iconUpUp60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconUpUp60@3x.png"; sourceTree = "<group>"; };
+		C690FD261FC9F021003E1E99 /* iconUp60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconUp60@3x.png"; sourceTree = "<group>"; };
+		C690FD271FC9F021003E1E99 /* iconConstant60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconConstant60@2x.png"; sourceTree = "<group>"; };
+		C690FD281FC9F021003E1E99 /* iconConstant60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconConstant60@3x.png"; sourceTree = "<group>"; };
+		C690FD291FC9F021003E1E99 /* iconUpUp60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconUpUp60@2x.png"; sourceTree = "<group>"; };
+		C690FD2A1FC9F021003E1E99 /* iconDown60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDown60@3x.png"; sourceTree = "<group>"; };
+		C690FD2B1FC9F021003E1E99 /* iconDownDown60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDownDown60@3x.png"; sourceTree = "<group>"; };
+		C690FD2C1FC9F0CC003E1E99 /* icon60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon60@2x.png"; sourceTree = "<group>"; };
+		C690FD2D1FC9F0CC003E1E99 /* icon60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon60@3x.png"; sourceTree = "<group>"; };
 		C6B537B41EBF6852000456B3 /* constands+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "constands+Extensions.swift"; path = "Bluetooth/constands+Extensions.swift"; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
@@ -291,6 +315,7 @@
 		C6822D641DB13F2200D08393 /* LibreMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				C690FD211FC9EFF5003E1E99 /* Alternative Icons */,
 				C678CCF11F53F84800AD3153 /* Extensions */,
 				C66A49491F40CBAB0005DC78 /* NightscoutUploader */,
 				C6078B091EC7575600FEE6F7 /* Managers */,
@@ -399,6 +424,25 @@
 				C6822DD21DB1631D00D08393 /* HeaderData+CoreDataProperties.swift */,
 			);
 			name = ModelCoreData;
+			sourceTree = "<group>";
+		};
+		C690FD211FC9EFF5003E1E99 /* Alternative Icons */ = {
+			isa = PBXGroup;
+			children = (
+				C690FD2C1FC9F0CC003E1E99 /* icon60@2x.png */,
+				C690FD2D1FC9F0CC003E1E99 /* icon60@3x.png */,
+				C690FD271FC9F021003E1E99 /* iconConstant60@2x.png */,
+				C690FD281FC9F021003E1E99 /* iconConstant60@3x.png */,
+				C690FD221FC9F020003E1E99 /* iconDown60@2x.png */,
+				C690FD2A1FC9F021003E1E99 /* iconDown60@3x.png */,
+				C690FD231FC9F020003E1E99 /* iconDownDown60@2x.png */,
+				C690FD2B1FC9F021003E1E99 /* iconDownDown60@3x.png */,
+				C690FD241FC9F021003E1E99 /* iconUp60@2x.png */,
+				C690FD261FC9F021003E1E99 /* iconUp60@3x.png */,
+				C690FD291FC9F021003E1E99 /* iconUpUp60@2x.png */,
+				C690FD251FC9F021003E1E99 /* iconUpUp60@3x.png */,
+			);
+			path = "Alternative Icons";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -531,7 +575,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C690FD361FC9FB5A003E1E99 /* iconUp60@2x.png in Resources */,
+				C690FD2F1FC9FB5A003E1E99 /* icon60@3x.png in Resources */,
+				C690FD371FC9FB5A003E1E99 /* iconUp60@3x.png in Resources */,
+				C690FD301FC9FB5A003E1E99 /* iconConstant60@2x.png in Resources */,
+				C690FD351FC9FB5A003E1E99 /* iconDownDown60@3x.png in Resources */,
 				C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */,
+				C690FD311FC9FB5A003E1E99 /* iconConstant60@3x.png in Resources */,
+				C690FD391FC9FB5A003E1E99 /* iconUpUp60@3x.png in Resources */,
+				C690FD2E1FC9FB53003E1E99 /* icon60@2x.png in Resources */,
+				C690FD331FC9FB5A003E1E99 /* iconDown60@3x.png in Resources */,
+				C690FD381FC9FB5A003E1E99 /* iconUpUp60@2x.png in Resources */,
+				C690FD321FC9FB5A003E1E99 /* iconDown60@2x.png in Resources */,
+				C690FD341FC9FB5A003E1E99 /* iconDownDown60@2x.png in Resources */,
 				C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */,
 				C61C296C1DB16C60009A5885 /* Main.storyboard in Resources */,
 			);
