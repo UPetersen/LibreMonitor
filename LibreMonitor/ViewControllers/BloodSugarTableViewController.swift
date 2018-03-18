@@ -507,6 +507,9 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 
                 // if crc is wrong. Request data again.
                 if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) {
+                    let crcString = String("crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
+
+                    os_log("At least one CRC is wrong %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
                     miaoMiaoManager.requestData()
                 } else {
                     trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)

@@ -441,7 +441,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                         // Any old buffer is invalidated and a new buffer created with every reception of data
                         timer?.invalidate()
                         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                            os_log("********** 20 s timer fired in background **********", log: MiaoMiaoManager.bt_log, type: .default)
+                            os_log("********** MiaoMiaoManagertimer fired **********", log: MiaoMiaoManager.bt_log, type: .default)
                             if self.rxBuffer.count >= 400 {
                                 // buffer large enough and can be used
                                 os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
@@ -449,6 +449,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                                 self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
                             } else {
                                 // buffer not large enough and has to be reset
+                                os_log("Buffer incomplete and not large enough, request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
                                 self.requestData()
                             }
                         }
@@ -515,6 +516,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         if let writeCharacteristic = writeCharacteristic {
             confirmSensor()
             resetBuffer()
+            timer?.invalidate()
             peripheral?.writeValue(Data.init(bytes: [0xF0]), for: writeCharacteristic, type: .withResponse)
         }
     }
