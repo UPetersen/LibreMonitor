@@ -36,7 +36,7 @@ struct Measurement {
     init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, date: Date) {
         self.bytes = bytes
         self.byteString = bytes.reduce("", {$0 + String(format: "%02X", arguments: [$1])})
-        self.rawValue = (Int(bytes[1]) << 8) & 0x0F00 + Int(bytes[0])
+        self.rawValue = (Int(bytes[1]) << 8) & 0x1F00 + Int(bytes[0]) // switched to 13 bit mask on 2018-03-15
         self.slope = slope
         self.offset = offset
         self.glucose = offset + slope * Double(rawValue)

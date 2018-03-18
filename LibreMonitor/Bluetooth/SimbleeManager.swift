@@ -192,6 +192,8 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
 
         os_log("Did discover peripheral while state %{public}@ with name: %{public}@", log: SimbleeManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name))
         
+        
+        
         self.peripheral = peripheral
         connect()
     }

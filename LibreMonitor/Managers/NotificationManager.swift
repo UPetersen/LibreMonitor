@@ -157,6 +157,8 @@ struct NotificationManager {
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
+    
+    
     static func removePendingDataTransferInterruptedNotification() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Category.dataTransferInterrupted.rawValue])
     }

@@ -71,6 +71,8 @@
 		C690FD561FC9FF4A003E1E99 /* iconConstant60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4C1FC9FF49003E1E99 /* iconConstant60@3x.png */; };
 		C690FD571FC9FF4A003E1E99 /* iconDown60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4D1FC9FF49003E1E99 /* iconDown60@3x.png */; };
 		C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B537B41EBF6852000456B3 /* constands+Extensions.swift */; };
+		C6CA13F52053EA9D0089C278 /* MiaoMiaoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */; };
+		C6CA13F7205EC40B0089C278 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F6205EC40B0089C278 /* Data.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
 		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
 		F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */; };
@@ -178,6 +180,8 @@
 		C690FD4C1FC9FF49003E1E99 /* iconConstant60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconConstant60@3x.png"; sourceTree = "<group>"; };
 		C690FD4D1FC9FF49003E1E99 /* iconDown60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDown60@3x.png"; sourceTree = "<group>"; };
 		C6B537B41EBF6852000456B3 /* constands+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "constands+Extensions.swift"; path = "Bluetooth/constands+Extensions.swift"; sourceTree = "<group>"; };
+		C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiaoMiaoManager.swift; path = Bluetooth/MiaoMiaoManager.swift; sourceTree = "<group>"; };
+		C6CA13F6205EC40B0089C278 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
 		D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -281,6 +285,7 @@
 		C678CCF11F53F84800AD3153 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C6CA13F6205EC40B0089C278 /* Data.swift */,
 				C66A49601F40D7CA0005DC78 /* HKUnit.swift */,
 			);
 			path = Extensions;
@@ -367,6 +372,7 @@
 				C6822DA61DB1616300D08393 /* NSData+SLIP.h */,
 				C6822DA71DB1616300D08393 /* NSData+SLIP.m */,
 				C6822DA81DB1616300D08393 /* SimbleeManager.swift */,
+				C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */,
 				C6822DA91DB1616300D08393 /* SLIPBuffer.swift */,
 			);
 			name = Bluetooth;
@@ -511,7 +517,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Uwe Petersen";
 				TargetAttributes = {
 					C6822D611DB13F2200D08393 = {
@@ -760,9 +766,11 @@
 				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
 				C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */,
+				C6CA13F7205EC40B0089C278 /* Data.swift in Sources */,
 				C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */,
 				C66A496F1F40D7CB0005DC78 /* NightscoutTreatment.swift in Sources */,
 				C68AA76E1EA7D6910010C43C /* UITableViewDataSource+NSFetchedResultsController.swift in Sources */,
+				C6CA13F52053EA9D0089C278 /* MiaoMiaoManager.swift in Sources */,
 				C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */,
 				C6822DB61DB1618400D08393 /* LibreSensor.swift in Sources */,
 				C66A495A1F40D7A70005DC78 /* NightscoutUploader.swift in Sources */,
@@ -847,7 +855,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -855,7 +865,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -899,7 +913,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -907,7 +923,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
