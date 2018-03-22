@@ -58,6 +58,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var nfcReadingStart = Date()
     var bluetoothTransmissionStart = Date()
     var timeOfTransmissionStart = Date()
+    var timer = Timer()
     
     
     var dateFormatter = DateFormatter()
@@ -128,11 +129,17 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         // Notification for updating table view after having changed the offset and/of slope
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name(rawValue: "updateBloodSugarTableViewController"), object: nil)
+    
+        // Timer to update diplayed time
+        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: {timer in
+            self.updateTableView()
+        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         super.viewWillDisappear(true)
+        timer.invalidate()
     }
     
     
@@ -485,6 +492,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     
     func miaoMiaoManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
         
+        NotificationManager.scheduleApplicationTerminatedNotification(wait: 500)
+        
         os_log("Received message with txFlags %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: txFlags))
         
         firmware = String(describing: Data(bytes: [txFlags]).hexEncodedString()) + " " + String(describing: payloadData.prefix(40).hexEncodedString())
@@ -511,7 +520,10 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 
                     os_log("At least one CRC is wrong %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
                     miaoMiaoManager.requestData()
+                    
                 } else {
+                    
+                    timeOfLastScan = Date()
                     trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                     historyMeasurements = sensorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                     
@@ -630,7 +642,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             timeOfTransmissionStart = Date()
             nfcReadingStart = Date()
             deviceID = "-"
-            
             
             let systemInformationData = SystemInformationDataType(bytes: payloadData)
             let uidString = systemInformationData.uidString

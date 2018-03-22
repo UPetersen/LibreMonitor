@@ -177,7 +177,7 @@ struct NotificationManager {
         content.body = "LibreMonitor termiated at \(timeFormatter.string(from: date))."
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
         
         let request = UNNotificationRequest(
             identifier: Category.applicationTerminated.rawValue,
