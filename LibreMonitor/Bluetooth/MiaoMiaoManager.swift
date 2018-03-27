@@ -116,16 +116,16 @@
 //      TX: 0xF0
 //          Request all the data or the sensor. The bluetooth will return the data at a certain frequency (default is every 5 minutes) after the request
 //      RX:
-//          a) Data
-//             0x28 +
-//             Len[2 bytes] +
-//             Index [2 bytes] (this is the minute counter of the Freestyle Libre sensor) +
-//             ID [8 bytes] +
-//             battery level in percent [1 byte] (e.g. 0x64 which is 100 in decimal means 100%?)
-//             firmware version [2 bytes] +
-//             hardware version [2 bytes] +
-//             FRAM data (244 x 8 bytes = 1952 bytes) +
-//             0x29
+//          a) Data:
+//             Pos.  0 (0x00): 0x28 +
+//             Pos.  1 (0x01): Len[2 bytes] +
+//             Pos.  3 (0x03): Index [2 bytes] (this is the minute counter of the Freestyle Libre sensor) +
+//             Pos.  5 (0x05): ID [8 bytes] +
+//             Pos. 13 (0x0D): xbattery level in percent [1 byte] (e.g. 0x64 which is 100 in decimal means 100%?)
+//             Pos. 14 (0x0E): firmware version [2 bytes] +
+//             Pos. 16 (0x10): hardware version [2 bytes] +
+//             Pos. 18 (0x12): FRAM data (244 x 8 bytes = 1952 bytes) +
+//             Pos. end      : 0x29
 //             Example: 28  07b3  5457  db353e01 00a007e0  64  0034 0001  11b6e84f050003 875104 57540000 00 000000 00000000 0000b94b 060f1600 c0da6a80 1600c0d6 6a801600
 //                      0x28   -> marks begin of data response
 //                      0x07b3 -> len is 1971 bytes (= 1952 for FRAM and 19 bytes for all the rest from 0x28 to 0x29, both of which are included)

@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //            }
         }
         
-        // redirect os_log output to a file in documents directory (but will then not be visible on the console
+        // redirect os_log output to a file in documents directory (but will then not be visible on the console)
         var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]
         let fileName = "\(Date()).log"

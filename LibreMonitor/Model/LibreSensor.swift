@@ -61,8 +61,8 @@ final class LibreSensor {
         //   3.) Prepend "0" at the beginning an thus receive "0M00009DHCR"
         
         
-        let uidString = self.uid.substring(from: self.uid.characters.index(self.uid.startIndex, offsetBy: 4)) // "E007A0000025905E" -> "A0000025905E"
-        
+        let uidString = self.uid.substring(from: self.uid.index(self.uid.startIndex, offsetBy: 4)) // "E007A0000025905E" -> "A0000025905E"
+
         var serialNumber = ""
         
         guard uidString.lengthOfBytes(using: String.Encoding.ascii) == 12,
@@ -94,7 +94,7 @@ final class LibreSensor {
         var prettyUid = self.uid
         let length = self.uid.lengthOfBytes(using: String.Encoding.ascii)
         for index in stride(from: 2, to: length, by: 2).reversed() {
-            prettyUid.insert(Character(":"), at: prettyUid.characters.index(prettyUid.startIndex, offsetBy: index))
+            prettyUid.insert(Character(":"), at: prettyUid.index(prettyUid.startIndex, offsetBy: index))
         }
         return prettyUid
     }()

@@ -185,6 +185,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     
     override func didReceiveMemoryWarning() {
         os_log("Did receive memory warning", log: BloodSugarTableViewController.bt_log, type: .default)
+        NotificationManager.scheduleApplicationDidReceiveMemoryWarningdNotification()
     }
 
     // MARK: - Table View
@@ -308,7 +309,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     }
                     if let sensor = sensor {
                         cell.textLabel?.text = "Sensor SN"
-                        cell.detailTextLabel?.text =  sensor.serialNumber + crcString // + " (" + sensor.prettyUid  + ")"
+                        cell.detailTextLabel?.text =  sensor.serialNumber + crcString + " " + hardware // + " (" + sensor.prettyUid  + ")"
                     } else {
                         cell.textLabel?.text = "Hardware"
                         cell.detailTextLabel?.text = hardware
@@ -499,7 +500,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         firmware = String(describing: Data(bytes: [txFlags]).hexEncodedString()) + " " + String(describing: payloadData.prefix(40).hexEncodedString())
         hardware = String(describing: payloadData.count) + " " + String(describing: payloadData.suffix(30).hexEncodedString())
         
-        
         if txFlags == 0x28 || txFlags == 0x29 {
 
             batteryVoltage = Double([UInt8](payloadData.subdata(in: 13..<14)).first ?? 0)
@@ -507,6 +507,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             if batteryVoltage < 10 {
                 NotificationManager.setLowBatteryNotification(voltage: Double(batteryVoltage))
             }
+            
+            sensor = LibreSensor(withUID: Data(payloadData.subdata(in: 5..<13).reversed()).hexEncodedString())
             
             sensorData = SensorData(bytes: [UInt8](payloadData.subdata(in: 18..<362)), date: Date())
             
@@ -518,8 +520,11 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) {
                     let crcString = String("crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
 
-                    os_log("At least one CRC is wrong %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
-                    miaoMiaoManager.requestData()
+                    os_log("At least one CRC is wrong %{public}@. Request data again in some seconds", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
+                    Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: {_ in
+                        self.miaoMiaoManager.requestData()
+                    })
+//                    miaoMiaoManager.requestData()
                     
                 } else {
                     
@@ -537,7 +542,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         
-                        let request = BloodGlucose.fetchRequest() as NSFetchRequest<BloodGlucose>
+                        
+                        let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
                         do {
                             let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
                             
@@ -550,7 +556,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                 for bloodGlucose in fetchedBloodGlucoses! {
                                     
                                     // Store value if dates are less than two minutes apart from each other (in either direction)
-                                    if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 2.0 * 60.0 {
+                                    if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 120.0 {
                                         storeMeasurement = false
                                         break
                                     }
@@ -691,7 +697,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                     
-                    let request = BloodGlucose.fetchRequest() as NSFetchRequest<BloodGlucose>
+                    let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
                     do {
                         let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
                         

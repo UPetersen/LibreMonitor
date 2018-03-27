@@ -11,8 +11,12 @@ import CoreData
 
 extension BloodGlucose {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<BloodGlucose> {
-        return NSFetchRequest<BloodGlucose>(entityName: "BloodGlucose");
+    @nonobjc public class func fetchRequest(from date: Date? = nil) -> NSFetchRequest<BloodGlucose> {
+        let request = NSFetchRequest<BloodGlucose>(entityName: "BloodGlucose")
+        if let date = date {
+            request.predicate = NSPredicate(format: "date > %@", date as NSDate)
+        }
+        return request
     }
 
     @NSManaged public var bytes: String?

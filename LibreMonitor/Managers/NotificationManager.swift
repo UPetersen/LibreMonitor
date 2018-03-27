@@ -20,6 +20,7 @@ struct NotificationManager {
         case bloodGlucoseHighOrLow
         case dataTransferInterrupted
         case applicationTerminated
+        case didRecieveMemoryWarning
         case debug
     }
     
@@ -222,6 +223,33 @@ struct NotificationManager {
     static func removePendingDebugNotification() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Category.debug.rawValue])
     }
+    
+    
+    /// Application terminated local notification.
+    ///
+    /// This notification is scheduled each time LibreMonitor is terminated. This aims at notifiying the user, if the app is terminated in the background. Currently the user will also be notified when he actively terminates the application
+    /// - Parameter wait: time to wait until notification is fired
+    static func scheduleApplicationDidReceiveMemoryWarningdNotification(wait: TimeInterval = TimeInterval(0.2)) {
+        
+        let date = Date(timeInterval: -wait, since: Date())
+        let content = UNMutableNotificationContent()
+        content.title = "LibreMonitor memory warning"
+        content.subtitle = ""
+        content.body = "LibreMonitor did receive memory warning at \(timeFormatter.string(from: date))."
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
+        
+        let request = UNNotificationRequest(
+            identifier: Category.didRecieveMemoryWarning.rawValue,
+            content: content,
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    
+
     
 //    // MARK: - Set alternative app icon
 //    static func setAlternativeAppIconForGlucoseDelta(_ delta: Double) {
