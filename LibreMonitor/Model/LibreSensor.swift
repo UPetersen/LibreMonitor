@@ -61,7 +61,8 @@ final class LibreSensor {
         //   3.) Prepend "0" at the beginning an thus receive "0M00009DHCR"
         
         
-        let uidString = self.uid.substring(from: self.uid.index(self.uid.startIndex, offsetBy: 4)) // "E007A0000025905E" -> "A0000025905E"
+//        let uidString = self.uid.substring(from: self.uid.index(self.uid.startIndex, offsetBy: 4)) // "E007A0000025905E" -> "A0000025905E"
+        let uidString = self.uid.suffix(12) // "E007A0000025905E" -> "A0000025905E"
 
         var serialNumber = ""
         
@@ -78,8 +79,9 @@ final class LibreSensor {
                 let leftIndex = uidAsBinaryString.index(startIndex, offsetBy: index)
                 let rightIndex = uidAsBinaryString.index(startIndex, offsetBy: index+5)
                 let range = leftIndex..<rightIndex
-                let fiveBits = uidAsBinaryString.substring(with: range)
-                
+//                let fiveBits = uidAsBinaryString.substring(with: range)
+                let fiveBits = uidAsBinaryString[leftIndex..<rightIndex]
+
                 if let theInt = Int(fiveBits, radix: 2) , theInt >= 0 && theInt < self.lookupTable.count {
                     serialNumber += self.lookupTable[theInt] // "10100" -> 20 -> "M"
                 }

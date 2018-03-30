@@ -143,7 +143,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     }
     
     
-    func didTapConnectButton() {
+    @objc func didTapConnectButton() {
         switch device {
         case .simblee:
             
@@ -178,7 +178,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     }
     
     
-    func updateTableView() {
+    @objc func updateTableView() {
         os_log("Update table view", log: BloodSugarTableViewController.bt_log, type: .default)
         self.tableView.reloadData()
     }
@@ -521,7 +521,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     let crcString = String("crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
 
                     os_log("At least one CRC is wrong %{public}@. Request data again in some seconds", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
-                    Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: {_ in
+                    Timer.scheduledTimer(withTimeInterval: 20, repeats: false, block: {_ in
                         self.miaoMiaoManager.requestData()
                     })
 //                    miaoMiaoManager.requestData()

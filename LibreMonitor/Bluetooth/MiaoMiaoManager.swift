@@ -430,7 +430,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             if characteristic.uuid == CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"), let value = characteristic.value {
 
                 rxBuffer.append(value)
-                os_log("Appended value, buffer length is: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: rxBuffer.count))
+                os_log("Appended value with length %{public}@, buffer length is: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: value.count), String(describing: rxBuffer.count))
                 
                 if let firstByte = rxBuffer.first {
                     
@@ -440,16 +440,16 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                         // Set timer to check if data is still uncomplete after a certain time frame
                         // Any old buffer is invalidated and a new buffer created with every reception of data
                         timer?.invalidate()
-                        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+                        timer = Timer.scheduledTimer(withTimeInterval: 8, repeats: false) { _ in
                             os_log("********** MiaoMiaoManagertimer fired **********", log: MiaoMiaoManager.bt_log, type: .default)
-                            if self.rxBuffer.count >= 400 {
+                            if self.rxBuffer.count >= 364 {
                                 // buffer large enough and can be used
                                 os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
                                 self.delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x29, payloadData: self.rxBuffer)
                                 self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
                             } else {
                                 // buffer not large enough and has to be reset
-                                os_log("Buffer incomplete and not large enough, request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
+                                os_log("Buffer incomplete and not large enough, reset buffer and request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
                                 self.requestData()
                             }
                         }
@@ -500,7 +500,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        os_log("Did Write value for characteristic %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(characteristic.debugDescription))
+        os_log("Did Write value %{public}@ for characteristic %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(characteristic.value.debugDescription), String(characteristic.debugDescription))
     }
     
     // Miaomiao specific commands

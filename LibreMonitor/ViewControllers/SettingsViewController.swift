@@ -126,10 +126,10 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         
         switch textField {
         case glucoseOffsetTextField:
-            let bloodGlucoseOffset = Double(aNumber)
+            let bloodGlucoseOffset = Double(truncating: aNumber)
             UserDefaults.standard.set(bloodGlucoseOffset, forKey: "bloodGlucoseOffset")
         case glucoseSlopeTextField:
-            let bloodGlucoseSlope = Double(aNumber)
+            let bloodGlucoseSlope = Double(truncating: aNumber)
             UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
         default:
             fatalError("Fatal Error in \(#file): textField not handled in switch case")

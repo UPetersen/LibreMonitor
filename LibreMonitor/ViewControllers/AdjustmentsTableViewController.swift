@@ -39,7 +39,7 @@ final class AdjustmentsTableViewController: UITableViewController, UITextFieldDe
     }
     
     
-    func didTapSaveButton() {
+    @objc func didTapSaveButton() {
         checkInputForTextField(offsetTextField)
         checkInputForTextField(slopeTextField)
     }
@@ -52,10 +52,10 @@ final class AdjustmentsTableViewController: UITableViewController, UITextFieldDe
         
         switch textField {
         case offsetTextField:
-            let bloodGlucoseOffset = Double(aNumber)
+            let bloodGlucoseOffset = Double(truncating: aNumber)
             UserDefaults.standard.set(bloodGlucoseOffset, forKey: "bloodGlucoseOffset")
         case slopeTextField:
-            let bloodGlucoseSlope = Double(aNumber)
+            let bloodGlucoseSlope = Double(truncating: aNumber)
             UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
         default:
             fatalError("Fatal Error in \(#file): textField not handled in switch case")
@@ -69,7 +69,7 @@ final class AdjustmentsTableViewController: UITableViewController, UITextFieldDe
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    func didTapUndoButton() {
+    @objc func didTapUndoButton() {
         resignFirstResponder()
         navigationController?.dismiss(animated: true, completion: nil)
     }

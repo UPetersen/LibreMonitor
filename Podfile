@@ -12,14 +12,15 @@ target 'LibreMonitor' do
 
 #pod 'Charts', '~> 3.0.2'
 pod 'Charts'
+platform :ios, '11'
 
 end
 
 target 'LibreMonitorTests' do
-
+platform :ios, '11'
 end
 
 target 'LibreMonitorUITests' do
-
+platform :ios, '11'
 end
 

@@ -217,7 +217,7 @@ class LibreMonitorTestSensorData: XCTestCase {
             let range = aIndex..<bIndex
 //            let range = Range(start: aIndex, end: bIndex)
             let string = String(theString.substring(with: range))
-            let aByte = UInt8(string!, radix: 16)
+            let aByte = UInt8(string, radix: 16)
             theBytes.append(aByte!)
         }
         return theBytes

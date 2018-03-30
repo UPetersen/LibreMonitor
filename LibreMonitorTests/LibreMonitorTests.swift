@@ -230,12 +230,14 @@ class LibreMonitorTests: XCTestCase, SLIPBufferDelegate  {
         
         var theBytes = [UInt8]()
         for index in stride(from: 0, to: length, by: 2) {
-            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
-            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
+//            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
+//            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
+            let aIndex = theString.index(theString.startIndex, offsetBy: index)
+            let bIndex = theString.index(theString.startIndex, offsetBy: index+2)
             let range = aIndex..<bIndex
             //            let range = Range(start: aIndex, end: bIndex)
             let string = String(theString.substring(with: range))
-            let aByte = UInt8(string!, radix: 16)
+            let aByte = UInt8(string, radix: 16)
             theBytes.append(aByte!)
         }
         return theBytes
