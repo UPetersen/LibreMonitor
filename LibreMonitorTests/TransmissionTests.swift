@@ -22,12 +22,10 @@ class TransmissionTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         
-        guard let dataAsString = BluetoothTestData.data().last else {
+        guard let _ = BluetoothTestData.data().last else {
             return
         }
         
-        let aString = dataAsString.replacingOccurrences(of: " ", with: "")
-        let bytes = stringToBytes(aString)
 
     }
     
@@ -54,11 +52,14 @@ class TransmissionTests: XCTestCase {
         
         var theBytes = [UInt8]()
         for index in stride(from: 0, to: length, by: 2) {
-            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
-            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
+//            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
+//            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
+            let aIndex = theString.index(theString.startIndex, offsetBy: index)
+            let bIndex = theString.index(theString.startIndex, offsetBy: index+2)
             let range = aIndex..<bIndex
             //            let range = Range(start: aIndex, end: bIndex)
-            let string = String(theString.substring(with: range))
+//            let string = String(theString.substring(with: range))
+            let string = String(theString[range])
             let aByte = UInt8(string, radix: 16)
             theBytes.append(aByte!)
         }

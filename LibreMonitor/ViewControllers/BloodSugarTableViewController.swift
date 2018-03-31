@@ -302,7 +302,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     var color = UIColor()
                     if let sensorData = sensorData {
                         crcString.append(", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
-                        color = colorForSensorState( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) )
+                        color = colorForSensorState( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC )) // only header and body crc
                     } else {
                         crcString = ", nil"
                         color = UIColor.lightGray
@@ -516,18 +516,19 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             
             if let sensorData = sensorData {
                 
-                // if crc is wrong. Request data again.
-                if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) {
+                // if crc (header or body) is wrong. Request data again.
+                if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC) {
                     let crcString = String("crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
 
                     os_log("At least one CRC is wrong %{public}@. Request data again in some seconds", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
-                    Timer.scheduledTimer(withTimeInterval: 20, repeats: false, block: {_ in
+                    Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {_ in
                         self.miaoMiaoManager.requestData()
                     })
 //                    miaoMiaoManager.requestData()
                     
                 } else {
-                    
+                    NotificationManager.scheduleDataTransferInterruptedNotification(wait: 400)
+
                     timeOfLastScan = Date()
                     trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                     historyMeasurements = sensorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
@@ -542,27 +543,40 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         
-                        
                         let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
                         do {
                             let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
                             
+                            
                             // Loop over all and check if new data exists and store the new data if not yet existent
                             historyMeasurements.forEach({measurement in
                                 
+                                os_log("HistoryMeasurement: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+
                                 var storeMeasurement = true
                                 
                                 // Check if there is already a record stored for the same time
                                 for bloodGlucose in fetchedBloodGlucoses! {
                                     
-                                    // Store value if dates are less than two minutes apart from each other (in either direction)
+                                    
+                                    // Found a value within time range that is already stored, so do not store the value just read from the sensor (since it is already stored)
+                                    // Time range criteria is fulfilled if dates of stored value and value just read from sensor are less than two minutes apart from each other (in either direction)
                                     if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 120.0 {
+                                        
+                                        os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+                                        os_log("Do not store: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(measurement.glucose) at \(String(describing: measurement.date))"))
                                         storeMeasurement = false
                                         break
                                     }
                                 }
                                 // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
                                 if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+                                
+                                    fetchedBloodGlucoses?.forEach({ bloodGlucose in
+                                        os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+                                    })
+                                    os_log("Store this one: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+
                                     let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
                                     glucose.bytes = measurement.byteString
                                     glucose.value = measurement.glucose
