@@ -9,9 +9,9 @@ target 'LibreMonitor' do
 #pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'Swift-3.0'
 #pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'Chart2.2.5-Swift3.0'
 #pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'master'
-
 #pod 'Charts', '~> 3.0.2'
-pod 'Charts'
+#pod 'Charts'
+pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'master'
 platform :ios, '11'
 
 end

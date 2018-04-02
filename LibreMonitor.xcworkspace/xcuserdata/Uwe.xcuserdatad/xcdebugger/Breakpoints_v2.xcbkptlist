@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.558017"
+            timestampString = "544350731.116609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "453"
-            endingLineNumber = "453"
+            startingLineNumber = "460"
+            endingLineNumber = "460"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.5580961"
+            timestampString = "544350731.1167001"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "659"
-            endingLineNumber = "659"
+            startingLineNumber = "665"
+            endingLineNumber = "665"
             landmarkName = "simbleeManagerReceivedMessage(_:txFlags:payloadData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.558157"
+            timestampString = "544350731.116766"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
             landmarkName = "simbleeManagerReceivedMessage(_:txFlags:payloadData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.558305"
+            timestampString = "544350731.116919"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "617"
-            endingLineNumber = "617"
+            startingLineNumber = "623"
+            endingLineNumber = "623"
             landmarkName = "miaoMiaoManagerReceivedMessage(_:txFlags:payloadData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -330,7 +330,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.558419"
+            timestampString = "544350731.117036"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "82"
@@ -346,13 +346,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Model/SensorData.swift"
-            timestampString = "542485803.1703"
+            timestampString = "544350731.117101"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "69"
             endingLineNumber = "69"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "init(bytes:date:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -394,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.558538"
+            timestampString = "544350731.1171941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "609"
-            endingLineNumber = "609"
+            startingLineNumber = "615"
+            endingLineNumber = "615"
             landmarkName = "miaoMiaoManagerReceivedMessage(_:txFlags:payloadData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "544129922.558619"
+            timestampString = "544350731.117276"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "558"
-            endingLineNumber = "558"
+            startingLineNumber = "564"
+            endingLineNumber = "564"
             landmarkName = "miaoMiaoManagerReceivedMessage(_:txFlags:payloadData:)"
             landmarkType = "7">
          </BreakpointContent>

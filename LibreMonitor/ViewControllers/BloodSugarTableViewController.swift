@@ -44,8 +44,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     
     var bloodGlucoseOffset: Double!
     var bloodGlucoseSlope: Double!
-    var sensor: LibreSensor?
-    
+    var sensor: FreestyleLibreSensor?
 
     var deviceID = "-"
     var temperatureString = "_"
@@ -508,8 +507,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 NotificationManager.setLowBatteryNotification(voltage: Double(batteryVoltage))
             }
             
-            sensor = LibreSensor(withUID: Data(payloadData.subdata(in: 5..<13).reversed()).hexEncodedString())
-            
+            sensor = FreestyleLibreSensor(withUID: Data(payloadData.subdata(in: 5..<13)))
             sensorData = SensorData(bytes: [UInt8](payloadData.subdata(in: 18..<362)), date: Date())
             
             os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
@@ -664,8 +662,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             deviceID = "-"
             
             let systemInformationData = SystemInformationDataType(bytes: payloadData)
-            let uidString = systemInformationData.uidString
-            sensor = LibreSensor(withUID: uidString)
+            sensor = FreestyleLibreSensor(withUID: Data(systemInformationData.uidArray))
             os_log("System information data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: systemInformationData.description))
 
             //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
