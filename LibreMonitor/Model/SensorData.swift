@@ -115,6 +115,23 @@ struct SensorData {
         return measurements
     }
     
+    /// Get date of most recent history value.
+    /// History values are updated every 15 minutes. Their corresponding time from start of the sensor in minutes is 15, 30, 45, 60, ..., but the value is delivered three minutes later, i.e. at the minutes 18, 33, 48, 63, ... and so on. So for instance if the current time in minutes (since start of sensor) is 67, the most recent value is 7 minutes old. This can be calculated from the minutes since start. Unfortunately sometimes the history index is incremented earlier than the minutes counter and they are not in sync. This has to be corrected.
+    ///
+    /// - Returns: the date of the most recent history value
+    func dateOfMostRecentHistoryValue() -> Date {
+        // Calculate correct date for the most recent history value.
+        //        date.addingTimeInterval( 60.0 * -Double( (minutesSinceStart - 3) % 15 + 3 ) )
+        let nextHistoryIndexCalculatedFromMinutesCounter = ( (minutesSinceStart - 3) / 15 ) % 32
+        let delay = (minutesSinceStart - 3) % 15 + 3 // in minutes
+        if nextHistoryIndexCalculatedFromMinutesCounter == nextHistoryBlock {
+            // Case when history index is incremented togehter with minutesSinceStart (in sync)
+            return date.addingTimeInterval( 60.0 * -Double(delay) )
+        } else {
+            // Case when history index is incremented before minutesSinceStart (and they are async)
+            return date.addingTimeInterval( 60.0 * -Double(delay - 15))
+        }
+    }
     
     /// Get array of 32 history glucose measurements. 
     /// Each array is sorted such that the most recent value is at index 0. This most recent value corresponds to -(minutesSinceStart - 3) % 15 + 3. The following measurements are each 15 more minutes behind, i.e. -15 minutes behind, -30 minutes, -45 minutes, ... .
@@ -124,8 +141,7 @@ struct SensorData {
     ///
     /// - returns: Array of Measurements
     func historyMeasurements(_ offset: Double = 0.0, slope: Double = 0.1) -> [Measurement] {
-      
-        let mostRecentHistoryDate = date.addingTimeInterval( 60.0 * -Double( (minutesSinceStart - 3) % 15 + 3 ) )
+        
         var measurements = [Measurement]()
         // History data is stored in body from byte 100 to byte 100+192-1=291 in units of 6 bytes. Index on data such that most recent block is first.
         for blockIndex in 0..<32 {
@@ -137,7 +153,7 @@ struct SensorData {
             
             let range = index..<index+6
             let measurementBytes = Array(body[range])
-            let measurementDate = mostRecentHistoryDate.addingTimeInterval(Double(-900 * blockIndex)) // 900 = 60 * 15
+            let measurementDate = dateOfMostRecentHistoryValue().addingTimeInterval(Double(-900 * blockIndex)) // 900 = 60 * 15
             
             let measurement = Measurement(bytes: measurementBytes, slope: slope, offset: offset, date: measurementDate)
             
@@ -146,6 +162,9 @@ struct SensorData {
         return measurements
     }
     
+    func dabear() -> String {
+        return Data(bytes).base64EncodedString()
+    }
 
 }
 

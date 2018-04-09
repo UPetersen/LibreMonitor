@@ -510,9 +510,12 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             sensor = FreestyleLibreSensor(withUID: Data(payloadData.subdata(in: 5..<13)))
             sensorData = SensorData(bytes: [UInt8](payloadData.subdata(in: 18..<362)), date: Date())
             
-            os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
-            
+//            os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
+            os_log("FRAM indices: %{public}@, %{public}@ and counter: %{public}@, date: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData?.nextTrendBlock), String(describing: sensorData?.nextHistoryBlock), String(describing: sensorData?.minutesSinceStart), String(describing: sensorData?.date))
+
             if let sensorData = sensorData {
+                
+                print(sensorData.dabear())
                 
                 // if crc (header or body) is wrong. Request data again.
                 if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC) {

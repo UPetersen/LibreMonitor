@@ -61,12 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
         
         // redirect os_log output to a file in documents directory (but will then not be visible on the console)
-        var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        let fileName = "\(Date()).log"
-        let logFilePath = (documentsDirectory as NSString).appendingPathComponent(fileName)
-        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stderr)
-        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
+//        var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//        let documentsDirectory = paths[0]
+//        let fileName = "\(Date()).log"
+//        let logFilePath = (documentsDirectory as NSString).appendingPathComponent(fileName)
+//        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stderr)
+//        freopen(logFilePath.cString(using: String.Encoding.ascii)!, "a+", stdout)
         
         
         // Test upload to Nightscout
