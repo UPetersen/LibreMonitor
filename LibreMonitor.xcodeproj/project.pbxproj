@@ -12,6 +12,9 @@
 		C6078B0F1EC76BE800FEE6F7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */; };
 		C61C296C1DB16C60009A5885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C61C296B1DB16C60009A5885 /* Main.storyboard */; };
 		C61DA67D1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DA67C1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift */; };
+		C61E5D4D207BF6250099157F /* LibreOOPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61E5D4A207BF6250099157F /* LibreOOPClient.swift */; };
+		C61E5D4E207BF6250099157F /* LibreOOPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */; };
+		C61E5D4F207BF6250099157F /* LibreOOPWebExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */; };
 		C65E6DA21E45070800A85E0E /* TransmissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E6DA11E45070800A85E0E /* TransmissionTests.swift */; };
 		C6652F1E1DB1801D00237E7D /* crc8.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1B1DB1801D00237E7D /* crc8.m */; };
 		C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1D1DB1801D00237E7D /* libUBP.m */; };
@@ -105,6 +108,9 @@
 		C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C61C296B1DB16C60009A5885 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C61DA67C1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodGlucoseEntryEditTableViewController.swift; path = ViewControllers/BloodGlucoseEntryEditTableViewController.swift; sourceTree = "<group>"; };
+		C61E5D4A207BF6250099157F /* LibreOOPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPClient.swift; sourceTree = "<group>"; };
+		C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPResponse.swift; sourceTree = "<group>"; };
+		C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPWebExtensions.swift; sourceTree = "<group>"; };
 		C65E6DA11E45070800A85E0E /* TransmissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransmissionTests.swift; sourceTree = "<group>"; };
 		C6652F1A1DB1801D00237E7D /* crc8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc8.h; path = SimbleeCode/crc8.h; sourceTree = "<group>"; };
 		C6652F1B1DB1801D00237E7D /* crc8.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = crc8.m; path = SimbleeCode/crc8.m; sourceTree = "<group>"; };
@@ -246,6 +252,9 @@
 		C6078B091EC7575600FEE6F7 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				C61E5D4A207BF6250099157F /* LibreOOPClient.swift */,
+				C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */,
+				C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */,
 				C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */,
 			);
 			path = Managers;
@@ -762,6 +771,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C61E5D4F207BF6250099157F /* LibreOOPWebExtensions.swift in Sources */,
 				C66A49681F40D7CB0005DC78 /* TimeFormat.swift in Sources */,
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
 				C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */,
@@ -775,6 +785,7 @@
 				C66A496E1F40D7CB0005DC78 /* NSData+Conversion.m in Sources */,
 				C66A49671F40D7CB0005DC78 /* NSUserDefaults.swift in Sources */,
 				C66A496B1F40D7CB0005DC78 /* NightscoutEntry.swift in Sources */,
+				C61E5D4E207BF6250099157F /* LibreOOPResponse.swift in Sources */,
 				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
 				C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */,
@@ -786,6 +797,7 @@
 				C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */,
 				C66A495A1F40D7A70005DC78 /* NightscoutUploader.swift in Sources */,
 				C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */,
+				C61E5D4D207BF6250099157F /* LibreOOPClient.swift in Sources */,
 				C6822DD61DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift in Sources */,
 				C6822DC31DB161C700D08393 /* BloodSugarGraphViewTableViewCell.swift in Sources */,
 				C66A496C1F40D7CB0005DC78 /* HKUnit.swift in Sources */,

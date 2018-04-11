@@ -41,6 +41,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
     var batteryVoltage = 0.0
+    var oopGlucoseValue: String?
     
     var bloodGlucoseOffset: Double!
     var bloodGlucoseSlope: Double!
@@ -196,7 +197,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .connectionData: return 3
-        case .generalData: return 7
+        case .generalData: return 8
         case .graph: return 1
         case .trendData: return 16
         case .historyData: return 32
@@ -386,6 +387,14 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 } else {
                     cell.detailTextLabel?.text = "nil"
                 }
+            case 7:
+                cell.textLabel?.text = "OOP Glucose"
+                if let sensorData = sensorData {
+                    cell.detailTextLabel?.text = "\(oopGlucoseValue ?? "-") at \(timeFormatter.string(from: sensorData.date))"
+                } else {
+                    cell.detailTextLabel?.text = "-"
+                }
+                
             default:
                 cell.textLabel?.text = "Something ..."
                 cell.detailTextLabel?.text = "... didn't work"
@@ -515,7 +524,37 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 
             if let sensorData = sensorData {
                 
-                print(sensorData.dabear())
+                // OOP Webinterface
+                if UserDefaults.standard.bool(forKey: "useOOPWebInterfaceIsActivated") {
+                   sensorData.dabear()
+                    oopGlucoseValue = nil
+                    if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
+                        let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
+                        let oopClient = LibreOOPClient(accessToken: accessToken, site: site)
+                        
+                        oopClient.uploadReading(reading: sensorData.bytes) { (response, success, errormessage) in
+                            guard success else {
+                                NSLog("remote: upload reading failed! \(errormessage)")
+                                return
+                            }
+                            
+                            if let response = response, let uuid = response.result?.uuid {
+                                print("uuid received: " + uuid)
+                                
+                                // The completion handler will be called once the result is available, or when a timeout is received
+                                // The timeout can be calculated as approx (intervalSeconds * maxTries) seconds
+                                // In case of timeout, the success parameter will be false, errormessage will have contents
+                                // and the response will be "N/A"
+                                // In case of success, response will be a string containing the result of the Algorithm
+                                oopClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, response) in
+                                    //"some value from android: currentBg: 170"
+                                    self.oopGlucoseValue = String(response.dropFirst(36))
+                                    NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(response))")
+                                })
+                            }
+                        }
+                    }
+                }
                 
                 // if crc (header or body) is wrong. Request data again.
                 if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC) {

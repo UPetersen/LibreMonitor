@@ -24,8 +24,12 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var nightscoutSiteTextField: UITextField!
     @IBOutlet weak var nightScoutAPISecretTextField: UITextField!
     @IBOutlet weak var verifyAccountButton: UIButton!
-    
     @IBOutlet var spinner: UIActivityIndicatorView!
+    
+    @IBOutlet weak var useOOPWebInterfaceSwitch: UISwitch!
+    @IBOutlet weak var oopWebInterfaceSiteTextField: UITextField!
+    @IBOutlet weak var oopWebInterfaceAPITokenTextField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +39,10 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         nightscoutSiteTextField.delegate = self
         nightScoutAPISecretTextField.delegate = self
         
-        // Section with offset and slope
+        oopWebInterfaceAPITokenTextField.delegate = self
+        oopWebInterfaceSiteTextField.delegate = self
         
+        // Section with offset and slope
         let bloodGlucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
         let bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
         
@@ -44,10 +50,14 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         glucoseSlopeTextField.text = numberFormatter.string(from: NSNumber(value: bloodGlucoseSlope))
         
         // Section with nightscout upload
-        
         uplodToNightscoutSwitch.isOn = UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") // returns false if not yet initialized, which is what we want in that case
         nightscoutSiteTextField.text = UserDefaults.standard.string(forKey: "nightscoutSite")
         nightScoutAPISecretTextField.text = UserDefaults.standard.string(forKey: "nightscoutAPISecret")
+
+        // Section with OOP web interface
+        useOOPWebInterfaceSwitch.isOn = UserDefaults.standard.bool(forKey: "oopWebInterfaceIsActivated") // returns false if not yet initialized, which is what we want in that case
+        oopWebInterfaceSiteTextField.text = UserDefaults.standard.string(forKey: "oopWebInterfaceSite")
+        oopWebInterfaceAPITokenTextField.text = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken")
     }
 
     @IBAction func tapGestureRecognized(_ sender: UITapGestureRecognizer) {
@@ -95,7 +105,11 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-
+    @IBAction func useOOPWebInterfaceSwitch(_ sender: UISwitch) {
+        self.view.endEditing(true) // resign keyboard
+        UserDefaults.standard.set(sender.isOn, forKey: "useOOPWebInterfaceIsActivated")
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -111,6 +125,10 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             handleNumericTextFieldInput(textField)
         case glucoseSlopeTextField:
             handleNumericTextFieldInput(textField)
+        case oopWebInterfaceSiteTextField:
+            UserDefaults.standard.set(textField.text, forKey: "oopWebInterfaceSite")
+        case oopWebInterfaceAPITokenTextField:
+            UserDefaults.standard.set(textField.text, forKey: "oopWebInterfaceAPIToken")
         default:
             fatalError("Fatal Error in \(#file): textField not handled in switch case")
             break
@@ -149,7 +167,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         alertController.addAction(defaultAction)
         
         present(alertController, animated: true, completion: nil)
-        
     }
     
     func presentVerificationResultAlertController(title: String?, message: String?) {

@@ -8,6 +8,66 @@
 	<string></string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>iconConstant60</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>iconConstant60</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>iconDown60</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>iconDown60</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>iconDownDown60</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>iconDownDown60</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>iconUp60</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>iconUp60</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>iconUpUp60</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>iconUpUp60</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+		</dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>icon60</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<false/>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -22,6 +82,19 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>libreoopweb.azurewebsites.net</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
@@ -60,65 +133,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>CFBundleIcons</key>
-    <dict>
-        <key>CFBundlePrimaryIcon</key>
-        <dict>
-            <key>CFBundleIconFiles</key>
-            <array>
-                <string>icon60</string>
-            </array>
-            <key>UIPrerenderedIcon</key>
-            <false/>
-        </dict>
-        <key>CFBundleAlternateIcons</key>
-        <dict>
-            <key>iconConstant60</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>iconConstant60</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>iconUp60</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>iconUp60</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>iconUpUp60</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>iconUpUp60</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>iconDown60</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>iconDown60</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-            <key>iconDownDown60</key>
-            <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                    <string>iconDownDown60</string>
-                </array>
-                <key>UIPrerenderedIcon</key>
-                <false/>
-            </dict>
-        </dict>
-    </dict>
 </dict>
 </plist>
