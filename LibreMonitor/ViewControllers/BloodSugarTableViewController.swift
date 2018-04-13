@@ -524,37 +524,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 
             if let sensorData = sensorData {
                 
-                // OOP Webinterface
-                if UserDefaults.standard.bool(forKey: "useOOPWebInterfaceIsActivated") {
-                   sensorData.dabear()
-                    oopGlucoseValue = nil
-                    if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
-                        let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
-                        let oopClient = LibreOOPClient(accessToken: accessToken, site: site)
-                        
-                        oopClient.uploadReading(reading: sensorData.bytes) { (response, success, errormessage) in
-                            guard success else {
-                                NSLog("remote: upload reading failed! \(errormessage)")
-                                return
-                            }
-                            
-                            if let response = response, let uuid = response.result?.uuid {
-                                print("uuid received: " + uuid)
-                                
-                                // The completion handler will be called once the result is available, or when a timeout is received
-                                // The timeout can be calculated as approx (intervalSeconds * maxTries) seconds
-                                // In case of timeout, the success parameter will be false, errormessage will have contents
-                                // and the response will be "N/A"
-                                // In case of success, response will be a string containing the result of the Algorithm
-                                oopClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, response) in
-                                    //"some value from android: currentBg: 170"
-                                    self.oopGlucoseValue = String(response.dropFirst(36))
-                                    NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(response))")
-                                })
-                            }
-                        }
-                    }
-                }
                 
                 // if crc (header or body) is wrong. Request data again.
                 if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC) {
@@ -564,11 +533,14 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {_ in
                         self.miaoMiaoManager.requestData()
                     })
-//                    miaoMiaoManager.requestData()
                     
                 } else {
                     NotificationManager.scheduleDataTransferInterruptedNotification(wait: 400)
 
+                    if sensorData.hasValidFooterCRC {
+                        getOOPGlucose(fram: sensorData.bytes)
+                    }
+                    
                     timeOfLastScan = Date()
                     trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
                     historyMeasurements = sensorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
@@ -649,11 +621,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 
         }
         tableView.reloadData()
-
-//        let aSerial = LibreSensor(
-//        let stringArray = self.idArray.map({String(format: "%02X", $0)})
-//        return stringArray.reduce("", + )
-//
 
     }
     
@@ -895,6 +862,52 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         
 //        // Show corresponding app icon
 //        NotificationManager.setAlternativeAppIconForGlucoseDelta(longDelta)
+    }
+    
+    
+    
+    
+    /// Gets glucose value from OOP web interface from @dabear.
+    ///
+    /// Gets glucose value from real Abbott algorithm for Freestyle Libre by sending data to a webserver that itself sends the data to an Android phone that calculates the glucose value from the fram data by using the LibreLink Android app (or apk).
+    ///
+    /// Since this is async: A closure will be called, when the value arrives and the glucose value will then be stored in a local variable of the view controller.
+    ///
+    /// - Parameter fram: 344 bytes of fram of the Freestyle Libre sensor
+    func getOOPGlucose(fram: [UInt8]) {
+        
+        // OOP Webinterface
+        if UserDefaults.standard.bool(forKey: "useOOPWebInterfaceIsActivated") {
+            
+            oopGlucoseValue = nil
+            if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
+                let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
+                
+                let oopClient = LibreOOPClient(accessToken: accessToken, site: site)
+                
+                oopClient.uploadReading(reading: fram) { (response, success, errormessage) in
+                    guard success else {
+                        NSLog("remote: upload reading failed! \(errormessage)")
+                        return
+                    }
+                    
+                    if let response = response, let uuid = response.result?.uuid {
+                        print("uuid received: " + uuid)
+                        
+                        // The completion handler will be called once the result is available, or when a timeout is received
+                        // The timeout can be calculated as approx (intervalSeconds * maxTries) seconds
+                        // In case of timeout, the success parameter will be false, errormessage will have contents
+                        // and the response will be "N/A"
+                        // In case of success, response will be a string containing the result of the Algorithm
+                        oopClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, response) in
+                            //"some value from android: currentBg: 170"
+                            self.oopGlucoseValue = String(response.dropFirst(36))
+                            NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(response))")
+                        })
+                    }
+                }
+            }
+        }
     }
     
 }

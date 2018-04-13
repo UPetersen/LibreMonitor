@@ -161,37 +161,6 @@ struct SensorData {
         }
         return measurements
     }
-    
-    func dabear() {
-
-        let patch = self.bytes
-
-        let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken")
-        let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite")
-        
-        let remote = LibreOOPClient(accessToken: accessToken!, site: site!)
-        
-        remote.uploadReading(reading: patch) { (resp, success, errormessage) in
-            if(!success) {
-                NSLog("remote: upload reading failed! \(errormessage)")
-                return
-            }
-            
-            if let resp=resp, let uuid = resp.result?.uuid {
-                print("uuid received: " + uuid)
-                
-                // The completion handler will be called once the result is available, or when a timeout is received
-                // The timeout can be calculated as approx (intervalSeconds * maxTries) seconds
-                // In case of timeout, the success parameter will be false, errormessage will have contents
-                // and the response will be "N/A"
-                // In case of success, response will be a string containing the result of the Algorithm
-                remote.getStatusIntervalled(uuid: uuid, { (success, errormessage, response) in
-                    
-                    NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(response))")
-                })
-            }
-        }
-    }
 
     
     func oopWebInterfaceInput() -> String {

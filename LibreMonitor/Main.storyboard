@@ -1164,25 +1164,24 @@ SOFTWARE.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Site URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOo-mo-li6">
-                                                    <rect key="frame" x="30" y="9.3333333333333357" width="66" height="21"/>
+                                                    <rect key="frame" x="30" y="9" width="66" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e.g. https://libreoopweb.azurewebsites.net" textAlignment="right" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Pu9-3I-K38">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e.g. https://libreoopweb.azurewebsites.net" textAlignment="right" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Pu9-3I-K38">
                                                     <rect key="frame" x="113" y="7" width="281" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="749" constant="80" id="29E-Db-UlL"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" textContentType="url"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Pu9-3I-K38" firstAttribute="centerY" secondItem="Ag6-g4-KRL" secondAttribute="centerY" id="EQX-o9-Bav"/>
-                                                <constraint firstItem="Pu9-3I-K38" firstAttribute="trailing" secondItem="Ag6-g4-KRL" secondAttribute="trailingMargin" id="RUC-vj-c5p"/>
+                                                <constraint firstItem="Pu9-3I-K38" firstAttribute="trailing" secondItem="Ag6-g4-KRL" secondAttribute="trailingMargin" id="83c-lA-Wmm"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="EOo-mo-li6" secondAttribute="bottom" constant="3" id="BPc-d7-JIZ"/>
+                                                <constraint firstItem="Pu9-3I-K38" firstAttribute="centerY" secondItem="Ag6-g4-KRL" secondAttribute="centerY" id="Tbc-Ne-pP0"/>
+                                                <constraint firstItem="EOo-mo-li6" firstAttribute="top" secondItem="Ag6-g4-KRL" secondAttribute="topMargin" constant="-2" id="ZH0-Xk-ewg"/>
+                                                <constraint firstItem="Pu9-3I-K38" firstAttribute="leading" secondItem="EOo-mo-li6" secondAttribute="trailing" constant="17" id="ber-Bf-VJv"/>
                                                 <constraint firstItem="EOo-mo-li6" firstAttribute="leading" secondItem="Ag6-g4-KRL" secondAttribute="leadingMargin" constant="10" id="dAt-Gh-i4C"/>
-                                                <constraint firstItem="Pu9-3I-K38" firstAttribute="baseline" secondItem="EOo-mo-li6" secondAttribute="baseline" id="r1j-iC-wOT"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
