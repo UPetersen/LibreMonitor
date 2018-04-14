@@ -900,8 +900,34 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                         // and the response will be "N/A"
                         // In case of success, response will be a string containing the result of the Algorithm
                         oopClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, response) in
+                            
                             //"some value from android: currentBg: 170"
-                            self.oopGlucoseValue = String(response.dropFirst(36))
+                            if let jsonStringStartIndex = response.range(of: "FullAlgoResults: ")?.upperBound {
+                                
+                                do {
+                                    let jsonString = response.suffix(from: jsonStringStartIndex)
+                                    let jsonData = String(jsonString).data(using: .utf8)!
+                                    let oopCurrentValue = try JSONDecoder().decode(OOPCurrentValue.self, from: jsonData)
+
+                                    self.oopGlucoseValue = String(oopCurrentValue.currentBg)
+
+//                                    print("\nRelevant json string: \n\(jsonString)")
+//                                    print("Decoded content")
+//                                    print("  Current trend: \(oopCurrentValue.currentTrend)")
+//                                    print("  Current bg: \(oopCurrentValue.currentBg)")
+//                                    print("  Current time: \(oopCurrentValue.currentTime)")
+//                                    print("  Serial Number: \(oopCurrentValue.serialNumber ?? "-")")
+//                                    print("  timeStamp: \(oopCurrentValue.timestamp)")
+//                                    var i = 0
+//                                    for historyValue in oopCurrentValue.historyValues {
+//                                        print(String(format: "    #%02d: time: \(historyValue.time), quality: \(historyValue.quality), bg: \(historyValue.bg)", i))
+//                                        i += 1
+//                                    }
+                                } catch let error {
+                                    print("Error", error)
+                                }
+                            }
+
                             NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(response))")
                         })
                     }
