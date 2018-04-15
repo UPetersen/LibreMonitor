@@ -41,7 +41,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
     var batteryVoltage = 0.0
-    var oopGlucoseValue: String?
+    var oopCurrentValue: OOPCurrentValue?
     
     var bloodGlucoseOffset: Double!
     var bloodGlucoseSlope: Double!
@@ -389,8 +389,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 }
             case 7:
                 cell.textLabel?.text = "OOP Glucose"
-                if let sensorData = sensorData {
-                    cell.detailTextLabel?.text = "\(oopGlucoseValue ?? "-") at \(timeFormatter.string(from: sensorData.date))"
+                if let sensorData = sensorData, let oopCurrentValue = oopCurrentValue {
+                    cell.detailTextLabel?.text = "\(oopCurrentValue.currentBg) mg/dl, time: \(oopCurrentValue.currentTime), trend: \(oopCurrentValue.currentTrend) at \(timeFormatter.string(from: sensorData.date))"
                 } else {
                     cell.detailTextLabel?.text = "-"
                 }
@@ -879,7 +879,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         // OOP Webinterface
         if UserDefaults.standard.bool(forKey: "useOOPWebInterfaceIsActivated") {
             
-            oopGlucoseValue = nil
+            oopCurrentValue = nil
             if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
                 let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
                 
@@ -907,9 +907,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                 do {
                                     let jsonString = response.suffix(from: jsonStringStartIndex)
                                     let jsonData = String(jsonString).data(using: .utf8)!
-                                    let oopCurrentValue = try JSONDecoder().decode(OOPCurrentValue.self, from: jsonData)
-
-                                    self.oopGlucoseValue = String(oopCurrentValue.currentBg)
+                                    self.oopCurrentValue = try JSONDecoder().decode(OOPCurrentValue.self, from: jsonData)
 
 //                                    print("\nRelevant json string: \n\(jsonString)")
 //                                    print("Decoded content")
