@@ -116,7 +116,7 @@
 //      TX: 0xF0
 //          Request all the data or the sensor. The bluetooth will return the data at a certain frequency (default is every 5 minutes) after the request
 //      RX:
-//          a) Data:
+//          a) Data (363 bytes):
 //             Pos.  0 (0x00): 0x28 +
 //             Pos.  1 (0x01): Len[2 bytes] +
 //             Pos.  3 (0x03): Index [2 bytes] (this is the minute counter of the Freestyle Libre sensor) +
@@ -124,7 +124,7 @@
 //             Pos. 13 (0x0D): xbattery level in percent [1 byte] (e.g. 0x64 which is 100 in decimal means 100%?)
 //             Pos. 14 (0x0E): firmware version [2 bytes] +
 //             Pos. 16 (0x10): hardware version [2 bytes] +
-//             Pos. 18 (0x12): FRAM data (244 x 8 bytes = 1952 bytes) +
+//             Pos. 18 (0x12): FRAM data (43 x 8 bytes = 344 bytes) +
 //             Pos. end      : 0x29
 //             Example: 28  07b3  5457  db353e01 00a007e0  64  0034 0001  11b6e84f050003 875104 57540000 00 000000 00000000 0000b94b 060f1600 c0da6a80 1600c0d6 6a801600
 //                      0x28   -> marks begin of data response
@@ -454,10 +454,16 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                             }
                         }
 
-                        if rxBuffer.count >= 1971 && rxBuffer.last! == 0x29 {
-//                            if rxBuffer.count >= 1791 && rxBuffer.last! == 0x29 {
+                        if rxBuffer.count >= 363 && rxBuffer.last! == 0x29 {
                             os_log("Buffer complete, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
                             delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x28, payloadData: rxBuffer)
+                            
+//                            // Data for Bert Rode
+//                            print(self.rxBuffer.hexEncodedString())
+//                            let stringArray = self.rxBuffer.map({String(format: "%02X", $0)})
+//                            print(stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} ))
+//                            print(self.rxBuffer.base64EncodedString())                            
+                            
                             rxBuffer = Data()  // reset buffer, once completed and delegate is informed
                             timer?.invalidate()
                         } else {

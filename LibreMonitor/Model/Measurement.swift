@@ -42,6 +42,42 @@ struct Measurement {
         self.glucose = offset + slope * Double(rawValue)
         self.date = date
     }
+    
+    func temp1() -> Double {
+        let anInt = (Int(self.bytes[4] & 0x3F) << 8) + Int(self.bytes[5])
+        return 0.5 * (-273.16 + sqrt(abs(273.16*273.16 + 4.0 * Double(anInt))))
+    }
+    func temp2() -> Double {
+        let anInt = (Int(self.bytes[4] & 0x3F) << 8) + Int(self.bytes[3])
+        return 0.5 * (-273.16 + sqrt(abs(273.16*273.16 + 4.0 * Double(anInt))))
+    }
+    
+    // Gitter
+    func temp3() -> Double {
+        let anInt = (Int(self.bytes[4] & 0x3F) << 8) + Int(self.bytes[5])
+        return 22.22 * log(311301.0/(11.44 * Double(anInt)))
+    }
+    //Pierre Vandevenne 1
+    func temp4() -> Double {
+        let anInt = 16384 - (Int(self.bytes[4] & 0x3F) << 8) + Int(self.bytes[5])
+        
+        let a = 1.0
+        let b = 273.0
+        let c = -Double(anInt)
+        let d = (b*b) - (4*a*c)
+        let res = -b + sqrt( d ) / (2*a)
+        return  abs(res*0.0027689+9.53)
+    }
+
+    // Pierre Vandevenne 2
+    func temp5() -> Double {
+        let anInt = 16383 - (Int(self.bytes[4] & 0x3F) << 8) + Int(self.bytes[5])
+        return  abs(Double(anInt)*0.0027689+9.53)
+    }
+    
+    
+//    Temp = 22.22 * log(311301/NTC)
+    
     var description: String {
         return String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset),rawValue: \(rawValue), bytes: \(bytes)" )
     }

@@ -161,11 +161,19 @@ struct SensorData {
         }
         return measurements
     }
-
     
     func oopWebInterfaceInput() -> String {
         return Data(bytes).base64EncodedString()
     }
+    
+    /// Returns a new array of 344 bytes of FRAM with correct crc for header, body and footer.
+    ///
+    /// Usefull, if some bytes are modified in order to investigate how the OOP algorithm handles this modification.
+    /// - Returns: 344 bytes of FRAM with correct crcs
+    func bytesWithCorrectCRC() -> [UInt8] {
+        return Crc.bytesWithCorrectCRC(header) + Crc.bytesWithCorrectCRC(body) + Crc.bytesWithCorrectCRC(footer)
+    }
+    
 
 }
 

@@ -69,6 +69,21 @@ final class Crc {
         return calculatedCrc == enclosedCrc
     }
     
+    /// Returns a byte array with correct crc in first two bytes (calculated over the remaining bytes).
+    ///
+    /// In case some bytes of the original byte array are tweaked, the original crc does not match the remainaing bytes any more. This function calculates the correct crc of the bytes from byte #0x02 to the end and replaces the first two bytes with the correct crc.
+    ///
+    /// - Parameter bytes: byte array
+    /// - Returns: byte array with correct crc in first two bytes
+    static func bytesWithCorrectCRC(_ bytes: [UInt8]) -> [UInt8] {
+        let calculatedCrc = Crc.crc16(Array(bytes.dropFirst(2)), seed: 0xffff)
+        
+        var correctedBytes = bytes
+        correctedBytes[0] = UInt8(calculatedCrc >> 8)
+        correctedBytes[1] = UInt8(calculatedCrc & 0x00FF)
+        return correctedBytes
+    }
+    
 }
 
 /// Struct BytesSequence, taken from https://github.com/krzyzanowskim/CryptoSwift
