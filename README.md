@@ -93,3 +93,7 @@ The "Last 15 minutes" and "Last eight hours" sections display the glucose values
 * [Freestyle Libre Alarm](https://github.com/pimpimmi/LibreAlarm/wiki). Uses as Sony smart watch to read data from the Freestyle Libre and send it to an Android phone.
 * [Bluereader](https://www.startnext.com/bluereader) project by [Sandra Kessler](http://unendlichkeit.net/wordpress/) who got funding to build a small neat device. I intend to adapt this project to work with bluereader once the first devices are available.
 * [Android reader application](https://github.com/vicktor/FreeStyleLibre-NFC-Reader) by Viktor Bautista that was helpful at the beginning of this work.
+
+## Personal note
+
+As of September 2018: I used different versions of the LibreMonitor and similar hardware (Marek’s Transmitter) based on Simblee or RFDuino since early 2016 up to March 2018 and liked it very much. When I started the project nothing similar was available. Meanwhile many other projects have evolved and also commercial hardware is available. Since March 2018 I have been using the [MiaoMiao](https://www.miaomiao.cool) hardware and I have to say that in my opinion it is much better than anything I had seen before. Thus I will no longer support the LibreMonitor hardware but only MiaoMiao hardware with the LibreMonitor iPhone application. So if you want to use the LibreMonitor with MiaoMiao, use the swift4 branch. If you choose to use the old LibreMonitor hardware, choose the old master branch.
