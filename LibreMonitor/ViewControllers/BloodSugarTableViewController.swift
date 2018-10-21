@@ -126,7 +126,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
         
         // Notification for updating table view after application did become active again
-        NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: UIApplication.didBecomeActiveNotification, object: nil)
         // Notification for updating table view after having changed the offset and/of slope
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name(rawValue: "updateBloodSugarTableViewController"), object: nil)
     
@@ -137,7 +137,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         super.viewWillDisappear(true)
         timer.invalidate()
     }
@@ -147,20 +147,19 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         switch device {
         case .simblee:
             
-            
             return
             
-            switch (simbleeManager.state) {
-            case .Unassigned:
-                simbleeManager.scanForSimblee()
-            case .Scanning:
-                simbleeManager.centralManager.stopScan()
-                simbleeManager.state = .Disconnected
-            case .Connected, .Connecting, .Notifying:
-                simbleeManager.disconnectManually()
-            case .Disconnected, .DisconnectingDueToButtonPress:
-                simbleeManager.connect()
-            }
+//            switch (simbleeManager.state) {
+//            case .Unassigned:
+//                simbleeManager.scanForSimblee()
+//            case .Scanning:
+//                simbleeManager.centralManager.stopScan()
+//                simbleeManager.state = .Disconnected
+//            case .Connected, .Connecting, .Notifying:
+//                simbleeManager.disconnectManually()
+//            case .Disconnected, .DisconnectingDueToButtonPress:
+//                simbleeManager.connect()
+//            }
         case .miaoMaio:
             switch (miaoMiaoManager.state) {
             case .Unassigned:
@@ -412,8 +411,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 
                 
                 // Solution for 
-                let bert = (Int(measurements[index].bytes[4] & 0x3F) << 8) + Int(measurements[index].bytes[5])
-                let berti = 0.5 * (-273.16 + sqrt(abs(273.16*273.16 + 4.0 * Double(bert))))
+//                let bert = (Int(measurements[index].bytes[4] & 0x3F) << 8) + Int(measurements[index].bytes[5])
+//                let berti = 0.5 * (-273.16 + sqrt(abs(273.16*273.16 + 4.0 * Double(bert))))
                 
                 let rawString = String(format: "%0d", measurements[index].rawValue)
 //                let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])

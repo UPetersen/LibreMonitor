@@ -113,8 +113,9 @@ final class SLIPBuffer {
 //                    print(self.rxBuffer.debugDescription)
                     
                     // Extact the frame (END byte at beginning and end are aleady removed)
-                    let escapedPacket = self.rxBuffer.subdata(in: Range((previousEndByteIndex + 1)..<endByteIndex))
-                    
+//                    let escapedPacket = self.rxBuffer.subdata(in: Range((previousEndByteIndex + 1)..<endByteIndex))
+                    let escapedPacket = self.rxBuffer.subdata(in: (previousEndByteIndex + 1)..<endByteIndex)
+
                     // Decode the packet (undo SLIP)
                     self.decodeSLIPPacket(escapedPacket)
                     
@@ -155,14 +156,17 @@ final class SLIPBuffer {
 		
 		// Extract embedded checksum from packet
         var embeddedChecksumByte:UInt8 = 0
-        unescapedPacket.copyBytes(to: &embeddedChecksumByte, from: Range((unescapedPacket.count - PacketChecksumLength)..<unescapedPacket.count))
-        
+//        unescapedPacket.copyBytes(to: &embeddedChecksumByte, from: Range((unescapedPacket.count - PacketChecksumLength)..<unescapedPacket.count))
+        unescapedPacket.copyBytes(to: &embeddedChecksumByte, from: (unescapedPacket.count - PacketChecksumLength)..<unescapedPacket.count)
+
         
         // 2016-07-30, Uwe Petersen: get unescaped packet without checksum
-        let unescapedPacketWithoutChecksum = unescapedPacket.subdata(in: Range(0..<(unescapedPacket.count-PacketChecksumLength)))
-		
+//        let unescapedPacketWithoutChecksum = unescapedPacket.subdata(in: Range(0..<(unescapedPacket.count-PacketChecksumLength)))
+        let unescapedPacketWithoutChecksum = unescapedPacket.subdata(in: 0..<(unescapedPacket.count-PacketChecksumLength))
+
         // Calculate checksum on payload bytes (2016-06-30, Uwe Petersen: seems to be an error to calculate on unescaped packet. Changed to escaped packet)
-        let checksummedData = escapedPacket.subdata(in: Range(0..<escapedPacket.count - PacketChecksumLength))
+//        let checksummedData = escapedPacket.subdata(in: Range(0..<escapedPacket.count - PacketChecksumLength))
+        let checksummedData = escapedPacket.subdata(in: 0..<escapedPacket.count - PacketChecksumLength)
         let calculatedChecksum = (checksummedData as NSData).crc8Checksum()
         
         if UInt8(bitPattern: calculatedChecksum) == embeddedChecksumByte { // crc is calulated as Int8 and thus has to be converted to UInt8
@@ -171,15 +175,18 @@ final class SLIPBuffer {
 				
 				// Extract payload and payload ID. (2016-06-30, Uwe Petersen: seems to be an error to calculate on unescaped packet. Changed to escaped packet)
 				var identifier: UInt16 = 0;
-                let _ = unescapedPacketWithoutChecksum.copyBytes(to: UnsafeMutableBufferPointer(start: &identifier, count: 1), from: Range(0..<PacketIdentifierLength))
-				
+//                let _ = unescapedPacketWithoutChecksum.copyBytes(to: UnsafeMutableBufferPointer(start: &identifier, count: 1), from: Range(0..<PacketIdentifierLength))
+                let _ = unescapedPacketWithoutChecksum.copyBytes(to: UnsafeMutableBufferPointer(start: &identifier, count: 1), from: 0..<PacketIdentifierLength)
+
                 
                 // 2016-06-30, Uwe Petersen: seems to be an error to calculate on unescaped packet. Changed to escaped packet
                 var txFlags: UInt8 = 0;
-                unescapedPacketWithoutChecksum.copyBytes(to: &txFlags, from: Range((PacketIdentifierLength-1)..<(PacketIdentifierLength-1+PacketFlagsLength)))
-                
-                let payloadData = unescapedPacketWithoutChecksum.subdata(in: Range( (PacketIdentifierLength + PacketFlagsLength)..<unescapedPacketWithoutChecksum.count ))
-				
+//                unescapedPacketWithoutChecksum.copyBytes(to: &txFlags, from: Range((PacketIdentifierLength-1)..<(PacketIdentifierLength-1+PacketFlagsLength)))
+                unescapedPacketWithoutChecksum.copyBytes(to: &txFlags, from: (PacketIdentifierLength-1)..<(PacketIdentifierLength-1+PacketFlagsLength))
+
+//                let payloadData = unescapedPacketWithoutChecksum.subdata(in: Range( (PacketIdentifierLength + PacketFlagsLength)..<unescapedPacketWithoutChecksum.count ))
+                let payloadData = unescapedPacketWithoutChecksum.subdata(in: (PacketIdentifierLength + PacketFlagsLength)..<unescapedPacketWithoutChecksum.count)
+
 				// Notify delegate with payloadData 
 				aDelegate.slipBufferReceivedPayload(payloadData, payloadIdentifier: identifier, txFlags: txFlags)
 			}

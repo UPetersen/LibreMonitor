@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9F659E798C0CD22711C55DE6 /* Pods_LibreMonitorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887C2B24AC9C0E842F9CE127 /* Pods_LibreMonitorUITests.framework */; };
+		11DB9C33006ABE4C6F2A5309 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57638DE5B016DAEE9465B711 /* Pods_LibreMonitor.framework */; };
+		893350C03F171279469A31AA /* Pods_LibreMonitorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5600B0B30465042D9D06EB /* Pods_LibreMonitorUITests.framework */; };
 		C60178961E3E7FE5008FCF3A /* BluetoothTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60178951E3E7FE5008FCF3A /* BluetoothTestData.swift */; };
 		C6078B0F1EC76BE800FEE6F7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */; };
 		C61C296C1DB16C60009A5885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C61C296B1DB16C60009A5885 /* Main.storyboard */; };
@@ -77,8 +78,7 @@
 		C6CA13F52053EA9D0089C278 /* MiaoMiaoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */; };
 		C6CA13F7205EC40B0089C278 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F6205EC40B0089C278 /* Data.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
-		F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */; };
-		F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */; };
+		FC5B8E789A910E25461ECD32 /* Pods_LibreMonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5DD7BF6FCFC24A1CDF0C4B /* Pods_LibreMonitorTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,11 +99,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		20B072583FD87F7318BD08D0 /* Pods-LibreMonitorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests.debug.xcconfig"; sourceTree = "<group>"; };
-		402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		771CB977837C430DB5630E78 /* Pods-LibreMonitor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.release.xcconfig"; sourceTree = "<group>"; };
-		887C2B24AC9C0E842F9CE127 /* Pods_LibreMonitorUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitorUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C01D6FD2C7EC8B142986E40 /* Pods-LibreMonitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.debug.xcconfig"; sourceTree = "<group>"; };
+		10E10B329FE1A294608335D3 /* Pods-LibreMonitorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.release.xcconfig"; sourceTree = "<group>"; };
+		29B84802438A170516B70200 /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		3699E067440DF4250D7C1B33 /* Pods-LibreMonitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.debug.xcconfig"; sourceTree = "<group>"; };
+		3DC219F91FAAC75C67C11638 /* Pods-LibreMonitorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests.release.xcconfig"; sourceTree = "<group>"; };
+		57638DE5B016DAEE9465B711 /* Pods_LibreMonitor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64D47D0B0840C959EFFA9D80 /* Pods-LibreMonitor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.release.xcconfig"; sourceTree = "<group>"; };
+		AD5DD7BF6FCFC24A1CDF0C4B /* Pods_LibreMonitorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE5600B0B30465042D9D06EB /* Pods_LibreMonitorUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitorUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C60178951E3E7FE5008FCF3A /* BluetoothTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTestData.swift; sourceTree = "<group>"; };
 		C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C61C296B1DB16C60009A5885 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -190,10 +193,7 @@
 		C6CA13F6205EC40B0089C278 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C6DDBDBC1DC512420048D275 /* LibreMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LibreMonitor.entitlements; sourceTree = "<group>"; };
-		D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibreMonitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ECBB8DB6FD66440727AC6903 /* Pods-LibreMonitorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests.release.xcconfig"; sourceTree = "<group>"; };
-		F858C2A695CEC9FB81DC9A5A /* Pods-LibreMonitorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.release.xcconfig"; sourceTree = "<group>"; };
+		F3D7B42C79827E18F3D9735C /* Pods-LibreMonitorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,8 +201,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1BB69F1B49E13B76E4A90C4 /* Pods_LibreMonitor.framework in Frameworks */,
 				C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */,
+				11DB9C33006ABE4C6F2A5309 /* Pods_LibreMonitor.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +210,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8C71C986A327FDC6776D4B2 /* Pods_LibreMonitorTests.framework in Frameworks */,
+				FC5B8E789A910E25461ECD32 /* Pods_LibreMonitorTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,22 +218,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F659E798C0CD22711C55DE6 /* Pods_LibreMonitorUITests.framework in Frameworks */,
+				893350C03F171279469A31AA /* Pods_LibreMonitorUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8F126C8830CE9383D368A1DE /* Pods */ = {
+		28EB0B9573ABD5787682CFEA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9C01D6FD2C7EC8B142986E40 /* Pods-LibreMonitor.debug.xcconfig */,
-				771CB977837C430DB5630E78 /* Pods-LibreMonitor.release.xcconfig */,
-				20B072583FD87F7318BD08D0 /* Pods-LibreMonitorTests.debug.xcconfig */,
-				ECBB8DB6FD66440727AC6903 /* Pods-LibreMonitorTests.release.xcconfig */,
-				D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */,
-				F858C2A695CEC9FB81DC9A5A /* Pods-LibreMonitorUITests.release.xcconfig */,
+				3699E067440DF4250D7C1B33 /* Pods-LibreMonitor.debug.xcconfig */,
+				64D47D0B0840C959EFFA9D80 /* Pods-LibreMonitor.release.xcconfig */,
+				F3D7B42C79827E18F3D9735C /* Pods-LibreMonitorTests.debug.xcconfig */,
+				3DC219F91FAAC75C67C11638 /* Pods-LibreMonitorTests.release.xcconfig */,
+				29B84802438A170516B70200 /* Pods-LibreMonitorUITests.debug.xcconfig */,
+				10E10B329FE1A294608335D3 /* Pods-LibreMonitorUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -242,9 +242,9 @@
 			isa = PBXGroup;
 			children = (
 				C6DDBDBA1DC512410048D275 /* HealthKit.framework */,
-				EAD184EB2119C8F78D731C7E /* Pods_LibreMonitor.framework */,
-				402C08AB93E799ED917B1043 /* Pods_LibreMonitorTests.framework */,
-				887C2B24AC9C0E842F9CE127 /* Pods_LibreMonitorUITests.framework */,
+				57638DE5B016DAEE9465B711 /* Pods_LibreMonitor.framework */,
+				AD5DD7BF6FCFC24A1CDF0C4B /* Pods_LibreMonitorTests.framework */,
+				AE5600B0B30465042D9D06EB /* Pods_LibreMonitorUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -307,8 +307,8 @@
 				C6822D7E1DB13F2200D08393 /* LibreMonitorTests */,
 				C6822D891DB13F2200D08393 /* LibreMonitorUITests */,
 				C6822D631DB13F2200D08393 /* Products */,
-				8F126C8830CE9383D368A1DE /* Pods */,
 				C12F12DE60464196E06F6804 /* Frameworks */,
+				28EB0B9573ABD5787682CFEA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -461,12 +461,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6822D8F1DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitor" */;
 			buildPhases = (
-				ACC5AE5D94CFB4897C7237F1 /* [CP] Check Pods Manifest.lock */,
+				2301DD43CCE3E5407D9EA8AD /* [CP] Check Pods Manifest.lock */,
 				C6822D5E1DB13F2200D08393 /* Sources */,
 				C6822D5F1DB13F2200D08393 /* Frameworks */,
 				C6822D601DB13F2200D08393 /* Resources */,
-				7ABA004F1E59594A6108DE52 /* [CP] Embed Pods Frameworks */,
-				19AB2018DB2E7FFBCFDA6F6B /* [CP] Copy Pods Resources */,
+				1D3518DA5221E7F3EABA7C15 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -481,12 +480,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6822D921DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitorTests" */;
 			buildPhases = (
-				BDD349C2E88A839DFD7221CD /* [CP] Check Pods Manifest.lock */,
+				11AB4B4F77C6C42D94E9DF51 /* [CP] Check Pods Manifest.lock */,
 				C6822D771DB13F2200D08393 /* Sources */,
 				C6822D781DB13F2200D08393 /* Frameworks */,
 				C6822D791DB13F2200D08393 /* Resources */,
-				937C85C62A3BBC97CAB8CD1C /* [CP] Embed Pods Frameworks */,
-				A86EDE06FCDE9DED1918E865 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -502,12 +499,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6822D951DB13F2200D08393 /* Build configuration list for PBXNativeTarget "LibreMonitorUITests" */;
 			buildPhases = (
-				4B935F2F04D9D35ADFEF9391 /* [CP] Check Pods Manifest.lock */,
+				C547848ACD9EA13100D90FE0 /* [CP] Check Pods Manifest.lock */,
 				C6822D821DB13F2200D08393 /* Sources */,
 				C6822D831DB13F2200D08393 /* Frameworks */,
 				C6822D841DB13F2200D08393 /* Resources */,
-				951B3668E1ADFC92ED178434 /* [CP] Embed Pods Frameworks */,
-				A725505D03BE411795C63648 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -532,7 +527,7 @@
 					C6822D611DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 26F6YWJYL8;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -546,14 +541,14 @@
 					C6822D7A1DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 26F6YWJYL8;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = C6822D611DB13F2200D08393;
 					};
 					C6822D851DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 26F6YWJYL8;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = C6822D611DB13F2200D08393;
 					};
@@ -617,49 +612,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		19AB2018DB2E7FFBCFDA6F6B /* [CP] Copy Pods Resources */ = {
+		11AB4B4F77C6C42D94E9DF51 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4B935F2F04D9D35ADFEF9391 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LibreMonitorUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-LibreMonitorTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7ABA004F1E59594A6108DE52 /* [CP] Embed Pods Frameworks */ = {
+		1D3518DA5221E7F3EABA7C15 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 			);
@@ -668,76 +656,20 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		937C85C62A3BBC97CAB8CD1C /* [CP] Embed Pods Frameworks */ = {
+		2301DD43CCE3E5407D9EA8AD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		951B3668E1ADFC92ED178434 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A725505D03BE411795C63648 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A86EDE06FCDE9DED1918E865 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ACC5AE5D94CFB4897C7237F1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-LibreMonitor-checkManifestLockResult.txt",
 			);
@@ -746,18 +678,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BDD349C2E88A839DFD7221CD /* [CP] Check Pods Manifest.lock */ = {
+		C547848ACD9EA13100D90FE0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LibreMonitorTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-LibreMonitorUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -920,7 +856,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-function-bodies=300";
@@ -975,7 +911,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -986,7 +922,7 @@
 		};
 		C6822D901DB13F2200D08393 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C01D6FD2C7EC8B142986E40 /* Pods-LibreMonitor.debug.xcconfig */;
+			baseConfigurationReference = 3699E067440DF4250D7C1B33 /* Pods-LibreMonitor.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1000,14 +936,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LibreMonitor/LibreMonitor-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		C6822D911DB13F2200D08393 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 771CB977837C430DB5630E78 /* Pods-LibreMonitor.release.xcconfig */;
+			baseConfigurationReference = 64D47D0B0840C959EFFA9D80 /* Pods-LibreMonitor.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1020,14 +955,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LibreMonitor/LibreMonitor-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
 		C6822D931DB13F2200D08393 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20B072583FD87F7318BD08D0 /* Pods-LibreMonitorTests.debug.xcconfig */;
+			baseConfigurationReference = F3D7B42C79827E18F3D9735C /* Pods-LibreMonitorTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1039,15 +973,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LibreMonitorTests/LibreMonitorTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LibreMonitor.app/LibreMonitor";
 			};
 			name = Debug;
 		};
 		C6822D941DB13F2200D08393 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECBB8DB6FD66440727AC6903 /* Pods-LibreMonitorTests.release.xcconfig */;
+			baseConfigurationReference = 3DC219F91FAAC75C67C11638 /* Pods-LibreMonitorTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1058,15 +991,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LibreMonitorTests/LibreMonitorTests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LibreMonitor.app/LibreMonitor";
 			};
 			name = Release;
 		};
 		C6822D961DB13F2200D08393 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8227FF2A03737CDDF22876F /* Pods-LibreMonitorUITests.debug.xcconfig */;
+			baseConfigurationReference = 29B84802438A170516B70200 /* Pods-LibreMonitorUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
@@ -1074,15 +1006,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = LibreMonitor;
 			};
 			name = Debug;
 		};
 		C6822D971DB13F2200D08393 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F858C2A695CEC9FB81DC9A5A /* Pods-LibreMonitorUITests.release.xcconfig */;
+			baseConfigurationReference = 10E10B329FE1A294608335D3 /* Pods-LibreMonitorUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
@@ -1090,8 +1021,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = LibreMonitor;
 			};
 			name = Release;

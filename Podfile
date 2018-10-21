@@ -12,15 +12,14 @@ target 'LibreMonitor' do
 #pod 'Charts', '~> 3.0.2'
 #pod 'Charts'
 pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'master'
-platform :ios, '11'
+platform :ios, '12'
 
 end
 
 target 'LibreMonitorTests' do
-platform :ios, '11'
+platform :ios, '12'
 end
 
 target 'LibreMonitorUITests' do
-platform :ios, '11'
+platform :ios, '12'
 end
-

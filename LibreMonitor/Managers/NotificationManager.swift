@@ -63,7 +63,7 @@ struct NotificationManager {
         content.subtitle = ""
         content.body = "LibreMonitor disconnected at \(timeFormatter.string(from: Date())) hours."
         content.badge = 0
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: true)
         let request = UNNotificationRequest(
@@ -87,7 +87,7 @@ struct NotificationManager {
         content.title = "Low battery"
         content.subtitle = ""
         content.body = "Battery voltage is \(voltage)"
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.5, repeats: false)
         
@@ -111,7 +111,7 @@ struct NotificationManager {
         content.title = title
         content.subtitle = ""
         content.body = body
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.5, repeats: false)
         
@@ -146,7 +146,7 @@ struct NotificationManager {
         content.title = "Data Transfer interrupted"
         content.subtitle = ""
         content.body = "Last data update was \(String(Int(wait))) s ago at \(timeFormatter.string(from: date)). Check transmitter and bluetooth connection."
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: true)
         
@@ -176,7 +176,7 @@ struct NotificationManager {
         content.title = "LibreMonitor terminated"
         content.subtitle = ""
         content.body = "LibreMonitor termiated at \(timeFormatter.string(from: date))."
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
         
@@ -208,7 +208,7 @@ struct NotificationManager {
         content.title = "DebugTimer"
         content.subtitle = "Something took too long (\(wait) s):"
         content.body = message
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
         
@@ -236,7 +236,7 @@ struct NotificationManager {
         content.title = "LibreMonitor memory warning"
         content.subtitle = ""
         content.body = "LibreMonitor did receive memory warning at \(timeFormatter.string(from: date))."
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
         
