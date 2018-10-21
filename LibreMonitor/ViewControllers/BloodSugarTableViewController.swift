@@ -406,19 +406,10 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             if let measurements = trendMeasurements {
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
-                
+                let rawString = String(format: "%0d, %0d", measurements[index].rawGlucose, measurements[index].rawTemperature)
+
                 cell.textLabel?.text = String(format: "%0.1f mg/dl", measurements[index].glucose)
-                
-                
-                // Solution for 
-//                let bert = (Int(measurements[index].bytes[4] & 0x3F) << 8) + Int(measurements[index].bytes[5])
-//                let berti = 0.5 * (-273.16 + sqrt(abs(273.16*273.16 + 4.0 * Double(bert))))
-                
-                let rawString = String(format: "%0d", measurements[index].rawValue)
-//                let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])
-//                let hugo = Int(measurements[index].bytes[3])
-                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(measurements[index].temp2()), \(measurements[index].temp3()), \(measurements[index].temp5()), \(measurements[index].temp4()), \(dateAsString), \(index)"
-//                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(temp), \(hugo), \(measurements[index].byteString), \(dateAsString), \(index)"
+                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(dateAsString), \(index)"
             }
 
         case .historyData:
@@ -426,17 +417,14 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             if let measurements = historyMeasurements {
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
-                
+                var rawString = String(format: "%0d, %0d", measurements[index].rawGlucose, measurements[index].rawTemperature)
+                if let oopCurrentValue = self.oopCurrentValue {
+                    let aString = String(format: ", oop: %0d, %0d, %0d", Int(round(oopCurrentValue.historyValues[31-index].bg)), oopCurrentValue.historyValues[31-index].time, oopCurrentValue.historyValues[31-index].quality)
+                    rawString.append(aString)
+                }
+
                 cell.textLabel?.text = String(format: "%0.1f mg/dl", measurements[index].glucose)
-                
-                let rawString = String(format: "%0d", measurements[index].rawValue)
-                // Solution for
-                let bert = (Int(measurements[index].bytes[4] & 0x1F) << 8) + Int(measurements[index].bytes[5])
-                let berti = 0.5 * (-273.16 + sqrt(abs(273.16*273.16 + 4.0 * Double(bert))))
-//                let temp =  (Int(measurements[index].bytes[5] & 0x0F) << 8) + Int(measurements[index].bytes[4])
-//                let hugo = Int(measurements[index].bytes[3])
-//                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(temp), \(hugo), \(dateAsString), \(index)"
-                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(berti), \(bert), \(dateAsString), \(index)"
+                cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(dateAsString), \(index)"
             }
         }
     }
