@@ -15,6 +15,7 @@ final class BloodSugarGraphView: LineChartView {
 
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
+    var oopCurrentValue: OOPCurrentValue?
     
     lazy var dateValueFormatter: DateValueFormatter = {
         let dateFormatter = DateFormatter()
@@ -34,7 +35,7 @@ final class BloodSugarGraphView: LineChartView {
     ///
     /// - parameter trendMeasurements:   trend measurement data (16 values for now and last 15 minutes)
     /// - parameter historyMeasurements: history measurement data (32 values for last eight hours, each beeing 15 minutes apart)
-    func setGlucoseCharts(_ trendMeasurements: [Measurement]?, historyMeasurements: [Measurement]?) {
+    func setGlucoseCharts(trendMeasurements: [Measurement]?, historyMeasurements: [Measurement]?, oopCurrentValue: OOPCurrentValue?) {
         
         self.noDataText = "No blood sugar data available"
         
@@ -55,11 +56,33 @@ final class BloodSugarGraphView: LineChartView {
             historyEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
         }
         let historyLineChartDataSet = LineChartDataSet(values: historyEntries, label: "History")
+        historyLineChartDataSet.setColor(NSUIColor.blue, alpha: CGFloat(1.0))
+        historyLineChartDataSet.setCircleColor(NSUIColor.blue)
+        
+        // oop glucose data set
+        var oopHistoryEntries = [ChartDataEntry]()
+        var i = 0
+        if let oopCurrentValue = oopCurrentValue, oopCurrentValue.historyValues.count == 32 && historyMeasurements.count == 32 {
+            oopCurrentValue.historyValues.map{$0.bg}.forEach{
+                let timeIntervall = historyMeasurements.reversed()[i].date.timeIntervalSince1970 // take date (x-axis) from history values
+                oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0))
+                i += 1
+            }
+        }
+        let oopHistoryLineChartDataSet = LineChartDataSet(values: oopHistoryEntries, label: "History")
+        oopHistoryLineChartDataSet.setColor(NSUIColor.red, alpha: CGFloat(1.0))
+        oopHistoryLineChartDataSet.setCircleColor(NSUIColor.red)
         
         // format data sets and create line chart with the data sets
         formatLineChartDataSet(historyLineChartDataSet)
         formatLineChartDataSet(trendLineChartDataSet)
-        let lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet])
+        var lineChartData = LineChartData()
+        if let _ = oopCurrentValue {
+            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, oopHistoryLineChartDataSet])
+            formatLineChartDataSet(oopHistoryLineChartDataSet)
+        } else {
+            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet])
+        }
 //        print(lineChartData.debugDescription)
         
         lineChartData.setValueFont(NSUIFont.systemFont(ofSize: CGFloat(9.0)))

@@ -214,7 +214,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             if let trendMeasurements = trendMeasurements, let historyMeasurements = historyMeasurements {
                 theCell.lineChartView.trendMeasurements = trendMeasurements
                 theCell.lineChartView.historyMeasurements = historyMeasurements
-                theCell.lineChartView.setGlucoseCharts(trendMeasurements, historyMeasurements: historyMeasurements)
+                theCell.lineChartView.oopCurrentValue = oopCurrentValue
+                theCell.lineChartView.setGlucoseCharts(trendMeasurements: trendMeasurements, historyMeasurements: historyMeasurements, oopCurrentValue: oopCurrentValue)
                 theCell.setNeedsDisplay()
                 theCell.lineChartView.setNeedsDisplay()
             }
