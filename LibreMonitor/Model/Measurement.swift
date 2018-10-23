@@ -28,6 +28,17 @@ struct Measurement {
     /// The glucose value in mg/dl
     let glucose: Double
     /// Initialize a new glucose measurement
+//    let slope_slope: Double = 0.0
+//    let slope_offset: Double = 0.0
+//    let offset_slope: Double = 0.0
+//    let offset_offset: Double = 0.0
+    let oopGlucose: Double
+    let slope_slope = 1.7333333333333336e-05
+    let slope_offset = -0.0006666666666666666
+    let offset_slope = 0.0049999999999999906
+    let offset_offset = -19.0
+    let oopSlope: Double
+    let oopOffset: Double
     ///
     /// - parameter bytes:  raw data bytes as read from the sensor
     /// - parameter slope:  slope to calculate glucose from raw value in (mg/dl)/raw
@@ -44,7 +55,40 @@ struct Measurement {
         self.offset = offset
         self.glucose = offset + slope * Double(rawGlucose)
         self.date = date
+        
+        self.oopSlope = slope_slope * Double(rawTemperature) + offset_slope
+        self.oopOffset = slope_offset * Double(rawTemperature) + offset_offset
+//        self.oopSlope = slope_slope * Double(rawTemperature) + slope_offset
+//        self.oopOffset = offset_slope * Double(rawTemperature) + offset_offset
+        self.oopGlucose = oopSlope * Double(rawGlucose) + oopOffset
+        print(self.description)
     }
+    
+//
+//
+//    private func slopefunc(raw_temp: Int) -> Double{
+//
+//        return self.params.slope_slope * Double(raw_temp) + self.params.offset_slope
+//        // rawglucose 7124: 0.1130434605
+//        //0.00001562292 * 7124 + 0.0017457784869033700
+//
+//        // rawglucose 5816: 0.0926086812
+//        //0.00001562292 * 5816 + 0.0017457784869033700
+//    }
+//
+//    private func offsetfunc(raw_temp: Int) -> Double{
+//        return self.params.slope_offset  * Double(raw_temp) + self.params.offset_offset
+//        //rawglucose 7124: -21.1304349
+//        //-0.00023267185 * 7124 + -19.4728806406
+//        // rawglucose 5816: -20.8261001202
+//        //-0.00023267185 * 5816 + -19.4728806406
+//    }
+//
+//
+//    public func GetGlucoseValue(from_raw_glucose raw_glucose: Int, raw_temp: Int) -> Double{
+//        return self.slopefunc(raw_temp: raw_temp) * Double(raw_glucose) + self.offsetfunc(raw_temp: raw_temp)
+//    }
+
     
 //    func temp1() -> Double {
 //        let anInt = (Int(self.bytes[4] & 0x3F) << 8) + Int(self.bytes[5])
@@ -80,6 +124,20 @@ struct Measurement {
 //    Temp = 22.22 * log(311301/NTC)
     
     var description: String {
-        return String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes)" )
+        var aString = String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes) \n")
+        aString.append("OOP: slope_slope: \(slope_slope), slope_offset: \(slope_offset), offset_slope: \(offset_slope), offset_offset: \(offset_offset)\n")
+        aString.append("OOP: slope: \(oopSlope), offset: \(oopOffset)")
+        
+        var oopSlopeTest = slope_slope * Double(9000) + offset_slope
+        var oopOffsetTest = slope_offset * Double(9000) + offset_offset
+        var oopGlucoseTest = oopSlopeTest * Double(3000) + oopOffsetTest
+        aString.append("Test 3000, 9000: \(oopGlucoseTest) (should be 458")
+        
+        oopSlopeTest = slope_slope * Double(6000) + offset_slope
+        oopOffsetTest = slope_offset * Double(6000) + offset_offset
+        oopGlucoseTest = oopSlopeTest * Double(1000) + oopOffsetTest
+        aString.append("Test 1000, 6000: \(oopGlucoseTest) (should be 86")
+        return aString
+//        return String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes)  /n oop: slope_slope = " )
     }
 }

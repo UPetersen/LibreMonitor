@@ -59,29 +59,59 @@ final class BloodSugarGraphView: LineChartView {
         historyLineChartDataSet.setColor(NSUIColor.blue, alpha: CGFloat(1.0))
         historyLineChartDataSet.setCircleColor(NSUIColor.blue)
         
-        // oop glucose data set
+        // oop glucose data set. Last point is mostly zero, so we will use the current oop glucose instead
         var oopHistoryEntries = [ChartDataEntry]()
         var i = 0
         if let oopCurrentValue = oopCurrentValue, oopCurrentValue.historyValues.count == 32 && historyMeasurements.count == 32 {
             oopCurrentValue.historyValues.map{$0.bg}.forEach{
-                let timeIntervall = historyMeasurements.reversed()[i].date.timeIntervalSince1970 // take date (x-axis) from history values
-                oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0))
+                if i < 31 {
+                    let timeIntervall = historyMeasurements.reversed()[i].date.timeIntervalSince1970 // take date (x-axis) from history values
+                    oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0))
+                } else {
+                    // last point will not be plotted because it is mostly zero, but plot current oop glucose instead
+                    let timeIntervall = trendMeasurements[0].date.timeIntervalSince1970 // take date (x-axis) from history values
+                    oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: oopCurrentValue.currentBg))
+                }
                 i += 1
             }
         }
-        let oopHistoryLineChartDataSet = LineChartDataSet(values: oopHistoryEntries, label: "History")
+        let oopHistoryLineChartDataSet = LineChartDataSet(values: oopHistoryEntries, label: "OOP")
         oopHistoryLineChartDataSet.setColor(NSUIColor.red, alpha: CGFloat(1.0))
         oopHistoryLineChartDataSet.setCircleColor(NSUIColor.red)
+        
+        
+        // new surrogate algo data set trend values and history values
+        var newTrendEntries = [ChartDataEntry]()
+        trendMeasurements.reversed().forEach{
+            let timeIntervall = $0.date.timeIntervalSince1970
+            newTrendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
+        }
+        let newTrendLineChartDataSet = LineChartDataSet(values: newTrendEntries, label: "New Trend")
+        var newHistoryEntries = [ChartDataEntry]()
+        newTrendLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
+        newTrendLineChartDataSet.setCircleColor(NSUIColor.darkGray)
+        newTrendLineChartDataSet.circleRadius = 3.0
+
+        historyMeasurements.reversed().forEach{
+            let timeIntervall = $0.date.timeIntervalSince1970
+            newHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
+        }
+        let newHistoryLineChartDataSet = LineChartDataSet(values: newHistoryEntries, label: "New History")
+        newHistoryLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
+        newHistoryLineChartDataSet.setCircleColor(NSUIColor.darkGray)
+        newHistoryLineChartDataSet.circleRadius = 3.0
+
+        
         
         // format data sets and create line chart with the data sets
         formatLineChartDataSet(historyLineChartDataSet)
         formatLineChartDataSet(trendLineChartDataSet)
         var lineChartData = LineChartData()
         if let _ = oopCurrentValue {
-            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, oopHistoryLineChartDataSet])
+            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, oopHistoryLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet])
             formatLineChartDataSet(oopHistoryLineChartDataSet)
         } else {
-            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet])
+            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet])
         }
 //        print(lineChartData.debugDescription)
         
