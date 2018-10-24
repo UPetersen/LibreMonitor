@@ -69,7 +69,8 @@ final class BloodSugarGraphView: LineChartView {
                     oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0))
                 } else {
                     // last point will not be plotted because it is mostly zero, but plot current oop glucose instead
-                    let timeIntervall = trendMeasurements[0].date.timeIntervalSince1970 // take date (x-axis) from history values
+//                    let timeIntervall = trendMeasurements[0].date.timeIntervalSince1970 // take date (x-axis) from history values
+                    let timeIntervall = trendMeasurements[0].date.timeIntervalSince1970 + (trendMeasurements[0].date.timeIntervalSince1970  -  trendMeasurements[9].date.timeIntervalSince1970) // newest date plus 10 minutes
                     oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: oopCurrentValue.currentBg))
                 }
                 i += 1
@@ -102,16 +103,32 @@ final class BloodSugarGraphView: LineChartView {
         newHistoryLineChartDataSet.circleRadius = 3.0
 
         
+        // Test for current glucose
+        let p1 = Double(trendMeasurements[10...14].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        let p2 = Double(trendMeasurements[5...9].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        let p3 = Double(trendMeasurements[0...4].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        var testEntries = [ChartDataEntry]()
+        testEntries.append(ChartDataEntry(x: trendMeasurements[12].date.timeIntervalSince1970, y: p1))
+        testEntries.append(ChartDataEntry(x: trendMeasurements[7].date.timeIntervalSince1970, y: p2))
+        testEntries.append(ChartDataEntry(x: trendMeasurements[2].date.timeIntervalSince1970, y: p3))
+        let p4 = p3 + (p3 - p1)
+        let t4 = trendMeasurements[2].date.timeIntervalSince1970 + (trendMeasurements[2].date.timeIntervalSince1970 - trendMeasurements[12].date.timeIntervalSince1970)
+        testEntries.append(ChartDataEntry(x: t4, y: p4))
+        let testLineChartDataSet = LineChartDataSet(values: testEntries, label: "Test")
+        testLineChartDataSet.setColor(NSUIColor.brown, alpha: CGFloat(1.0))
+        testLineChartDataSet.setCircleColor(NSUIColor.brown)
+        testLineChartDataSet.circleRadius = 3.0
+
         
         // format data sets and create line chart with the data sets
         formatLineChartDataSet(historyLineChartDataSet)
         formatLineChartDataSet(trendLineChartDataSet)
         var lineChartData = LineChartData()
         if let _ = oopCurrentValue {
-            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, oopHistoryLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet])
+            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, oopHistoryLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet, testLineChartDataSet])
             formatLineChartDataSet(oopHistoryLineChartDataSet)
         } else {
-            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet])
+            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet, testLineChartDataSet])
         }
 //        print(lineChartData.debugDescription)
         
@@ -135,7 +152,8 @@ final class BloodSugarGraphView: LineChartView {
 
         let oldXAxisMaximum = self.xAxis.axisMaximum          // i.e. date when the chart was refreshed last time
         let highestXValue = lineChartData.xMax                // i.e. date of last scan (or sample)
-        self.xAxis.axisMaximum = Date().timeIntervalSince1970 // set maximum to current date
+        self.xAxis.axisMaximum = Date().addingTimeInterval(10.0 * 60.0).timeIntervalSince1970 // set maximum to current date
+//        self.xAxis.axisMaximum = Date().timeIntervalSince1970 // set maximum to current date
 
         
         // Adjust zoom and x-offset
@@ -143,7 +161,8 @@ final class BloodSugarGraphView: LineChartView {
             // if last sample was more than 10 minutes ago, zoom out such that all the last 8 hours are displayed. The rest of the data can be displayed e.g. by paning
             self.fitScreen()
             let xTimeRange = self.xAxis.axisMaximum - self.xAxis.axisMinimum
-            let eightHours = 8.0 * 3600.0
+//            let eightHours = 8.0 * 3600.0
+            let eightHours = 8.0 * 3600.0 + 10.0 * 60.0 // 8 hours plus 10 minutes
             let scaleX = xTimeRange / eightHours
             let xOffset = xTimeRange - eightHours
             self.zoom(scaleX: CGFloat(scaleX), scaleY: 1, x: CGFloat(xOffset), y: 0)
