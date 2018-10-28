@@ -13,6 +13,8 @@ import Foundation
 struct Measurement {
     /// The date for this measurement
     let date: Date
+    /// The minute counter for this measurement
+    let counter: Int
     /// The bytes as read from the sensor. All data is derived from this \"raw data"
     let bytes: [UInt8]
     /// The bytes as String
@@ -46,7 +48,7 @@ struct Measurement {
     /// - parameter date:   date of the measurement
     ///
     /// - returns: Measurement
-    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, date: Date) {
+    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date) {
         self.bytes = bytes
         self.byteString = bytes.reduce("", {$0 + String(format: "%02X", arguments: [$1])})
         self.rawGlucose = (Int(bytes[1] & 0x1F) << 8) + Int(bytes[0]) // switched to 13 bit mask on 2018-03-15
@@ -55,6 +57,7 @@ struct Measurement {
         self.offset = offset
         self.glucose = offset + slope * Double(rawGlucose)
         self.date = date
+        self.counter = counter
         
         self.oopSlope = slope_slope * Double(rawTemperature) + offset_slope
         self.oopOffset = slope_offset * Double(rawTemperature) + offset_offset

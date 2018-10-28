@@ -41,7 +41,51 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
     var batteryVoltage = 0.0
-    var oopCurrentValue: OOPCurrentValue?
+    var fetchedGlucoses: [BloodGlucose]?
+    var oopCurrentValue: OOPCurrentValue? {
+        didSet {
+            print("----------------------- \n\n\n DID SET IT \n\n\n ----------------------------")
+            if let oopCurrentValue = oopCurrentValue {
+
+                // Store value in core data data base
+                if let currentMeasurement = trendMeasurements?.first {
+                    let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
+                    glucose.value = oopCurrentValue.currentBg
+                    glucose.bytes = currentMeasurement.byteString
+                    glucose.date = currentMeasurement.date as NSDate
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    glucose.dateString = dateFormatter.string(from: currentMeasurement.date)
+                    
+                    print("trend: \(String(describing: sensorData?.nextTrendBlock)), history: \(String(describing: sensorData?.nextHistoryBlock)); counter: \(String(describing: sensorData?.minutesSinceStart))")
+                    NSLog("Decoded content")
+                    NSLog("  Current trend: \(oopCurrentValue.currentTrend)")
+                    NSLog("  Current bg: \(oopCurrentValue.currentBg)")
+                    NSLog("  Current time: \(oopCurrentValue.currentTime)")
+                    NSLog("  Serial Number: \(oopCurrentValue.serialNumber ?? "-")")
+                    NSLog("  timeStamp: \(oopCurrentValue.timestamp)")
+                    var i = 0
+                    for historyValue in oopCurrentValue.historyValues {
+                        NSLog(String(format: "    #%02d: time: \(historyValue.time), quality: \(historyValue.quality), bg: \(historyValue.bg)", i))
+                        i += 1
+                    }
+
+                    print("----------------------- DID STORE IT in CORE DATA ----------------------------")
+                }
+
+                let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
+                request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+                if let fetchedGlucoses = try? persistentContainer?.viewContext.fetch(request) {
+                    self.fetchedGlucoses = fetchedGlucoses
+                } else {
+                    self.fetchedGlucoses = nil
+                }
+                
+                    
+
+            }
+        }
+    }
     
     var bloodGlucoseOffset: Double!
     var bloodGlucoseSlope: Double!
@@ -113,7 +157,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             bloodGlucoseSlope = 1.0
             UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
         }
-        
         
         dateFormatter.dateFormat = "yyyy-MM-dd"
         timeFormatter.dateFormat = "HH:mm:ss"
@@ -215,7 +258,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 theCell.lineChartView.trendMeasurements = trendMeasurements
                 theCell.lineChartView.historyMeasurements = historyMeasurements
                 theCell.lineChartView.oopCurrentValue = oopCurrentValue
-                theCell.lineChartView.setGlucoseCharts(trendMeasurements: trendMeasurements, historyMeasurements: historyMeasurements, oopCurrentValue: oopCurrentValue)
+                theCell.lineChartView.setGlucoseCharts(trendMeasurements: trendMeasurements, historyMeasurements: historyMeasurements, oopCurrentValue: oopCurrentValue, fetchedGlucoses: fetchedGlucoses)
                 theCell.setNeedsDisplay()
                 theCell.lineChartView.setNeedsDisplay()
             }
@@ -418,12 +461,11 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             if let measurements = historyMeasurements {
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
-                var rawString = String(format: "%0d, %0d", measurements[index].rawGlucose, measurements[index].rawTemperature)
+                var rawString = String(format: "%0d, %0d, %0d, %d", measurements[index].rawGlucose, measurements[index].rawTemperature, measurements[index].counter, Int(measurements[index].oopGlucose))
                 if let oopCurrentValue = self.oopCurrentValue {
                     let aString = String(format: ", oop: %0d, %0d, %0d", Int(round(oopCurrentValue.historyValues[31-index].bg)), oopCurrentValue.historyValues[31-index].time, oopCurrentValue.historyValues[31-index].quality)
                     rawString.append(aString)
                 }
-
                 cell.textLabel?.text = String(format: "%0.1f mg/dl", measurements[index].glucose)
                 cell.detailTextLabel?.text = "\(timeAsString), \(rawString), \(measurements[index].byteString), \(dateAsString), \(index)"
             }
@@ -547,17 +589,14 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                         do {
                             let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
                             
-                            
                             // Loop over all and check if new data exists and store the new data if not yet existent
                             historyMeasurements.forEach({measurement in
                                 
                                 os_log("HistoryMeasurement: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
 
                                 var storeMeasurement = true
-                                
                                 // Check if there is already a record stored for the same time
                                 for bloodGlucose in fetchedBloodGlucoses! {
-                                    
                                     
                                     // Found a value within time range that is already stored, so do not store the value just read from the sensor (since it is already stored)
                                     // Time range criteria is fulfilled if dates of stored value and value just read from sensor are less than two minutes apart from each other (in either direction)
@@ -569,6 +608,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                         break
                                     }
                                 }
+/* 2018-10-27: Skip storing history data in core data for test purposes
                                 // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
                                 if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
                                 
@@ -586,6 +626,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                     // Prepare for nightscout
                                     nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
                                 }
+ */
                             })
                             // send to nightscout
                             if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {

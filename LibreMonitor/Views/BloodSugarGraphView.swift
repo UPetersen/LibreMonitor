@@ -35,104 +35,36 @@ final class BloodSugarGraphView: LineChartView {
     ///
     /// - parameter trendMeasurements:   trend measurement data (16 values for now and last 15 minutes)
     /// - parameter historyMeasurements: history measurement data (32 values for last eight hours, each beeing 15 minutes apart)
-    func setGlucoseCharts(trendMeasurements: [Measurement]?, historyMeasurements: [Measurement]?, oopCurrentValue: OOPCurrentValue?) {
+    func setGlucoseCharts(trendMeasurements: [Measurement]?, historyMeasurements: [Measurement]?, oopCurrentValue: OOPCurrentValue?, fetchedGlucoses: [BloodGlucose]?) {
         
         self.noDataText = "No blood sugar data available"
         
         guard let trendMeasurements = trendMeasurements, let historyMeasurements = historyMeasurements else {return}
         
+        
         // Trend data set (data needs to be ordered from lowest x-value to highest x-value)
-        var trendEntries = [ChartDataEntry]()
-        trendMeasurements.reversed().forEach{
-            let timeIntervall = $0.date.timeIntervalSince1970
-            trendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
-        }
-        let trendLineChartDataSet = LineChartDataSet(values: trendEntries, label: "Trend")
-
+        let trendLineChartDataSet = trendLineChartData(trendMeasurements: trendMeasurements)
         // History data set (data needs to be ordered from lowest x-value to highest x-value)
-        var historyEntries = [ChartDataEntry]()
-        historyMeasurements.reversed().forEach{
-            let timeIntervall = $0.date.timeIntervalSince1970
-            historyEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
-        }
-        let historyLineChartDataSet = LineChartDataSet(values: historyEntries, label: "History")
-        historyLineChartDataSet.setColor(NSUIColor.blue, alpha: CGFloat(1.0))
-        historyLineChartDataSet.setCircleColor(NSUIColor.blue)
-        
-        // oop glucose data set. Last point is mostly zero, so we will use the current oop glucose instead
-        var oopHistoryEntries = [ChartDataEntry]()
-        var i = 0
-        if let oopCurrentValue = oopCurrentValue, oopCurrentValue.historyValues.count == 32 && historyMeasurements.count == 32 {
-            oopCurrentValue.historyValues.map{$0.bg}.forEach{
-                if i < 31 {
-                    let timeIntervall = historyMeasurements.reversed()[i].date.timeIntervalSince1970 // take date (x-axis) from history values
-                    oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0))
-                } else {
-                    // last point will not be plotted because it is mostly zero, but plot current oop glucose instead
-//                    let timeIntervall = trendMeasurements[0].date.timeIntervalSince1970 // take date (x-axis) from history values
-                    let timeIntervall = trendMeasurements[0].date.timeIntervalSince1970 + (trendMeasurements[0].date.timeIntervalSince1970  -  trendMeasurements[9].date.timeIntervalSince1970) // newest date plus 10 minutes
-                    oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: oopCurrentValue.currentBg))
-                }
-                i += 1
-            }
-        }
-        let oopHistoryLineChartDataSet = LineChartDataSet(values: oopHistoryEntries, label: "OOP")
-        oopHistoryLineChartDataSet.setColor(NSUIColor.red, alpha: CGFloat(1.0))
-        oopHistoryLineChartDataSet.setCircleColor(NSUIColor.red)
-        
-        
+        let historyLineChartDataSet = historyLineChartData(historyMeasurements: historyMeasurements)
+        let oopHistoryLineChartDataSet = oopHistoryLineChartData(oopCurrentValue: oopCurrentValue, trendMeasurements: trendMeasurements)
         // new surrogate algo data set trend values and history values
-        var newTrendEntries = [ChartDataEntry]()
-        trendMeasurements.reversed().forEach{
-            let timeIntervall = $0.date.timeIntervalSince1970
-            newTrendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
-        }
-        let newTrendLineChartDataSet = LineChartDataSet(values: newTrendEntries, label: "New Trend")
-        var newHistoryEntries = [ChartDataEntry]()
-        newTrendLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
-        newTrendLineChartDataSet.setCircleColor(NSUIColor.darkGray)
-        newTrendLineChartDataSet.circleRadius = 3.0
-
-        historyMeasurements.reversed().forEach{
-            let timeIntervall = $0.date.timeIntervalSince1970
-            newHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
-        }
-        let newHistoryLineChartDataSet = LineChartDataSet(values: newHistoryEntries, label: "New History")
-        newHistoryLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
-        newHistoryLineChartDataSet.setCircleColor(NSUIColor.darkGray)
-        newHistoryLineChartDataSet.circleRadius = 3.0
-
-        
-        // Test for current glucose
-        let p1 = Double(trendMeasurements[10...14].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
-        let p2 = Double(trendMeasurements[5...9].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
-        let p3 = Double(trendMeasurements[0...4].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
-        var testEntries = [ChartDataEntry]()
-        testEntries.append(ChartDataEntry(x: trendMeasurements[12].date.timeIntervalSince1970, y: p1))
-        testEntries.append(ChartDataEntry(x: trendMeasurements[7].date.timeIntervalSince1970, y: p2))
-        testEntries.append(ChartDataEntry(x: trendMeasurements[2].date.timeIntervalSince1970, y: p3))
-        let p4 = p3 + (p3 - p1)
-        let t4 = trendMeasurements[2].date.timeIntervalSince1970 + (trendMeasurements[2].date.timeIntervalSince1970 - trendMeasurements[12].date.timeIntervalSince1970)
-        testEntries.append(ChartDataEntry(x: t4, y: p4))
-        let testLineChartDataSet = LineChartDataSet(values: testEntries, label: "Test")
-        testLineChartDataSet.setColor(NSUIColor.brown, alpha: CGFloat(1.0))
-        testLineChartDataSet.setCircleColor(NSUIColor.brown)
-        testLineChartDataSet.circleRadius = 3.0
-
+        let newTrendLineChartDataSet = newTrendLineChartData(trendMeasurements: trendMeasurements)
+        let newHistoryLineChartDataSet = newHistoryLineChartData(historyMeasurements: historyMeasurements)
+        let testLineChartDataSet = testLineChartData(trendMeasurements: trendMeasurements)
+        let fetchedGlucosesLineChartDataSet = fetchedGlucosesLineChartData(fetchedGlucoses: fetchedGlucoses)
         
         // format data sets and create line chart with the data sets
         formatLineChartDataSet(historyLineChartDataSet)
         formatLineChartDataSet(trendLineChartDataSet)
+//        formatLineChartDataSet(oopHistoryLineChartDataSet)
+
+        // Create the line chart
         var lineChartData = LineChartData()
-        if let _ = oopCurrentValue {
-            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, oopHistoryLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet, testLineChartDataSet])
-            formatLineChartDataSet(oopHistoryLineChartDataSet)
-        } else {
-            lineChartData = LineChartData(dataSets: [historyLineChartDataSet, trendLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet, testLineChartDataSet])
-        }
-//        print(lineChartData.debugDescription)
-        
+//        lineChartData = LineChartData(dataSets: [fetchedGlucosesLineChartDataSet, oopHistoryLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet, testLineChartDataSet])
+        lineChartData = LineChartData(dataSets: [trendLineChartDataSet, historyLineChartDataSet, oopHistoryLineChartDataSet, newTrendLineChartDataSet, newHistoryLineChartDataSet, testLineChartDataSet, fetchedGlucosesLineChartDataSet])
         lineChartData.setValueFont(NSUIFont.systemFont(ofSize: CGFloat(9.0)))
+        
+        
         
         // Line for upper and lower threshold of ideal glucose values
         let lowerLimitLine = ChartLimitLine(limit: 70.0)
@@ -185,8 +117,134 @@ final class BloodSugarGraphView: LineChartView {
         lineChartDataSet.circleRadius = CGFloat(3.0)
         lineChartDataSet.mode = .cubicBezier
         lineChartDataSet.cubicIntensity = 0.05
-        lineChartDataSet.lineWidth = lineChartDataSet.lineWidth * CGFloat(3.0)
+        lineChartDataSet.lineWidth = lineChartDataSet.lineWidth * CGFloat(2.0)
     }
+    
+    
+    // MARK: - Functions for line chart data
+    
+    func trendLineChartData(trendMeasurements: [Measurement]) -> LineChartDataSet {
+        // Trend data set (data needs to be ordered from lowest x-value to highest x-value)
+        var trendEntries = [ChartDataEntry]()
+        trendMeasurements.reversed().forEach{
+            let timeIntervall = $0.date.timeIntervalSince1970
+            trendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
+        }
+        let trendLineChartDataSet = LineChartDataSet(values: trendEntries, label: "Trend")
+        trendLineChartDataSet.drawValuesEnabled = false
+        return trendLineChartDataSet
+    }
+    
+    func historyLineChartData(historyMeasurements: [Measurement]) -> LineChartDataSet {
+        // History data set (data needs to be ordered from lowest x-value to highest x-value)
+        var historyEntries = [ChartDataEntry]()
+        historyMeasurements.reversed().forEach{
+            let timeIntervall = $0.date.timeIntervalSince1970
+            historyEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
+        }
+        let historyLineChartDataSet = LineChartDataSet(values: historyEntries, label: "History")
+        historyLineChartDataSet.setColor(NSUIColor.blue, alpha: CGFloat(1.0))
+        historyLineChartDataSet.setCircleColor(NSUIColor.blue)
+        return historyLineChartDataSet
+    }
+    
+    func oopHistoryLineChartData(oopCurrentValue: OOPCurrentValue?, trendMeasurements: [Measurement]) -> LineChartDataSet {
+        var oopHistoryEntries = [ChartDataEntry]()
+        if let oopCurrentValue = oopCurrentValue {
+            if let trendMeasurmentMostRecentValue = trendMeasurements.first {
+                oopCurrentValue.historyValues.map{$0}.forEach{
+                    if $0.bg > 0 {
+                        let timeIntervall = trendMeasurmentMostRecentValue.date.timeIntervalSince1970 - TimeInterval((oopCurrentValue.currentTime - $0.time) * 60)
+                        oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.bg))
+                    }
+                }
+                let timeIntervall = trendMeasurmentMostRecentValue.date.timeIntervalSince1970 + TimeInterval(8 * 60) // newest date plus 10 minutes
+                oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: oopCurrentValue.currentBg))
+            }
+        }
+        let oopHistoryLineChartDataSet = LineChartDataSet(values: oopHistoryEntries, label: "OOP")
+        oopHistoryLineChartDataSet.setColor(NSUIColor.red, alpha: CGFloat(1.0))
+        oopHistoryLineChartDataSet.setCircleColor(NSUIColor.red)
+        oopHistoryLineChartDataSet.circleRadius = 3.0
+        oopHistoryLineChartDataSet.lineWidth =  CGFloat(1.5)
+
+        return oopHistoryLineChartDataSet
+    }
+    
+    func newTrendLineChartData(trendMeasurements: [Measurement]) -> LineChartDataSet {
+        
+        // new surrogate algo data set trend values and history values
+        var newTrendEntries = [ChartDataEntry]()
+        trendMeasurements.reversed().forEach{
+            let timeIntervall = $0.date.timeIntervalSince1970
+            newTrendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
+        }
+        let newTrendLineChartDataSet = LineChartDataSet(values: newTrendEntries, label: "New Trend")
+        newTrendLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
+        newTrendLineChartDataSet.setCircleColor(NSUIColor.darkGray)
+        newTrendLineChartDataSet.circleRadius = 3.0
+        newTrendLineChartDataSet.drawValuesEnabled = false
+        return newTrendLineChartDataSet
+    }
+    
+    func newHistoryLineChartData(historyMeasurements: [Measurement]) -> LineChartDataSet {
+        var newHistoryEntries = [ChartDataEntry]()
+        historyMeasurements.reversed().forEach{
+            let timeIntervall = $0.date.timeIntervalSince1970 // Test - TimeInterval(60*5)
+            newHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
+        }
+        let newHistoryLineChartDataSet = LineChartDataSet(values: newHistoryEntries, label: "New History")
+        newHistoryLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
+        newHistoryLineChartDataSet.setCircleColor(NSUIColor.darkGray)
+        newHistoryLineChartDataSet.circleRadius = 3.0
+        //        print("newHistoryLineChartDataSet:")
+        //        print(newHistoryLineChartDataSet.debugDescription)
+        return newHistoryLineChartDataSet
+    }
+    
+    func testLineChartData(trendMeasurements: [Measurement]) -> LineChartDataSet {
+        // Test for current glucose
+        let p1 = Double(trendMeasurements[10...14].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        let p2 = Double(trendMeasurements[5...9].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        let p3 = Double(trendMeasurements[0...4].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        var testEntries = [ChartDataEntry]()
+        testEntries.append(ChartDataEntry(x: trendMeasurements[12].date.timeIntervalSince1970, y: p1))
+        testEntries.append(ChartDataEntry(x: trendMeasurements[7].date.timeIntervalSince1970, y: p2))
+        testEntries.append(ChartDataEntry(x: trendMeasurements[2].date.timeIntervalSince1970, y: p3))
+        let p4 = p3 + 0.65 * (p3 - p1) + 0.4 * (p3 - p2)
+        let t4 = trendMeasurements[2].date.timeIntervalSince1970 + 0.8 * (trendMeasurements[2].date.timeIntervalSince1970 - trendMeasurements[12].date.timeIntervalSince1970)
+        testEntries.append(ChartDataEntry(x: t4, y: p4))
+        let testLineChartDataSet = LineChartDataSet(values: testEntries, label: "Test")
+        testLineChartDataSet.setColor(NSUIColor.brown, alpha: CGFloat(1.0))
+        testLineChartDataSet.setCircleColor(NSUIColor.brown)
+        testLineChartDataSet.circleRadius = 3.0
+     
+        return testLineChartDataSet
+    }
+    
+    
+    func fetchedGlucosesLineChartData(fetchedGlucoses: [BloodGlucose]?) -> LineChartDataSet {
+        // array of oop glucose that was retreived from core data.
+        var fetchedGlucosesEntries = [ChartDataEntry]()
+        if let fetchedGlucoses = fetchedGlucoses {
+            fetchedGlucoses.reversed().forEach{
+                if let timeIntervall = $0.date?.timeIntervalSince1970 {
+                    fetchedGlucosesEntries.append(ChartDataEntry(x: timeIntervall, y: $0.value))
+                }
+            }
+        }
+        let fetchedGlucosesLineChartDataSet = LineChartDataSet(values: fetchedGlucosesEntries, label: "current")
+        fetchedGlucosesLineChartDataSet.setColor(NSUIColor.brown, alpha: CGFloat(1.0))
+        fetchedGlucosesLineChartDataSet.setCircleColor(NSUIColor.brown)
+        fetchedGlucosesLineChartDataSet.circleRadius = 3.0
+        fetchedGlucosesLineChartDataSet.lineWidth = fetchedGlucosesLineChartDataSet.lineWidth * CGFloat(2.0)
+        fetchedGlucosesLineChartDataSet.drawValuesEnabled = false
+        //        print("fetchedGlucosesLineChartDataSet:")
+        //        print(fetchedGlucosesLineChartDataSet.debugDescription)
+        return fetchedGlucosesLineChartDataSet
+    }
+
+    
 }
 
 
