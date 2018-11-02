@@ -195,18 +195,19 @@ extension MiaoMiaoResponseState: CustomStringConvertible {
 protocol MiaoMiaoManagerDelegate {
     func miaoMiaoManagerPeripheralStateChanged(_ state: MiaoMiaoManagerState)
     func miaoMiaoManagerReceivedMessage(_ messageIdentifier:UInt16, txFlags:UInt8, payloadData:Data)
+    func miaoMiaoManagerDidUpdateSensorAndMiaoMiao(sensorData: SensorData, miaoMiao: MiaoMiao) -> Void
 }
 
-final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, SLIPBufferDelegate {
+final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // MARK: - Properties
     
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "MiaoMiaoManager")
-    var miaomiao: MiaoMiao?
+    var miaoMiao: MiaoMiao?
     var miaoMiaoResponseState: MiaoMiaoResponseState?
     var centralManager: CBCentralManager!
     var peripheral: CBPeripheral?
-    var slipBuffer = SLIPBuffer()
+//    var slipBuffer = SLIPBuffer()
     var writeCharacteristic: CBCharacteristic?
     
     var rxBuffer = Data()
@@ -237,7 +238,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil, options: nil)
-        slipBuffer.delegate = self
+//        slipBuffer.delegate = self
     }
     
     func scanForMiaoMiao() {
@@ -469,6 +470,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                                     // buffer large enough and can be used
                                     os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
                                     self.delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x29, payloadData: self.rxBuffer)
+                                    self.handleCompleteMessage()
+
                                     self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
                                 } else {
                                     // buffer not large enough and has to be reset
@@ -480,6 +483,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                             if rxBuffer.count >= 363 && rxBuffer.last! == 0x29 {
                                 os_log("Buffer complete, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
                                 delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x28, payloadData: rxBuffer)
+                                handleCompleteMessage()
                                 rxBuffer = Data()  // reset buffer, once completed and delegate is informed
                                 timer?.invalidate()
                             } else {
@@ -552,37 +556,45 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         rxBuffer = Data()
     }
     
-    
-    
-    // MARK: - SLIPBufferDelegate
-    
-    func slipBufferReceivedPayload(_ payloadData: Data, payloadIdentifier: UInt16, txFlags: UInt8) {
-        os_log("Slip buffer received payload with identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(payloadIdentifier))
+    func handleCompleteMessage() {
+        guard rxBuffer.count >= 363 else {
+            return
+        }
+
+        miaoMiao = MiaoMiao(hardware: String(describing: rxBuffer[16...17].hexEncodedString()),
+                            firmware: String(describing: rxBuffer[14...15].hexEncodedString()),
+                            battery: Int(rxBuffer[13]))
+
+         let sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date())
+
+        guard let miaoMiao = miaoMiao else {
+            return
+        }
+        
+        // Set notifications
+        NotificationManager.scheduleApplicationTerminatedNotification(wait: 500)
+        NotificationManager.scheduleDataTransferInterruptedNotification(wait: 400)
+
+        if miaoMiao.battery < 20 {
+            NotificationManager.setLowBatteryNotification(voltage: Double(miaoMiao.battery))
+        }
+
+        // Check if sensor data is valid and reread, if this is not the case
+        
+        if let sensorData = sensorData {
+            if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) {
+                Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {_ in
+                    self.requestData()
+                })
+            }
+        }
+
         
         // Inform delegate
-        if let delegate = delegate {
-            os_log("Inform slip buffer delegate", log: MiaoMiaoManager.bt_log, type: .default)
-            delegate.miaoMiaoManagerReceivedMessage(payloadIdentifier, txFlags: txFlags, payloadData: payloadData)
-        }
+        delegate?.miaoMiaoManagerDidUpdateSensorAndMiaoMiao(sensorData: sensorData!, miaoMiao: miaoMiao)
+
+        
+        
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

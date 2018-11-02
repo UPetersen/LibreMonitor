@@ -8,20 +8,24 @@
 
 import Foundation
 
-struct MiaoMiao {
+struct MiaoMiao: CustomStringConvertible {
     // hardware number
-    let hardwareNumber: String
+    let hardware: String
     // software number
-    let softwareNumber: String
+    let firmware: String
     // battery level, percentage between 0 % and 100 %
-    let battery: Double
+    let battery: Int
     // battery level String
     let batteryString: String
     
-    init(hardwareNumber: String, softwareNumber: String, battery: Double) {
-        self.hardwareNumber = hardwareNumber
-        self.softwareNumber = softwareNumber
+    init(hardware: String, firmware: String, battery: Int) {
+        self.hardware = hardware
+        self.firmware = firmware
         self.battery = battery
-        self.batteryString = "\(Int(battery)) %"
+        self.batteryString = "\(battery) %"
+    }
+    
+    var description: String {
+        return "Hardware: \(hardware), firmware: \(firmware), battery: \(batteryString)"
     }
 }

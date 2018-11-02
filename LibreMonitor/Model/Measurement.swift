@@ -35,10 +35,15 @@ struct Measurement {
 //    let offset_slope: Double = 0.0
 //    let offset_offset: Double = 0.0
     let oopGlucose: Double
-    let slope_slope = 1.7333333333333336e-05
-    let slope_offset = -0.0006666666666666666
-    let offset_slope = 0.0049999999999999906
-    let offset_offset = -19.0
+    // {"status":"complete","slope_slope":0.00001816666666666667,"slope_offset":-0.00016666666666666666,"offset_offset":-21.5,"offset_slope":0.007499999999999993,"uuid":"calibrationmetadata-e61686dd-1305-44f0-a675-df98aabce67f","isValidForFooterWithReverseCRCs":61141}
+//    let slope_slope = 1.7333333333333336e-05
+//    let slope_offset = -0.0006666666666666666
+//    let offset_slope = 0.0049999999999999906
+//    let offset_offset = -19.0
+    let slope_slope = 0.00001816666666666667
+    let slope_offset = -0.00016666666666666666
+    let offset_slope = 0.007499999999999993
+    let offset_offset = -21.5
     let oopSlope: Double
     let oopOffset: Double
     ///

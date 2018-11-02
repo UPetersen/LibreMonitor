@@ -39,6 +39,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 
     
     var sensorData: SensorData?
+    var sensor: SensorData?
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
     var batteryVoltage = 0.0
@@ -330,8 +331,9 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             case 0:
                 switch device {
                 case .miaoMaio:
+                    let hugo = String(describing: miaoMiaoManager.rxBuffer.prefix(40).hexEncodedString())
                     cell.textLabel?.text = "Firmware"
-                    cell.detailTextLabel?.text = (miaoMiaoManager.miaoMiaoResponseState?.description ?? "-") + " " + firmware
+                    cell.detailTextLabel?.text = (miaoMiaoManager.miaoMiaoResponseState?.description ?? "-") + " "  + hugo //firmware
                 case .simblee:
                     cell.textLabel?.text = "BM019 ID"
                     cell.detailTextLabel?.text = deviceID
@@ -343,7 +345,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     var color = UIColor()
                     if let sensorData = sensorData {
                         crcString.append(", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
-                        color = colorForSensorState( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC )) // only header and body crc
+                        color = colorForSensorCRCs( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC )) // only header and body crc
                     } else {
                         crcString = ", nil"
                         color = UIColor.lightGray
@@ -357,7 +359,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     if let sensorData = sensorData {
                         
                         crcString.append(", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
-                        color = colorForSensorState( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) )
+                        color = colorForSensorCRCs( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) )
                     } else {
                         crcString = ", nil"
                         color = UIColor.lightGray
@@ -376,10 +378,11 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 switch device {
                 case .miaoMaio:
                     cell.textLabel?.text = "Battery"
-                    cell.detailTextLabel?.text = String(format: "%3.0f %%", arguments: [batteryVoltage])
-                    if batteryVoltage < 10.0 {
+                    cell.detailTextLabel?.text = miaoMiaoManager.miaoMiao?.batteryString ?? ""
+                    if let miaoMiao = miaoMiaoManager.miaoMiao, miaoMiao.battery < 40 {
                         cell.backgroundColor = UIColor.orange
-                    }                case .simblee:
+                    }
+                case .simblee:
                     cell.textLabel?.text = "Environment"
                     cell.detailTextLabel?.text = String(format: "%3.1f V", arguments: [batteryVoltage]) + ", " + temperatureString
                     if batteryVoltage < 3.5 {
@@ -421,6 +424,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 cell.textLabel?.text = "Sensor status"
                 if let sennsorData = sensorData {
                     cell.detailTextLabel?.text = sennsorData.state.description
+                    cell.backgroundColor = colorForSensorState(sensorState: sennsorData.state)
                 } else {
                     cell.detailTextLabel?.text = "nil"
                 }
@@ -523,8 +527,96 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         tableView.reloadData()
     }
     
-    func miaoMiaoManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
+    func miaoMiaoManagerDidUpdateSensorAndMiaoMiao(sensorData: SensorData, miaoMiao: MiaoMiao) {
         
+        self.sensorData = sensorData
+        
+        batteryVoltage = Double(miaoMiao.battery)
+        
+//        if let sensorData = sensorData {
+        
+            if sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC {
+                
+                getOOPGlucose(fram: sensorData.bytes)
+                
+                timeOfLastScan = Date()
+                trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
+                historyMeasurements = sensorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
+                
+                if let trendMeasurements = trendMeasurements {
+                    setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
+                }
+                
+                if let historyMeasurements = historyMeasurements, sensorData.state == .ready {
+                    
+                    // fetch all records that are newer than the oldest history measurement of the new data
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    
+                    let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
+                    do {
+                        let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
+                        
+                        // Loop over all and check if new data exists and store the new data if not yet existent
+                        historyMeasurements.forEach({measurement in
+                            
+                            os_log("HistoryMeasurement: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+                            
+                            var storeMeasurement = true
+                            // Check if there is already a record stored for the same time
+                            for bloodGlucose in fetchedBloodGlucoses! {
+                                
+                                // Found a value within time range that is already stored, so do not store the value just read from the sensor (since it is already stored)
+                                // Time range criteria is fulfilled if dates of stored value and value just read from sensor are less than two minutes apart from each other (in either direction)
+                                if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 120.0 {
+                                    
+                                    os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+                                    os_log("Do not store: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(measurement.glucose) at \(String(describing: measurement.date))"))
+                                    storeMeasurement = false
+                                    break
+                                }
+                            }
+                            ///* 2018-10-27: Skip storing history data in core data for test purposes
+                            // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
+                            if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+                                
+                                fetchedBloodGlucoses?.forEach({ bloodGlucose in
+                                    os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+                                })
+                                os_log("Store this one: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+                                
+                                let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
+                                glucose.bytes = measurement.byteString
+                                glucose.value = measurement.glucose
+                                glucose.date = measurement.date as NSDate
+                                glucose.dateString = dateFormatter.string(from: measurement.date)
+                                
+                                // Prepare for nightscout
+                                nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
+                            }
+                            //*/
+                        })
+                        // send to nightscout
+                        if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {
+                            uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
+                            nightscoutEntries = []
+                        }
+                        try? persistentContainer?.viewContext.save()
+                        
+                    } catch {
+                        fatalError("Failed to fetch BloodGlucose: \(error)")
+                    }
+                }
+                
+            }
+            
+            
+        tableView.reloadData()
+    }
+    
+    
+    func miaoMiaoManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
+ /*
         NotificationManager.scheduleApplicationTerminatedNotification(wait: 500)
         
         os_log("Received message with txFlags %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: txFlags))
@@ -539,6 +631,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             if batteryVoltage < 10 {
                 NotificationManager.setLowBatteryNotification(voltage: Double(batteryVoltage))
             }
+
             
             sensorSerialNumber = SensorSerialNumber(withUID: Data(payloadData.subdata(in: 5..<13)))
             sensorData = SensorData(uuid: Data(payloadData.subdata(in: 5..<13)), bytes: [UInt8](payloadData.subdata(in: 18..<362)), date: Date())
@@ -603,7 +696,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                         break
                                     }
                                 }
-                                ///* 2018-10-27: Skip storing history data in core data for test purposes
+                                /// 2018-10-27: Skip storing history data in core data for test purposes
                                 // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
                                 if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
                                 
@@ -621,7 +714,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                     // Prepare for nightscout
                                     nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
                                 }
-                            //*/
+                            ///
                             })
                             // send to nightscout
                             if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {
@@ -645,7 +738,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 
         }
         tableView.reloadData()
-
+*/
     }
     
     
@@ -834,7 +927,18 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         }
     }
 
-    func colorForSensorState(_ bool: Bool) -> UIColor {
+    func colorForSensorState(sensorState: SensorState) -> UIColor {
+        switch sensorState {
+        case .ready:
+            return UIColor.white
+        case .starting:
+            return UIColor.orange
+        case .expired, .failure, .shutdown, .notYetStarted, .unknown:
+            return UIColor.red
+        }
+    }
+    
+    func colorForSensorCRCs(_ bool: Bool) -> UIColor {
         if bool == false {
             return UIColor.red
         }
