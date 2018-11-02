@@ -36,28 +36,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         os_log("Application did finish launching with options", log: AppDelegate.bt_log, type: .default)
 
-        
+        let miaoMiaoManager = MiaoMiaoManager()
+
         let tabBarController = self.window?.rootViewController as! UITabBarController
         
         if let childViewControllers = tabBarController.viewControllers {
             
             for childViewController in childViewControllers where childViewController is UINavigationController {
-                
                 let hugo = childViewController as! UINavigationController
                 print(hugo.topViewController ?? "no view controller available")
-                if let navigationController = childViewController as? UINavigationController, let bloodSugarTableViewController = navigationController.topViewController as? BloodSugarTableViewController {
+                
+                // set vars for view controller that displays glucose etc.
+                if let navigationController = childViewController as? UINavigationController,
+                    let bloodSugarTableViewController = navigationController.topViewController as? BloodSugarTableViewController {
                     // Set core data stack in view controller where it is needed/used
                     bloodSugarTableViewController.persistentContainer = self.persistentContainer
+                    bloodSugarTableViewController.miaoMiaoManager = miaoMiaoManager
                     print("changed")
                 }
+                
+                // Set vars for settings view controller
+                if let navigationController = childViewController as? UINavigationController,
+                    let settingsViewController = navigationController.topViewController as? SettingsViewController {
+                    settingsViewController.miaoMiaoManager = miaoMiaoManager
+                }
             }
-//            for childViewController in childViewControllers where childViewController is UINavigationController {
-//                let navigationController = childViewController as! UINavigationController
-//                let bloodSugarTableViewController = navigationController.topViewController as! BloodSugarTableViewController
-//
-//                // Set core data stack in view controller
-//                bloodSugarTableViewController.persistentContainer = self.persistentContainer
-//            }
         }
         
         // redirect os_log output to a file in documents directory (but will then not be visible on the console)

@@ -11,6 +11,7 @@ import UIKit
 
 final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
+    var miaoMiaoManager: MiaoMiaoManager!
     var numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -31,6 +32,10 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var oopWebInterfaceAPITokenTextField: UITextField!
     
     
+    @IBOutlet weak var startCalibrationButton: UIButton!
+    
+    // MARK: - functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,6 +47,11 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         oopWebInterfaceAPITokenTextField.delegate = self
         oopWebInterfaceSiteTextField.delegate = self
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         // Section with offset and slope
         let bloodGlucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
         let bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
@@ -49,21 +59,26 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         glucoseOffsetTextField.text = numberFormatter.string(from: NSNumber(value: bloodGlucoseOffset))
         glucoseSlopeTextField.text = numberFormatter.string(from: NSNumber(value: bloodGlucoseSlope))
         
-        // Section with nightscout upload
+        // Nightscout Section
         uplodToNightscoutSwitch.isOn = UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") // returns false if not yet initialized, which is what we want in that case
         nightscoutSiteTextField.text = UserDefaults.standard.string(forKey: "nightscoutSite")
         nightScoutAPISecretTextField.text = UserDefaults.standard.string(forKey: "nightscoutAPISecret")
-
-        // Section with OOP web interface
+        
+        // OOP web interface
         useOOPWebInterfaceSwitch.isOn = UserDefaults.standard.bool(forKey: "oopWebInterfaceIsActivated") // returns false if not yet initialized, which is what we want in that case
         oopWebInterfaceSiteTextField.text = UserDefaults.standard.string(forKey: "oopWebInterfaceSite")
         oopWebInterfaceAPITokenTextField.text = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken")
+        
+        // Temperature Algorithm
+        temperatureAlgorithmTextView.text = "MiaoMiaoManager state is \(miaoMiaoManager.state)"
     }
 
     @IBAction func tapGestureRecognized(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true) // resign keyoard
     }
     
+    
+    // MARK: - Nightscout Section
     
     @IBAction func uploadToNightscoutSwitchChanged(_ sender: UISwitch) {
         self.view.endEditing(true) // resign keyboard
@@ -105,7 +120,9 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func useOOPWebInterfaceSwitch(_ sender: UISwitch) {
+    // MARK: - OOP web interface
+    
+    @IBAction func useOOPWebInterfaceSwitchChanged(_ sender: UISwitch) {
         self.view.endEditing(true) // resign keyboard
         UserDefaults.standard.set(sender.isOn, forKey: "useOOPWebInterfaceIsActivated")
     }
@@ -114,6 +131,21 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
+    // MARK: - temperature algo
+    @IBOutlet weak var useTemperatureAlgorithmSwitch: UISwitch!
+    @IBOutlet weak var temperatureAlgorithmTextView: UITextView!
+    
+    @IBAction func useTemperatureAlgorithmSwitchChanged(_ sender: UISwitch) {
+        self.view.endEditing(true) // resign keyboard
+        temperatureAlgorithmTextView.text = "Switch is \(useTemperatureAlgorithmSwitch.isOn)"
+    }
+    @IBAction func startCalibrationPressed(_ sender: UIButton) {
+        temperatureAlgorithmTextView.text = " Pressed that text field and request new data"
+        miaoMiaoManager.requestData()
+    }
+
+    // MARK: - textfield handling
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         switch textField {
@@ -157,7 +189,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         // update table view
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateBloodSugarTableViewController"), object: self)
     }
-    
+
     // MARK: - Convenience methods
     
     func displayAlertForTextField(_ textField: UITextField) {

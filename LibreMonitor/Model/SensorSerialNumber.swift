@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FreestyleLibreSensor: CustomStringConvertible {
+struct SensorSerialNumber: CustomStringConvertible {
     
     let uid: Data
 

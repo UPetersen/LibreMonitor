@@ -211,7 +211,7 @@ final class BloodSugarGraphView: LineChartView {
         testEntries.append(ChartDataEntry(x: trendMeasurements[12].date.timeIntervalSince1970, y: p1))
         testEntries.append(ChartDataEntry(x: trendMeasurements[7].date.timeIntervalSince1970, y: p2))
         testEntries.append(ChartDataEntry(x: trendMeasurements[2].date.timeIntervalSince1970, y: p3))
-        let p4 = p3 + 0.65 * (p3 - p1) + 0.4 * (p3 - p2)
+        let p4 = p3 + 0.65 * (p3 - p1) + 0.2 * (p3 - p2)
         let t4 = trendMeasurements[2].date.timeIntervalSince1970 + 0.8 * (trendMeasurements[2].date.timeIntervalSince1970 - trendMeasurements[12].date.timeIntervalSince1970)
         testEntries.append(ChartDataEntry(x: t4, y: p4))
         let testLineChartDataSet = LineChartDataSet(values: testEntries, label: "Test")

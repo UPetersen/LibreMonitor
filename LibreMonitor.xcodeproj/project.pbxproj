@@ -32,7 +32,7 @@
 		C66A496F1F40D7CB0005DC78 /* NightscoutTreatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49631F40D7CA0005DC78 /* NightscoutTreatment.swift */; };
 		C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49661F40D7CB0005DC78 /* Crypto.m */; };
 		C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A497B1F4227860005DC78 /* NSDateFormatter.swift */; };
-		C6760962207175FC0056A5FF /* FreestyleLibreSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6760961207175FC0056A5FF /* FreestyleLibreSensor.swift */; };
+		C6760962207175FC0056A5FF /* SensorSerialNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6760961207175FC0056A5FF /* SensorSerialNumber.swift */; };
 		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
 		C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */; };
 		C6822D721DB13F2200D08393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6822D711DB13F2200D08393 /* Assets.xcassets */; };
@@ -136,7 +136,7 @@
 		C66A49651F40D7CB0005DC78 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
 		C66A49661F40D7CB0005DC78 /* Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypto.m; sourceTree = "<group>"; };
 		C66A497B1F4227860005DC78 /* NSDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatter.swift; sourceTree = "<group>"; };
-		C6760961207175FC0056A5FF /* FreestyleLibreSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreestyleLibreSensor.swift; path = Model/FreestyleLibreSensor.swift; sourceTree = "<group>"; };
+		C6760961207175FC0056A5FF /* SensorSerialNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SensorSerialNumber.swift; path = Model/SensorSerialNumber.swift; sourceTree = "<group>"; };
 		C6822D621DB13F2200D08393 /* LibreMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6822D651DB13F2200D08393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6822D681DB13F2200D08393 /* LibreMonitor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LibreMonitor.xcdatamodel; sourceTree = "<group>"; };
@@ -391,7 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				C6822DB01DB1618400D08393 /* CRC.swift */,
-				C6760961207175FC0056A5FF /* FreestyleLibreSensor.swift */,
+				C6760961207175FC0056A5FF /* SensorSerialNumber.swift */,
 				C6822DB21DB1618400D08393 /* Measurement.swift */,
 				C6822DB31DB1618400D08393 /* SensorData.swift */,
 				C6822DB41DB1618400D08393 /* SensorState.swift */,
@@ -741,7 +741,7 @@
 				C6822DB91DB1618400D08393 /* SensorState.swift in Sources */,
 				C6822DDB1DB1631D00D08393 /* HeaderData+CoreDataClass.swift in Sources */,
 				C6822DD71DB1631D00D08393 /* Reader+CoreDataClass.swift in Sources */,
-				C6760962207175FC0056A5FF /* FreestyleLibreSensor.swift in Sources */,
+				C6760962207175FC0056A5FF /* SensorSerialNumber.swift in Sources */,
 				C6822DB81DB1618400D08393 /* SensorData.swift in Sources */,
 				C6822DBD1DB161AB00D08393 /* AdjustmentsTableViewController.swift in Sources */,
 				C66A496D1F40D7CB0005DC78 /* Either.swift in Sources */,
@@ -930,7 +930,7 @@
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -950,7 +950,7 @@
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";

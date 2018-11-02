@@ -13,6 +13,10 @@ import Foundation
 /// To be initialized with the bytes as read via nfc. Provides all derived data.
 struct SensorData {
     
+    /// The uid of the sensor
+    let uuid: Data
+    /// The serial number of the sensor
+    let serialNumber: String
     /// Number of bytes of sensor data to be used (read only), i.e. 344 bytes (24 for header, 296 for body and 24 for footer)
     let numberOfBytes = 344 // Header and body and footer of Freestyle Libre data (i.e. 40 blocks of 8 bytes)
     /// Array of 344 bytes as read via nfc
@@ -65,7 +69,7 @@ struct SensorData {
     }
     
     
-    init?(bytes: [UInt8], date: Date = Date()) {
+    init?(uuid: Data, bytes: [UInt8], date: Date = Date()) {
         guard bytes.count == numberOfBytes else {
             return nil
         }
@@ -83,6 +87,9 @@ struct SensorData {
         self.nextTrendBlock = Int(body[2])
         self.nextHistoryBlock = Int(body[3])
         self.minutesSinceStart = Int(body[293]) << 8 + Int(body[292])
+        
+        self.uuid = uuid
+        self.serialNumber = SensorSerialNumber(withUID: uuid)?.serialNumber ?? "-"
     }
 
     
