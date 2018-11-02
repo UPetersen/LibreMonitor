@@ -171,6 +171,27 @@ public enum MiaoMiaoManagerState: String {
     case Notifying = "Notifying"
 }
 
+public enum MiaoMiaoResponseState: UInt8 {
+    case dataPacketReceived = 0x28
+    case newSensor = 0x32
+    case noSensor = 0x34
+    case frequencyChangedResponse = 0xD1
+}
+extension MiaoMiaoResponseState: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .dataPacketReceived:
+            return "Data packet received"
+        case .newSensor:
+            return "New sensor detected"
+        case .noSensor:
+            return "No sensor found"
+        case .frequencyChangedResponse:
+            return "Reading intervall changed"
+        }
+    }
+}
+
 protocol MiaoMiaoManagerDelegate {
     func miaoMiaoManagerPeripheralStateChanged(_ state: MiaoMiaoManagerState)
     func miaoMiaoManagerReceivedMessage(_ messageIdentifier:UInt16, txFlags:UInt8, payloadData:Data)
@@ -181,7 +202,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     // MARK: - Properties
     
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "MiaoMiaoManager")
-    
+    var miaomiao: MiaoMiao?
+    var miaoMiaoResponseState: MiaoMiaoResponseState?
     var centralManager: CBCentralManager!
     var peripheral: CBPeripheral?
     var slipBuffer = SLIPBuffer()
@@ -433,73 +455,71 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                 os_log("Appended value with length %{public}@, buffer length is: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: value.count), String(describing: rxBuffer.count))
                 
                 if let firstByte = rxBuffer.first {
-                    
-                    switch firstByte {
-                    case 0x28: // data received, append to buffer and inform delegate if end reached
-                        
-                        // Set timer to check if data is still uncomplete after a certain time frame
-                        // Any old buffer is invalidated and a new buffer created with every reception of data
-                        timer?.invalidate()
-                        timer = Timer.scheduledTimer(withTimeInterval: 8, repeats: false) { _ in
-                            os_log("********** MiaoMiaoManagertimer fired **********", log: MiaoMiaoManager.bt_log, type: .default)
-                            if self.rxBuffer.count >= 364 {
-                                // buffer large enough and can be used
-                                os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
-                                self.delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x29, payloadData: self.rxBuffer)
-                                self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
-                            } else {
-                                // buffer not large enough and has to be reset
-                                os_log("Buffer incomplete and not large enough, reset buffer and request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
-                                self.requestData()
-                            }
-                        }
-
-                        if rxBuffer.count >= 363 && rxBuffer.last! == 0x29 {
-                            os_log("Buffer complete, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
-                            delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x28, payloadData: rxBuffer)
+                    miaoMiaoResponseState = MiaoMiaoResponseState(rawValue: firstByte)
+                    if let miaoMiaoResponseState = miaoMiaoResponseState {
+                        switch miaoMiaoResponseState {
+                        case .dataPacketReceived: // 0x28: // data received, append to buffer and inform delegate if end reached
                             
-//                            // Data for Bert Rode
-//                            print(self.rxBuffer.hexEncodedString())
-//                            let stringArray = self.rxBuffer.map({String(format: "%02X", $0)})
-//                            print(stringArray.dropFirst().reduce(stringArray.first!,  {$0 + ":" + $1} ))
-//                            print(self.rxBuffer.base64EncodedString())                            
-                            
-                            rxBuffer = Data()  // reset buffer, once completed and delegate is informed
+                            // Set timer to check if data is still uncomplete after a certain time frame
+                            // Any old buffer is invalidated and a new buffer created with every reception of data
                             timer?.invalidate()
-                        } else {
-                            // buffer not yet complete, inform delegate with txFlags 0x27 to display intermediate data
-                            delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x27, payloadData: rxBuffer)
-                        }
-                        
-                        // if data is not complete after 10 seconds: use anyways, if long enough, do not use if not long enough and reset buffer in both cases.
-                        
-                    case 0x32: // A new sensor has been detected -> acknowledge to use sensor and reset buffer
-                        delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x32, payloadData: rxBuffer)
-                        if let writeCharacteristic = writeCharacteristic {
-                            peripheral.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
-                        }
-                        rxBuffer = Data()
-                    case 0x34: // No sensor has been detected -> reset buffer (and wait for new data to arrive)
-                        delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x34, payloadData: rxBuffer)
-                        rxBuffer = Data()
-                    case 0xD1: // Success of fail for setting time intervall
-                        delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0xD1, payloadData: rxBuffer)
-                        if rxBuffer.count >= 2 {
-                            if rxBuffer[2] == 0x01 {
-                                os_log("Success setting time interval.", log: MiaoMiaoManager.bt_log, type: .default)
-                            } else if rxBuffer[2] == 0x00 {
-                                os_log("Failure setting time interval.", log: MiaoMiaoManager.bt_log, type: .default)
-                            } else {
-                                os_log("Unkown response for setting time interval.", log: MiaoMiaoManager.bt_log, type: .default)
+                            timer = Timer.scheduledTimer(withTimeInterval: 8, repeats: false) { _ in
+                                os_log("********** MiaoMiaoManagertimer fired **********", log: MiaoMiaoManager.bt_log, type: .default)
+                                if self.rxBuffer.count >= 364 {
+                                    // buffer large enough and can be used
+                                    os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
+                                    self.delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x29, payloadData: self.rxBuffer)
+                                    self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
+                                } else {
+                                    // buffer not large enough and has to be reset
+                                    os_log("Buffer incomplete and not large enough, reset buffer and request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
+                                    self.requestData()
+                                }
                             }
+                            
+                            if rxBuffer.count >= 363 && rxBuffer.last! == 0x29 {
+                                os_log("Buffer complete, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
+                                delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x28, payloadData: rxBuffer)
+                                rxBuffer = Data()  // reset buffer, once completed and delegate is informed
+                                timer?.invalidate()
+                            } else {
+                                // buffer not yet complete, inform delegate with txFlags 0x27 to display intermediate data
+                                delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x27, payloadData: rxBuffer)
+                            }
+                            
+                            // if data is not complete after 10 seconds: use anyways, if long enough, do not use if not long enough and reset buffer in both cases.
+                            
+                        case .newSensor: // 0x32: // A new sensor has been detected -> acknowledge to use sensor and reset buffer
+                            delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x32, payloadData: rxBuffer)
+                            if let writeCharacteristic = writeCharacteristic {
+                                peripheral.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
+                            }
+                            rxBuffer = Data()
+                        case .noSensor: // 0x34: // No sensor has been detected -> reset buffer (and wait for new data to arrive)
+                            delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x34, payloadData: rxBuffer)
+                            rxBuffer = Data()
+                        case .frequencyChangedResponse: // 0xD1: // Success of fail for setting time intervall
+                            delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0xD1, payloadData: rxBuffer)
+                            if rxBuffer.count >= 2 {
+                                if rxBuffer[2] == 0x01 {
+                                    os_log("Success setting time interval.", log: MiaoMiaoManager.bt_log, type: .default)
+                                } else if rxBuffer[2] == 0x00 {
+                                    os_log("Failure setting time interval.", log: MiaoMiaoManager.bt_log, type: .default)
+                                } else {
+                                    os_log("Unkown response for setting time interval.", log: MiaoMiaoManager.bt_log, type: .default)
+                                }
+                            }
+                            rxBuffer = Data()
+                            //                    default: // any other data (e.g. partial response ...)
+                            //                        delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x99, payloadData: rxBuffer)
+                            //                        rxBuffer = Data() // reset buffer, since no valid response
                         }
-                        rxBuffer = Data()
-                    default: // any other data (e.g. partial response ...)
-                        delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x99, payloadData: rxBuffer)
-                        rxBuffer = Data() // reset buffer, since no valid response
                     }
+                } else {
+                    // any other data (e.g. partial response ...)
+                    delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x99, payloadData: rxBuffer)
+                    rxBuffer = Data() // reset buffer, since no valid response
                 }
-//                os_log("... after append escaped bytes", log: MiaoMiaoManager.bt_log, type: .default)
             }
         }
     }

@@ -32,6 +32,7 @@
 		C66A496F1F40D7CB0005DC78 /* NightscoutTreatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A49631F40D7CA0005DC78 /* NightscoutTreatment.swift */; };
 		C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49661F40D7CB0005DC78 /* Crypto.m */; };
 		C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A497B1F4227860005DC78 /* NSDateFormatter.swift */; };
+		C6728304218C59AC00209032 /* MiaoMiao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728303218C59AC00209032 /* MiaoMiao.swift */; };
 		C6760962207175FC0056A5FF /* SensorSerialNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6760961207175FC0056A5FF /* SensorSerialNumber.swift */; };
 		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
 		C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */; };
@@ -136,6 +137,7 @@
 		C66A49651F40D7CB0005DC78 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
 		C66A49661F40D7CB0005DC78 /* Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypto.m; sourceTree = "<group>"; };
 		C66A497B1F4227860005DC78 /* NSDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatter.swift; sourceTree = "<group>"; };
+		C6728303218C59AC00209032 /* MiaoMiao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiaoMiao.swift; path = Bluetooth/MiaoMiao.swift; sourceTree = "<group>"; };
 		C6760961207175FC0056A5FF /* SensorSerialNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SensorSerialNumber.swift; path = Model/SensorSerialNumber.swift; sourceTree = "<group>"; };
 		C6822D621DB13F2200D08393 /* LibreMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6822D651DB13F2200D08393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				C6822DA71DB1616300D08393 /* NSData+SLIP.m */,
 				C6822DA81DB1616300D08393 /* SimbleeManager.swift */,
 				C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */,
+				C6728303218C59AC00209032 /* MiaoMiao.swift */,
 				C6822DA91DB1616300D08393 /* SLIPBuffer.swift */,
 			);
 			name = Bluetooth;
@@ -711,6 +714,7 @@
 				C66A49681F40D7CB0005DC78 /* TimeFormat.swift in Sources */,
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
 				C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */,
+				C6728304218C59AC00209032 /* MiaoMiao.swift in Sources */,
 				C66A49691F40D7CB0005DC78 /* TimeInterval.swift in Sources */,
 				C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */,
 				C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */,

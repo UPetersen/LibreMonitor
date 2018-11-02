@@ -331,7 +331,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 switch device {
                 case .miaoMaio:
                     cell.textLabel?.text = "Firmware"
-                    cell.detailTextLabel?.text = firmware
+                    cell.detailTextLabel?.text = (miaoMiaoManager.miaoMiaoResponseState?.description ?? "-") + " " + firmware
                 case .simblee:
                     cell.textLabel?.text = "BM019 ID"
                     cell.detailTextLabel?.text = deviceID
