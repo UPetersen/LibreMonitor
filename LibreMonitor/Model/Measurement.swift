@@ -40,12 +40,17 @@ struct Measurement {
 //    let slope_offset = -0.0006666666666666666
 //    let offset_slope = 0.0049999999999999906
 //    let offset_offset = -19.0
-    let slope_slope = 0.00001816666666666667
-    let slope_offset = -0.00016666666666666666
-    let offset_slope = 0.007499999999999993
-    let offset_offset = -21.5
+
+//    let slope_slope = 0.00001816666666666667
+//    let slope_offset = -0.00016666666666666666
+//    let offset_slope = 0.007499999999999993
+//    let offset_offset = -21.5
     let oopSlope: Double
     let oopOffset: Double
+    ///
+    let derivedAlgorithmParameterSet: DerivedAlgorithmParameterSet?
+
+
     ///
     /// - parameter bytes:  raw data bytes as read from the sensor
     /// - parameter slope:  slope to calculate glucose from raw value in (mg/dl)/raw
@@ -53,7 +58,8 @@ struct Measurement {
     /// - parameter date:   date of the measurement
     ///
     /// - returns: Measurement
-    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date) {
+    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date, derivedAlgorithmParameterSet: DerivedAlgorithmParameterSet? = nil) {
+//    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date) {
         self.bytes = bytes
         self.byteString = bytes.reduce("", {$0 + String(format: "%02X", arguments: [$1])})
         self.rawGlucose = (Int(bytes[1] & 0x1F) << 8) + Int(bytes[0]) // switched to 13 bit mask on 2018-03-15
@@ -64,11 +70,25 @@ struct Measurement {
         self.date = date
         self.counter = counter
         
-        self.oopSlope = slope_slope * Double(rawTemperature) + offset_slope
-        self.oopOffset = slope_offset * Double(rawTemperature) + offset_offset
-//        self.oopSlope = slope_slope * Double(rawTemperature) + slope_offset
-//        self.oopOffset = offset_slope * Double(rawTemperature) + offset_offset
-        self.oopGlucose = oopSlope * Double(rawGlucose) + oopOffset
+//        self.oopSlope = slope_slope * Double(rawTemperature) + offset_slope
+//        self.oopOffset = slope_offset * Double(rawTemperature) + offset_offset
+//        self.oopGlucose = oopSlope * Double(rawGlucose) + oopOffset
+
+        self.derivedAlgorithmParameterSet = derivedAlgorithmParameterSet
+        if let derivedAlgorithmParameterSet = self.derivedAlgorithmParameterSet {
+            self.oopSlope = derivedAlgorithmParameterSet.slope_slope * Double(rawTemperature) + derivedAlgorithmParameterSet.offset_slope
+            self.oopOffset = derivedAlgorithmParameterSet.slope_offset * Double(rawTemperature) + derivedAlgorithmParameterSet.offset_offset
+            //        self.oopSlope = slope_slope * Double(rawTemperature) + slope_offset
+            //        self.oopOffset = offset_slope * Double(rawTemperature) + offset_offset
+            let oopGlucose = oopSlope * Double(rawGlucose) + oopOffset
+            // Final correction, if sensor values are very low and need to be compensated
+            self.oopGlucose = oopGlucose * derivedAlgorithmParameterSet.additionalSlope + derivedAlgorithmParameterSet.additionalOffset
+        } else {
+            self.oopSlope = 0
+            self.oopOffset = 0
+            self.oopGlucose = 0
+        }
+        
         print(self.description)
     }
     
@@ -133,18 +153,9 @@ struct Measurement {
     
     var description: String {
         var aString = String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes) \n")
-        aString.append("OOP: slope_slope: \(slope_slope), slope_offset: \(slope_offset), offset_slope: \(offset_slope), offset_offset: \(offset_offset)\n")
+        aString.append("OOP: slope_slope: \(derivedAlgorithmParameterSet?.slope_slope), slope_offset: \(derivedAlgorithmParameterSet?.slope_offset), offset_slope: \(derivedAlgorithmParameterSet?.offset_slope), offset_offset: \(derivedAlgorithmParameterSet?.offset_offset)\n")
         aString.append("OOP: slope: \(oopSlope), offset: \(oopOffset)")
         
-        var oopSlopeTest = slope_slope * Double(9000) + offset_slope
-        var oopOffsetTest = slope_offset * Double(9000) + offset_offset
-        var oopGlucoseTest = oopSlopeTest * Double(3000) + oopOffsetTest
-        aString.append("Test 3000, 9000: \(oopGlucoseTest) (should be 458")
-        
-        oopSlopeTest = slope_slope * Double(6000) + offset_slope
-        oopOffsetTest = slope_offset * Double(6000) + offset_offset
-        oopGlucoseTest = oopSlopeTest * Double(1000) + oopOffsetTest
-        aString.append("Test 1000, 6000: \(oopGlucoseTest) (should be 86")
         return aString
 //        return String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes)  /n oop: slope_slope = " )
     }

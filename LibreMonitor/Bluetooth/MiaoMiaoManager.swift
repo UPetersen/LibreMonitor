@@ -211,6 +211,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     var writeCharacteristic: CBCharacteristic?
     
     var rxBuffer = Data()
+    var sensorData: SensorData?
     
 //    fileprivate let serviceUUIDs:[CBUUID]? = [CBUUID(string: "6E400001B5A3F393E0A9E50E24DCCA9E")]
     fileprivate let deviceName = "miaomiao"
@@ -565,7 +566,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                             firmware: String(describing: rxBuffer[14...15].hexEncodedString()),
                             battery: Int(rxBuffer[13]))
 
-         let sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date())
+//        let sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date())
+        sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date(), derivedAlgorithmParameterSet: CalibrationManager().calibrationParameters)
 
         guard let miaoMiao = miaoMiao else {
             return

@@ -12,10 +12,20 @@ import UIKit
 final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     var miaoMiaoManager: MiaoMiaoManager!
+    var calibrationManager = CalibrationManager()
+    
+    var additionalSlope = 0.0
+    var additionalOffset = 0.0
+
     var numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter
+    }()
+    var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd' 'HH:mm:ss"
+        return dateFormatter
     }()
     
     @IBOutlet weak var glucoseOffsetTextField: UITextField!
@@ -25,7 +35,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var nightscoutSiteTextField: UITextField!
     @IBOutlet weak var nightScoutAPISecretTextField: UITextField!
     @IBOutlet weak var verifyAccountButton: UIButton!
-    @IBOutlet var spinner: UIActivityIndicatorView!
+    @IBOutlet var veryfiyAccountActivityIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var useOOPWebInterfaceSwitch: UISwitch!
     @IBOutlet weak var oopWebInterfaceSiteTextField: UITextField!
@@ -47,6 +57,8 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         oopWebInterfaceAPITokenTextField.delegate = self
         oopWebInterfaceSiteTextField.delegate = self
         
+        temperatureParametersAdditionalSlope.delegate = self
+        temperatureParametersAdditionalOffset.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,6 +83,18 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         
         // Temperature Algorithm
         temperatureAlgorithmTextView.text = "MiaoMiaoManager state is \(miaoMiaoManager.state)"
+        if let derivedParameters = calibrationManager.calibrationParameters {
+            temperatureParametersDate.text = dateFormatter.string(from: derivedParameters.date)
+            temperatureParametersSensorSerialNumber.text = derivedParameters.serialNumber
+            temperatureParametersSlopeSlope.text = String(format: "%5.3e", derivedParameters.slope_slope)
+            temperatureParametersOffsetSlope.text = String(format: "%5.3e", derivedParameters.offset_slope)
+            temperatureParametersSlopeOffset.text = String(format: "%5.3e", derivedParameters.slope_offset)
+            temperatureParametersOffsetOffset.text = String(format: "%5.3e", derivedParameters.offset_offset)
+            temperatureParametersAdditionalSlope.text = String(format: "%5.3f", derivedParameters.additionalSlope)
+            temperatureParametersAdditionalOffset.text = String(format: "%3.0f", derivedParameters.additionalOffset)
+            additionalSlope = derivedParameters.additionalSlope
+            additionalOffset = derivedParameters.additionalOffset
+        }
     }
 
     @IBAction func tapGestureRecognized(_ sender: UITapGestureRecognizer) {
@@ -87,7 +111,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func verifyAccountButtonPressed(_ sender: UIButton) {
         self.view.endEditing(true) //resign keyboard
-        spinner.startAnimating()
+        veryfiyAccountActivityIndicator.startAnimating()
         
         // This is kind of awkward: textfield editing does not end when pressing verify button, thus get the textField values here, too.
         UserDefaults.standard.set(nightscoutSiteTextField.text, forKey: "nightscoutSite")
@@ -124,7 +148,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func useOOPWebInterfaceSwitchChanged(_ sender: UISwitch) {
         self.view.endEditing(true) // resign keyboard
-        UserDefaults.standard.set(sender.isOn, forKey: "useOOPWebInterfaceIsActivated")
+        UserDefaults.standard.set(sender.isOn, forKey: "oopWebInterfaceIsActivated")
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -134,15 +158,68 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: - temperature algo
     @IBOutlet weak var useTemperatureAlgorithmSwitch: UISwitch!
+    @IBOutlet weak var temperatureParametersDate: UITextField!
+    @IBOutlet weak var temperatureParametersSensorSerialNumber: UITextField!
+    @IBOutlet weak var temperatureParametersSlopeSlope: UITextField!
+    @IBOutlet weak var temperatureParametersOffsetSlope: UITextField!
+    @IBOutlet weak var temperatureParametersSlopeOffset: UITextField!
+    @IBOutlet weak var temperatureParametersOffsetOffset: UITextField!
+    @IBOutlet weak var temperatureParametersAdditionalSlope: UITextField!
+    @IBOutlet weak var temperatureParametersAdditionalOffset: UITextField!
+    
     @IBOutlet weak var temperatureAlgorithmTextView: UITextView!
     
     @IBAction func useTemperatureAlgorithmSwitchChanged(_ sender: UISwitch) {
         self.view.endEditing(true) // resign keyboard
         temperatureAlgorithmTextView.text = "Switch is \(useTemperatureAlgorithmSwitch.isOn)"
     }
+    @IBOutlet weak var getParametersActivityIndicator: UIActivityIndicatorView!
     @IBAction func startCalibrationPressed(_ sender: UIButton) {
         temperatureAlgorithmTextView.text = " Pressed that text field and request new data"
-        miaoMiaoManager.requestData()
+        getParametersActivityIndicator.startAnimating()
+//        miaoMiaoManager.requestData()
+       
+//        public func uploadCalibration(reading: [UInt8], _ completion:@escaping (( _ resp: CalibrationResult?, _ success: Bool, _ errorMessage: String) -> Void)) {
+//            //        return uploadCalibration(reading: LibreOOPClient.readingToString(patch), completion)
+//            return uploadCalibration(reading: LibreOOPClient.readingToString(reading), completion)
+//        }
+        
+        if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
+            let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite"),
+            let sensorData = miaoMiaoManager.sensorData {
+
+            let libreOOPClient = LibreOOPClient(accessToken: accessToken, site: site)
+            libreOOPClient.uploadCalibration(reading: sensorData.bytes, {calibrationResult, success, errormessage in
+                guard success else {
+                    DispatchQueue.main.async {
+                        self.getParametersActivityIndicator.stopAnimating()
+                    }
+                    NSLog("remote: upload calibration failed! \(errormessage)")
+                    return
+                }
+                if let calibrationResult = calibrationResult {
+                    print("uuid received: " + calibrationResult.uuid)
+                    libreOOPClient.getCalibrationStatusIntervalled(uuid: calibrationResult.uuid, {success, errormessage, parameters in
+                        if let parameters = parameters {
+                            
+                            CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
+                                serialNumber: sensorData.serialNumber,
+                                slope_slope: parameters.slope_slope,
+                                offset_slope: parameters.offset_slope,
+                                slope_offset: parameters.slope_offset,
+                                offset_offset: parameters.offset_offset,
+                                additionalSlope: self.additionalSlope,
+                                additionalOffset: self.additionalOffset
+                            )
+                        }
+                        DispatchQueue.main.async {
+                            self.getParametersActivityIndicator.stopAnimating()
+                        }
+                        NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(parameters.debugDescription)")
+                    })
+                }
+            })
+        }
     }
 
     // MARK: - textfield handling
@@ -161,6 +238,10 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             UserDefaults.standard.set(textField.text, forKey: "oopWebInterfaceSite")
         case oopWebInterfaceAPITokenTextField:
             UserDefaults.standard.set(textField.text, forKey: "oopWebInterfaceAPIToken")
+        case temperatureParametersAdditionalSlope:
+            handleNumericTextFieldInput(textField)
+        case temperatureParametersAdditionalOffset:
+            handleNumericTextFieldInput(textField)
         default:
             fatalError("Fatal Error in \(#file): textField not handled in switch case")
             break
@@ -181,6 +262,32 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         case glucoseSlopeTextField:
             let bloodGlucoseSlope = Double(truncating: aNumber)
             UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
+        case temperatureParametersAdditionalSlope:
+            additionalSlope = Double(truncating: aNumber)
+            if let derivedParameters = calibrationManager.calibrationParameters {
+                CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
+                    serialNumber: derivedParameters.serialNumber,
+                    slope_slope: derivedParameters.slope_slope,
+                    offset_slope: derivedParameters.offset_slope,
+                    slope_offset: derivedParameters.slope_offset,
+                    offset_offset: derivedParameters.offset_offset,
+                    additionalSlope: self.additionalSlope,
+                    additionalOffset: derivedParameters.additionalOffset
+                )
+            }
+        case temperatureParametersAdditionalOffset:
+            additionalOffset = Double(truncating: aNumber)
+            if let derivedParameters = calibrationManager.calibrationParameters {
+                CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
+                    serialNumber: derivedParameters.serialNumber,
+                    slope_slope: derivedParameters.slope_slope,
+                    offset_slope: derivedParameters.offset_slope,
+                    slope_offset: derivedParameters.slope_offset,
+                    offset_offset: derivedParameters.offset_offset,
+                    additionalSlope: derivedParameters.additionalSlope,
+                    additionalOffset: self.additionalOffset
+                )
+            }
         default:
             fatalError("Fatal Error in \(#file): textField not handled in switch case")
             break
@@ -207,7 +314,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
         
-        spinner.stopAnimating() // Verify account always ends with a alert displayed. Thus stop spinner here.
+        veryfiyAccountActivityIndicator.stopAnimating() // Verify account always ends with a alert displayed. Thus stop spinner here.
         
         present(alertController, animated: true, completion: nil)
     }

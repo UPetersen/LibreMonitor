@@ -13,6 +13,9 @@ import Foundation
 /// To be initialized with the bytes as read via nfc. Provides all derived data.
 struct SensorData {
     
+    /// Parameters for the temperature compensation algorithm
+    let derivedAlgorithmParameterSet: DerivedAlgorithmParameterSet?
+
     /// The uid of the sensor
     let uuid: Data
     /// The serial number of the sensor
@@ -69,7 +72,7 @@ struct SensorData {
     }
     
     
-    init?(uuid: Data, bytes: [UInt8], date: Date = Date()) {
+    init?(uuid: Data, bytes: [UInt8], date: Date = Date(), derivedAlgorithmParameterSet: DerivedAlgorithmParameterSet? = nil) {
         guard bytes.count == numberOfBytes else {
             return nil
         }
@@ -90,6 +93,8 @@ struct SensorData {
         
         self.uuid = uuid
         self.serialNumber = SensorSerialNumber(withUID: uuid)?.serialNumber ?? "-"
+        
+        self.derivedAlgorithmParameterSet = derivedAlgorithmParameterSet
     }
 
     
@@ -111,7 +116,7 @@ struct SensorData {
             let range = index..<index+6
             let measurementBytes = Array(body[range])
             let measurementDate = date.addingTimeInterval(Double(-60 * blockIndex))
-            let measurement = Measurement(bytes: measurementBytes, slope: slope, offset: offset, date: measurementDate)
+            let measurement = Measurement(bytes: measurementBytes, slope: slope, offset: offset, date: measurementDate, derivedAlgorithmParameterSet: derivedAlgorithmParameterSet)
             measurements.append(measurement)
         }
         return measurements
@@ -195,7 +200,7 @@ struct SensorData {
 //            let measurementDate = dateOfMostRecentHistoryValue().addingTimeInterval(Double(-900 * blockIndex)) // 900 = 60 * 15
 //            let measurement = Measurement(bytes: measurementBytes, slope: slope, offset: offset, date: measurementDate)
             let (date, counter) = dateOfMostRecentHistoryValue()
-            let measurement = Measurement(bytes: measurementBytes, slope: slope, offset: offset, counter: counter - blockIndex * 15, date: date.addingTimeInterval(Double(-900 * blockIndex))) // 900 = 60 * 15
+            let measurement = Measurement(bytes: measurementBytes, slope: slope, offset: offset, counter: counter - blockIndex * 15, date: date.addingTimeInterval(Double(-900 * blockIndex)), derivedAlgorithmParameterSet: derivedAlgorithmParameterSet) // 900 = 60 * 15
             
             measurements.append(measurement)
         }

@@ -46,6 +46,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var fetchedGlucoses: [BloodGlucose]?
     var oopCurrentValue: OOPCurrentValue? {
         didSet {
+            self.tableView.reloadData()
             print("----------------------- \n\n\n DID SET IT \n\n\n ----------------------------")
 //            if let oopCurrentValue = oopCurrentValue {
 
@@ -992,7 +993,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 //        NotificationManager.setAlternativeAppIconForGlucoseDelta(longDelta)
     }
     
-    
+    // MARK: - LibreOOPWeb
     
     
     /// Gets glucose value from OOP web interface from @dabear.
@@ -1005,63 +1006,34 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     func getOOPGlucose(fram: [UInt8]) {
         
         // OOP Webinterface
-        if UserDefaults.standard.bool(forKey: "useOOPWebInterfaceIsActivated") {
-            
-            oopCurrentValue = nil
-            if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
-                let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
-                
-                let oopClient = LibreOOPClient(accessToken: accessToken, site: site)
-                
-                oopClient.uploadReading(reading: fram) { (response, success, errormessage) in
-                    guard success else {
-                        NSLog("remote: upload reading failed! \(errormessage)")
-                        return
-                    }
+        oopCurrentValue = nil
+        guard UserDefaults.standard.bool(forKey: "oopWebInterfaceIsActivated") else {
+            return
+        }
+        if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
+            let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
+            let libreOOPClient = LibreOOPClient(accessToken: accessToken, site: site)
+            libreOOPClient.uploadReading(reading: fram) { (response, success, errormessage) in
+                guard success else {
+                    NSLog("remote: upload reading failed! \(errormessage)")
+                    return
+                }
+                if let response = response, let uuid = response.result?.uuid {
+                    print("uuid received: " + uuid)
                     
-                    if let response = response, let uuid = response.result?.uuid {
-                        print("uuid received: " + uuid)
-                        
-                        // The completion handler will be called once the result is available, or when a timeout is received
-                        // The timeout can be calculated as approx (intervalSeconds * maxTries) seconds
-                        // In case of timeout, the success parameter will be false, errormessage will have contents
-                        // and the response will be "N/A"
-                        // In case of success, response will be a string containing the result of the Algorithm
-                        oopClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, response) in
-                            
-                            //"some value from android: currentBg: 170"
-                            if let jsonStringStartIndex = response.range(of: "FullAlgoResults: ")?.upperBound {
-                                
-                                do {
-                                    let jsonString = response.suffix(from: jsonStringStartIndex)
-                                    let jsonData = String(jsonString).data(using: .utf8)!
-                                    self.oopCurrentValue = try JSONDecoder().decode(OOPCurrentValue.self, from: jsonData)
-
-//                                    print("\nRelevant json string: \n\(jsonString)")
-//                                    print("Decoded content")
-//                                    print("  Current trend: \(oopCurrentValue.currentTrend)")
-//                                    print("  Current bg: \(oopCurrentValue.currentBg)")
-//                                    print("  Current time: \(oopCurrentValue.currentTime)")
-//                                    print("  Serial Number: \(oopCurrentValue.serialNumber ?? "-")")
-//                                    print("  timeStamp: \(oopCurrentValue.timestamp)")
-//                                    var i = 0
-//                                    for historyValue in oopCurrentValue.historyValues {
-//                                        print(String(format: "    #%02d: time: \(historyValue.time), quality: \(historyValue.quality), bg: \(historyValue.bg)", i))
-//                                        i += 1
-//                                    }
-                                } catch let error {
-                                    print("Error", error)
-                                }
-                            }
-
-                            NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(response))")
-                        })
-                    }
+                    // The completion handler will be called once the result is available, or when a timeout is received
+                    // The timeout can be calculated as approx (intervalSeconds * maxTries) seconds
+                    // In case of timeout, the success parameter will be false, errormessage will have contents
+                    // and the response will be "N/A"
+                    // In case of success, response will be containing the result of the Algorithm
+                    libreOOPClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, oopCurrentValue, newSstate) in
+                        self.oopCurrentValue = oopCurrentValue
+                        NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(oopCurrentValue.debugDescription), newstate: \(newSstate)")
+                    })
                 }
             }
         }
     }
-    
 }
 
 

@@ -33,6 +33,13 @@
 		C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49661F40D7CB0005DC78 /* Crypto.m */; };
 		C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A497B1F4227860005DC78 /* NSDateFormatter.swift */; };
 		C6728304218C59AC00209032 /* MiaoMiao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728303218C59AC00209032 /* MiaoMiao.swift */; };
+		C6728306218D815900209032 /* CalibrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728305218D815900209032 /* CalibrationManager.swift */; };
+		C6728308218E1CF400209032 /* LibreUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728307218E1CF400209032 /* LibreUtils.swift */; };
+		C672830A218E1D2D00209032 /* LibreOOPDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728309218E1D2D00209032 /* LibreOOPDefaults.swift */; };
+		C672830F218E1DEB00209032 /* AlgorithmTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672830B218E1DEA00209032 /* AlgorithmTester.swift */; };
+		C6728310218E1DEB00209032 /* CreatePatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672830C218E1DEB00209032 /* CreatePatches.swift */; };
+		C6728311218E1DEB00209032 /* AlgorithmCalc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672830D218E1DEB00209032 /* AlgorithmCalc.swift */; };
+		C6728312218E1DEB00209032 /* DerivedAlgorithmRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672830E218E1DEB00209032 /* DerivedAlgorithmRunner.swift */; };
 		C6760962207175FC0056A5FF /* SensorSerialNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6760961207175FC0056A5FF /* SensorSerialNumber.swift */; };
 		C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D651DB13F2200D08393 /* AppDelegate.swift */; };
 		C6822D691DB13F2200D08393 /* LibreMonitor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */; };
@@ -138,6 +145,13 @@
 		C66A49661F40D7CB0005DC78 /* Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypto.m; sourceTree = "<group>"; };
 		C66A497B1F4227860005DC78 /* NSDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatter.swift; sourceTree = "<group>"; };
 		C6728303218C59AC00209032 /* MiaoMiao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiaoMiao.swift; path = Bluetooth/MiaoMiao.swift; sourceTree = "<group>"; };
+		C6728305218D815900209032 /* CalibrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalibrationManager.swift; path = Model/CalibrationManager.swift; sourceTree = "<group>"; };
+		C6728307218E1CF400209032 /* LibreUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreUtils.swift; sourceTree = "<group>"; };
+		C6728309218E1D2D00209032 /* LibreOOPDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPDefaults.swift; sourceTree = "<group>"; };
+		C672830B218E1DEA00209032 /* AlgorithmTester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgorithmTester.swift; sourceTree = "<group>"; };
+		C672830C218E1DEB00209032 /* CreatePatches.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePatches.swift; sourceTree = "<group>"; };
+		C672830D218E1DEB00209032 /* AlgorithmCalc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgorithmCalc.swift; sourceTree = "<group>"; };
+		C672830E218E1DEB00209032 /* DerivedAlgorithmRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivedAlgorithmRunner.swift; sourceTree = "<group>"; };
 		C6760961207175FC0056A5FF /* SensorSerialNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SensorSerialNumber.swift; path = Model/SensorSerialNumber.swift; sourceTree = "<group>"; };
 		C6822D621DB13F2200D08393 /* LibreMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6822D651DB13F2200D08393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -254,9 +268,15 @@
 		C6078B091EC7575600FEE6F7 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				C672830D218E1DEB00209032 /* AlgorithmCalc.swift */,
+				C672830B218E1DEA00209032 /* AlgorithmTester.swift */,
+				C672830C218E1DEB00209032 /* CreatePatches.swift */,
+				C672830E218E1DEB00209032 /* DerivedAlgorithmRunner.swift */,
+				C6728309218E1D2D00209032 /* LibreOOPDefaults.swift */,
 				C61E5D4A207BF6250099157F /* LibreOOPClient.swift */,
 				C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */,
 				C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */,
+				C6728307218E1CF400209032 /* LibreUtils.swift */,
 				C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */,
 			);
 			path = Managers;
@@ -398,6 +418,7 @@
 				C6822DB21DB1618400D08393 /* Measurement.swift */,
 				C6822DB31DB1618400D08393 /* SensorData.swift */,
 				C6822DB41DB1618400D08393 /* SensorState.swift */,
+				C6728305218D815900209032 /* CalibrationManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -715,11 +736,13 @@
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
 				C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */,
 				C6728304218C59AC00209032 /* MiaoMiao.swift in Sources */,
+				C6728308218E1CF400209032 /* LibreUtils.swift in Sources */,
 				C66A49691F40D7CB0005DC78 /* TimeInterval.swift in Sources */,
 				C68AA76C1EA7D5AB0010C43C /* GlucoseCDTVC.swift in Sources */,
 				C6822DC21DB161C700D08393 /* BloodSugarGraphView.swift in Sources */,
 				C6822DD81DB1631D00D08393 /* Reader+CoreDataProperties.swift in Sources */,
 				C665A8CF1F4AE5CE00F204B1 /* SettingsViewController.swift in Sources */,
+				C672830F218E1DEB00209032 /* AlgorithmTester.swift in Sources */,
 				C6822DD51DB1631D00D08393 /* BloodGlucose+CoreDataClass.swift in Sources */,
 				C6822DDC1DB1631D00D08393 /* HeaderData+CoreDataProperties.swift in Sources */,
 				C66A496E1F40D7CB0005DC78 /* NSData+Conversion.m in Sources */,
@@ -728,7 +751,9 @@
 				C61E5D4E207BF6250099157F /* LibreOOPResponse.swift in Sources */,
 				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
+				C6728306218D815900209032 /* CalibrationManager.swift in Sources */,
 				C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */,
+				C672830A218E1D2D00209032 /* LibreOOPDefaults.swift in Sources */,
 				C6CA13F7205EC40B0089C278 /* Data.swift in Sources */,
 				C68AA7681EA7D52E0010C43C /* FetchedResultsTableViewController.swift in Sources */,
 				C66A496F1F40D7CB0005DC78 /* NightscoutTreatment.swift in Sources */,
@@ -740,6 +765,7 @@
 				C61E5D4D207BF6250099157F /* LibreOOPClient.swift in Sources */,
 				C6822DD61DB1631D00D08393 /* BloodGlucose+CoreDataProperties.swift in Sources */,
 				C6822DC31DB161C700D08393 /* BloodSugarGraphViewTableViewCell.swift in Sources */,
+				C6728310218E1DEB00209032 /* CreatePatches.swift in Sources */,
 				C66A496C1F40D7CB0005DC78 /* HKUnit.swift in Sources */,
 				C6822DB71DB1618400D08393 /* Measurement.swift in Sources */,
 				C6822DB91DB1618400D08393 /* SensorState.swift in Sources */,
@@ -748,7 +774,9 @@
 				C6760962207175FC0056A5FF /* SensorSerialNumber.swift in Sources */,
 				C6822DB81DB1618400D08393 /* SensorData.swift in Sources */,
 				C6822DBD1DB161AB00D08393 /* AdjustmentsTableViewController.swift in Sources */,
+				C6728312218E1DEB00209032 /* DerivedAlgorithmRunner.swift in Sources */,
 				C66A496D1F40D7CB0005DC78 /* Either.swift in Sources */,
+				C6728311218E1DEB00209032 /* AlgorithmCalc.swift in Sources */,
 				C6078B0F1EC76BE800FEE6F7 /* NotificationManager.swift in Sources */,
 				C6822DBE1DB161AB00D08393 /* BloodSugarTableViewController.swift in Sources */,
 				C61DA67D1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift in Sources */,
