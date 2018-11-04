@@ -13,7 +13,7 @@ public struct DerivedAlgorithmParameters: Codable, CustomStringConvertible {
     public var slope_offset: Double
     public var offset_slope: Double
     public var offset_offset: Double
-    public var isValidForFooterWithReverseCRCs: Double
+    public var isValidForFooterWithReverseCRCs: Int
     
     public var description: String {
         return "DerivedAlgorithmParameters:: slopeslope: \(slope_slope), slopeoffset: \(slope_offset), offsetoffset: \(offset_offset), offsetSlope: \(offset_slope), isValidForFooterWithReverseCRCs: \(isValidForFooterWithReverseCRCs)"

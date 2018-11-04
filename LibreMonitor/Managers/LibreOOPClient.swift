@@ -533,7 +533,7 @@ class LibreOOPClient {
                 if let result = response.result, result.status == "complete" {
                     print("calibration  ready")
                     
-                    let params = DerivedAlgorithmParameters(slope_slope: result.slopeSlope!, slope_offset: result.slopeOffset!, offset_slope: result.offsetSlope!, offset_offset: result.offsetOffset!, isValidForFooterWithReverseCRCs: result.isValidForFooterWithReverseCRCs!)
+                    let params = DerivedAlgorithmParameters(slope_slope: result.slopeSlope!, slope_offset: result.slopeOffset!, offset_slope: result.offsetSlope!, offset_offset: result.offsetOffset!, isValidForFooterWithReverseCRCs: Int(result.isValidForFooterWithReverseCRCs!))
                     completion(true, "complete", params )
                     return
                 }

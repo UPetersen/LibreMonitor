@@ -85,7 +85,8 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         temperatureAlgorithmTextView.text = "MiaoMiaoManager state is \(miaoMiaoManager.state)"
         if let derivedParameters = calibrationManager.calibrationParameters {
             temperatureParametersDate.text = dateFormatter.string(from: derivedParameters.date)
-            temperatureParametersSensorSerialNumber.text = derivedParameters.serialNumber
+//            temperatureParametersSensorSerialNumber.text = miaoMiaoManager.sensorData?.serialNumber ?? ""
+            temperatureParametersIsValidForFooterCRCs.text = String(format: "%0d", derivedParameters.isValidForFooterWithReverseCRCs)
             temperatureParametersSlopeSlope.text = String(format: "%5.3e", derivedParameters.slope_slope)
             temperatureParametersOffsetSlope.text = String(format: "%5.3e", derivedParameters.offset_slope)
             temperatureParametersSlopeOffset.text = String(format: "%5.3e", derivedParameters.slope_offset)
@@ -159,7 +160,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     // MARK: - temperature algo
     @IBOutlet weak var useTemperatureAlgorithmSwitch: UISwitch!
     @IBOutlet weak var temperatureParametersDate: UITextField!
-    @IBOutlet weak var temperatureParametersSensorSerialNumber: UITextField!
+    @IBOutlet weak var temperatureParametersIsValidForFooterCRCs: UITextField!
     @IBOutlet weak var temperatureParametersSlopeSlope: UITextField!
     @IBOutlet weak var temperatureParametersOffsetSlope: UITextField!
     @IBOutlet weak var temperatureParametersSlopeOffset: UITextField!
@@ -177,12 +178,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func startCalibrationPressed(_ sender: UIButton) {
         temperatureAlgorithmTextView.text = " Pressed that text field and request new data"
         getParametersActivityIndicator.startAnimating()
-//        miaoMiaoManager.requestData()
-       
-//        public func uploadCalibration(reading: [UInt8], _ completion:@escaping (( _ resp: CalibrationResult?, _ success: Bool, _ errorMessage: String) -> Void)) {
-//            //        return uploadCalibration(reading: LibreOOPClient.readingToString(patch), completion)
-//            return uploadCalibration(reading: LibreOOPClient.readingToString(reading), completion)
-//        }
         
         if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
             let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite"),
@@ -200,16 +195,19 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 if let calibrationResult = calibrationResult {
                     print("uuid received: " + calibrationResult.uuid)
                     libreOOPClient.getCalibrationStatusIntervalled(uuid: calibrationResult.uuid, {success, errormessage, parameters in
-                        if let parameters = parameters {
-                            
+                        // check for data integrity
+                        if let parameters = parameters,
+                            sensorData.footerCrc == UInt16(parameters.isValidForFooterWithReverseCRCs).byteSwapped {
+                            print("\n\n\nThe crcs are \(sensorData.footerCrc) and \(UInt16(parameters.isValidForFooterWithReverseCRCs).byteSwapped)")
                             CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-                                serialNumber: sensorData.serialNumber,
+//                                serialNumber: sensorData.serialNumber,
                                 slope_slope: parameters.slope_slope,
                                 offset_slope: parameters.offset_slope,
                                 slope_offset: parameters.slope_offset,
                                 offset_offset: parameters.offset_offset,
                                 additionalSlope: self.additionalSlope,
-                                additionalOffset: self.additionalOffset
+                                additionalOffset: self.additionalOffset,
+                                isValidForFooterWithReverseCRCs: parameters.isValidForFooterWithReverseCRCs
                             )
                         }
                         DispatchQueue.main.async {
@@ -266,26 +264,29 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             additionalSlope = Double(truncating: aNumber)
             if let derivedParameters = calibrationManager.calibrationParameters {
                 CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-                    serialNumber: derivedParameters.serialNumber,
+//                    serialNumber: derivedParameters.serialNumber,
                     slope_slope: derivedParameters.slope_slope,
                     offset_slope: derivedParameters.offset_slope,
                     slope_offset: derivedParameters.slope_offset,
                     offset_offset: derivedParameters.offset_offset,
                     additionalSlope: self.additionalSlope,
-                    additionalOffset: derivedParameters.additionalOffset
+                    additionalOffset: derivedParameters.additionalOffset,
+                    isValidForFooterWithReverseCRCs: derivedParameters.isValidForFooterWithReverseCRCs
                 )
             }
         case temperatureParametersAdditionalOffset:
             additionalOffset = Double(truncating: aNumber)
             if let derivedParameters = calibrationManager.calibrationParameters {
                 CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-                    serialNumber: derivedParameters.serialNumber,
+//                    serialNumber: derivedParameters.serialNumber,
                     slope_slope: derivedParameters.slope_slope,
                     offset_slope: derivedParameters.offset_slope,
                     slope_offset: derivedParameters.slope_offset,
                     offset_offset: derivedParameters.offset_offset,
                     additionalSlope: derivedParameters.additionalSlope,
-                    additionalOffset: self.additionalOffset
+                    additionalOffset: self.additionalOffset,
+                    isValidForFooterWithReverseCRCs: derivedParameters.isValidForFooterWithReverseCRCs
+                    
                 )
             }
         default:

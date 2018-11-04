@@ -153,7 +153,7 @@ struct Measurement {
     
     var description: String {
         var aString = String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes) \n")
-        aString.append("OOP: slope_slope: \(derivedAlgorithmParameterSet?.slope_slope), slope_offset: \(derivedAlgorithmParameterSet?.slope_offset), offset_slope: \(derivedAlgorithmParameterSet?.offset_slope), offset_offset: \(derivedAlgorithmParameterSet?.offset_offset)\n")
+        aString.append("OOP: slope_slope: \(String(describing: derivedAlgorithmParameterSet?.slope_slope)), slope_offset: \(String(describing: derivedAlgorithmParameterSet?.slope_offset)), offset_slope: \(String(describing: derivedAlgorithmParameterSet?.offset_slope)), offset_offset: \(String(describing: derivedAlgorithmParameterSet?.offset_offset))\n")
         aString.append("OOP: slope: \(oopSlope), offset: \(oopOffset)")
         
         return aString

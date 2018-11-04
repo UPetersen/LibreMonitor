@@ -51,6 +51,11 @@ struct SensorData {
         return Crc.hasValidCrc16InFirstTwoBytes(footer)
     }
     
+    /// Footer crc needed for checking integrity of SwiftLibreOOPWeb response
+    var footerCrc: UInt16 {
+        return  Crc.crc16(Array(footer.dropFirst(2)), seed: 0xffff)
+    }
+    
     /// Sensor state (ready, failure, starting etc.)
     var state: SensorState {
         switch header[4] {
