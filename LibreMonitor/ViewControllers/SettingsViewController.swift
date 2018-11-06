@@ -82,10 +82,12 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         oopWebInterfaceAPITokenTextField.text = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken")
         
         // Temperature Algorithm
-        temperatureAlgorithmTextView.text = "MiaoMiaoManager state is \(miaoMiaoManager.state)"
+        configureTemperatureAlgorithmParameterCells()
+    }
+    
+    func configureTemperatureAlgorithmParameterCells() {
         if let derivedParameters = calibrationManager.calibrationParameters {
             temperatureParametersDate.text = dateFormatter.string(from: derivedParameters.date)
-//            temperatureParametersSensorSerialNumber.text = miaoMiaoManager.sensorData?.serialNumber ?? ""
             temperatureParametersIsValidForFooterCRCs.text = String(format: "%0d", derivedParameters.isValidForFooterWithReverseCRCs)
             temperatureParametersSlopeSlope.text = String(format: "%5.3e", derivedParameters.slope_slope)
             temperatureParametersOffsetSlope.text = String(format: "%5.3e", derivedParameters.offset_slope)
@@ -131,9 +133,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         
         uploader.verify { [unowned self] (success, error) in
             DispatchQueue.main.async {
-                //                    UIView.animate(withDuration: 0.25, animations: {
-                //                        self.verifyAccountButton.title = "verifyng"
-                //                    })
                 if success {
                     self.presentVerificationResultAlertController(title: "Verification successful", message: "Your nightscout account was veryfied successfully.")
                 } else {
@@ -176,48 +175,44 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     }
     @IBOutlet weak var getParametersActivityIndicator: UIActivityIndicatorView!
     @IBAction func startCalibrationPressed(_ sender: UIButton) {
-        temperatureAlgorithmTextView.text = " Pressed that text field and request new data"
         getParametersActivityIndicator.startAnimating()
         
-        if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
+        guard let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
             let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite"),
-            let sensorData = miaoMiaoManager.sensorData {
+            let sensorData = miaoMiaoManager.sensorData else {
+                self.presentGetParameterResultAlertController(title: "Get Parameters Failed", message: "Cannot request new data, because site url, access token or sensor datais not valid")
+                return
+        }
 
-            let libreOOPClient = LibreOOPClient(accessToken: accessToken, site: site)
-            libreOOPClient.uploadCalibration(reading: sensorData.bytes, {calibrationResult, success, errormessage in
-                guard success else {
-                    DispatchQueue.main.async {
-                        self.getParametersActivityIndicator.stopAnimating()
-                    }
-                    NSLog("remote: upload calibration failed! \(errormessage)")
-                    return
+        let libreOOPClient = LibreOOPClient(accessToken: accessToken, site: site)
+        libreOOPClient.uploadCalibration(reading: sensorData.bytes, {calibrationResult, success, errormessage in
+            guard success, let calibrationResult = calibrationResult else {
+                DispatchQueue.main.async {
+                    self.presentGetParameterResultAlertController(title: "Get Parameters Failed", message: "Reason: \(errormessage)")
+                    self.getParametersActivityIndicator.stopAnimating()
                 }
-                if let calibrationResult = calibrationResult {
-                    print("uuid received: " + calibrationResult.uuid)
-                    libreOOPClient.getCalibrationStatusIntervalled(uuid: calibrationResult.uuid, {success, errormessage, parameters in
-                        // check for data integrity
-                        if let parameters = parameters,
-                            sensorData.footerCrc == UInt16(parameters.isValidForFooterWithReverseCRCs).byteSwapped {
-                            print("\n\n\nThe crcs are \(sensorData.footerCrc) and \(UInt16(parameters.isValidForFooterWithReverseCRCs).byteSwapped)")
-                            CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-//                                serialNumber: sensorData.serialNumber,
-                                slope_slope: parameters.slope_slope,
-                                offset_slope: parameters.offset_slope,
-                                slope_offset: parameters.slope_offset,
-                                offset_offset: parameters.offset_offset,
-                                additionalSlope: self.additionalSlope,
-                                additionalOffset: self.additionalOffset,
-                                isValidForFooterWithReverseCRCs: parameters.isValidForFooterWithReverseCRCs
-                            )
-                        }
+                NSLog("remote: upload calibration failed! \(errormessage)")
+                return
+            }
+            NSLog("uuid received: " + calibrationResult.uuid)
+            libreOOPClient.getCalibrationStatusIntervalled(uuid: calibrationResult.uuid, {success, errormessage, parameters in
+                // check for data integrity
+                guard success,
+                    let parameters = parameters,
+                    sensorData.footerCrc == UInt16(parameters.isValidForFooterWithReverseCRCs).byteSwapped else {
                         DispatchQueue.main.async {
+                            self.presentGetParameterResultAlertController(title: "Get Parameters Failed", message: "Reason: \(errormessage)")
                             self.getParametersActivityIndicator.stopAnimating()
                         }
-                        NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(parameters.debugDescription)")
-                    })
+                        return
                 }
+                DispatchQueue.main.async {
+                    self.presentReceivedNewParametersAlertController(newParameters: parameters)
+                    self.getParametersActivityIndicator.stopAnimating()
+                }
+                NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(parameters.description)")
             })
-        }
+        })
     }
 
     // MARK: - textfield handling
@@ -264,7 +259,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             additionalSlope = Double(truncating: aNumber)
             if let derivedParameters = calibrationManager.calibrationParameters {
                 CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-//                    serialNumber: derivedParameters.serialNumber,
                     slope_slope: derivedParameters.slope_slope,
                     offset_slope: derivedParameters.offset_slope,
                     slope_offset: derivedParameters.slope_offset,
@@ -278,7 +272,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             additionalOffset = Double(truncating: aNumber)
             if let derivedParameters = calibrationManager.calibrationParameters {
                 CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-//                    serialNumber: derivedParameters.serialNumber,
                     slope_slope: derivedParameters.slope_slope,
                     offset_slope: derivedParameters.offset_slope,
                     slope_offset: derivedParameters.slope_offset,
@@ -286,7 +279,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
                     additionalSlope: derivedParameters.additionalSlope,
                     additionalOffset: self.additionalOffset,
                     isValidForFooterWithReverseCRCs: derivedParameters.isValidForFooterWithReverseCRCs
-                    
                 )
             }
         default:
@@ -310,7 +302,6 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     }
     
     func presentVerificationResultAlertController(title: String?, message: String?) {
-        
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
@@ -320,6 +311,42 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         present(alertController, animated: true, completion: nil)
     }
     
+    func presentGetParameterResultAlertController(title: String?, message: String?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        
+        self.getParametersActivityIndicator.stopAnimating()
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func presentReceivedNewParametersAlertController(newParameters: DerivedAlgorithmParameters) {
+        var message = "Old Parameterset:\n"
+        message.append(self.calibrationManager.calibrationParameters?.description ?? "-")
+        message.append("\n\nNew Parameterset:\n")
+        message.append(newParameters.description)
+        
+        let alertController = UIAlertController(title: "Parameter set recieved", message: message, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        let saveNewParametersAction = UIAlertAction(title: "Save", style: .default, handler: {uiAlertAction in
+            print("I will save this stuff")
+            CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
+                slope_slope: newParameters.slope_slope,
+                offset_slope: newParameters.offset_slope,
+                slope_offset: newParameters.slope_offset,
+                offset_offset: newParameters.offset_offset,
+                additionalSlope: self.additionalSlope,
+                additionalOffset: self.additionalOffset,
+                isValidForFooterWithReverseCRCs: newParameters.isValidForFooterWithReverseCRCs
+            )
+
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveNewParametersAction)
+        present(alertController, animated: true, completion: nil)
+    }
     
 }
 
