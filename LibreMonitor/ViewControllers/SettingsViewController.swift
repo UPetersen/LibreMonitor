@@ -12,7 +12,7 @@ import UIKit
 final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     var miaoMiaoManager: MiaoMiaoManager!
-    var calibrationManager = CalibrationManager()
+    var temperatureParameterManager = TemperatureParameterManager()
     
     var additionalSlope = 0.0
     var additionalOffset = 0.0
@@ -82,19 +82,20 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         oopWebInterfaceAPITokenTextField.text = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken")
         
         // Temperature Algorithm
+        useTemperatureAlgorithmSwitch.isOn = UserDefaults.standard.bool(forKey: "useTemperatureAlgorithm")
         configureTemperatureAlgorithmParameterCells()
     }
     
     func configureTemperatureAlgorithmParameterCells() {
-        if let derivedParameters = calibrationManager.calibrationParameters {
+        if let derivedParameters = temperatureParameterManager.temperatureParameters {
             temperatureParametersDate.text = dateFormatter.string(from: derivedParameters.date)
+            temperatureParametersSlopeSlope.text = String(format: "%5.3g", derivedParameters.slope_slope)
+            temperatureParametersOffsetSlope.text = String(format: "%5.3g", derivedParameters.offset_slope)
+            temperatureParametersSlopeOffset.text = String(format: "%5.3g", derivedParameters.slope_offset)
+            temperatureParametersOffsetOffset.text = String(format: "%5.3g", derivedParameters.offset_offset)
+            temperatureParametersAdditionalSlope.text = String(format: "%5.3g", derivedParameters.additionalSlope)
+            temperatureParametersAdditionalOffset.text = String(format: "%3.0g", derivedParameters.additionalOffset)
             temperatureParametersIsValidForFooterCRCs.text = String(format: "%0d", derivedParameters.isValidForFooterWithReverseCRCs)
-            temperatureParametersSlopeSlope.text = String(format: "%5.3e", derivedParameters.slope_slope)
-            temperatureParametersOffsetSlope.text = String(format: "%5.3e", derivedParameters.offset_slope)
-            temperatureParametersSlopeOffset.text = String(format: "%5.3e", derivedParameters.slope_offset)
-            temperatureParametersOffsetOffset.text = String(format: "%5.3e", derivedParameters.offset_offset)
-            temperatureParametersAdditionalSlope.text = String(format: "%5.3f", derivedParameters.additionalSlope)
-            temperatureParametersAdditionalOffset.text = String(format: "%3.0f", derivedParameters.additionalOffset)
             additionalSlope = derivedParameters.additionalSlope
             additionalOffset = derivedParameters.additionalOffset
         }
@@ -167,11 +168,9 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var temperatureParametersAdditionalSlope: UITextField!
     @IBOutlet weak var temperatureParametersAdditionalOffset: UITextField!
     
-    @IBOutlet weak var temperatureAlgorithmTextView: UITextView!
-    
     @IBAction func useTemperatureAlgorithmSwitchChanged(_ sender: UISwitch) {
+        UserDefaults.standard.set(sender.isOn, forKey: "useTemperatureAlgorithm")
         self.view.endEditing(true) // resign keyboard
-        temperatureAlgorithmTextView.text = "Switch is \(useTemperatureAlgorithmSwitch.isOn)"
     }
     @IBOutlet weak var getParametersActivityIndicator: UIActivityIndicatorView!
     @IBAction func startCalibrationPressed(_ sender: UIButton) {
@@ -197,11 +196,17 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             NSLog("uuid received: " + calibrationResult.uuid)
             libreOOPClient.getCalibrationStatusIntervalled(uuid: calibrationResult.uuid, {success, errormessage, parameters in
                 // check for data integrity
-                guard success,
-                    let parameters = parameters,
+                guard success else {
+                    DispatchQueue.main.async {
+                        self.presentGetParameterResultAlertController(title: "Get Parameters Failed", message: "Reason: \(errormessage)")
+                        self.getParametersActivityIndicator.stopAnimating()
+                    }
+                    return
+                }
+                guard let parameters = parameters,
                     sensorData.footerCrc == UInt16(parameters.isValidForFooterWithReverseCRCs).byteSwapped else {
                         DispatchQueue.main.async {
-                            self.presentGetParameterResultAlertController(title: "Get Parameters Failed", message: "Reason: \(errormessage)")
+                            self.presentGetParameterResultAlertController(title: "Get Parameters Failed", message: "Wrong crc or no parameters returned.")
                             self.getParametersActivityIndicator.stopAnimating()
                         }
                         return
@@ -257,28 +262,28 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
         case temperatureParametersAdditionalSlope:
             additionalSlope = Double(truncating: aNumber)
-            if let derivedParameters = calibrationManager.calibrationParameters {
-                CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-                    slope_slope: derivedParameters.slope_slope,
-                    offset_slope: derivedParameters.offset_slope,
-                    slope_offset: derivedParameters.slope_offset,
-                    offset_offset: derivedParameters.offset_offset,
+            if let temperatureParameters = temperatureParameterManager.temperatureParameters {
+                TemperatureParameterManager().temperatureParameters = TemperatureAlgorithmParameter(
+                    slope_slope: temperatureParameters.slope_slope,
+                    offset_slope: temperatureParameters.offset_slope,
+                    slope_offset: temperatureParameters.slope_offset,
+                    offset_offset: temperatureParameters.offset_offset,
                     additionalSlope: self.additionalSlope,
-                    additionalOffset: derivedParameters.additionalOffset,
-                    isValidForFooterWithReverseCRCs: derivedParameters.isValidForFooterWithReverseCRCs
+                    additionalOffset: temperatureParameters.additionalOffset,
+                    isValidForFooterWithReverseCRCs: temperatureParameters.isValidForFooterWithReverseCRCs
                 )
             }
         case temperatureParametersAdditionalOffset:
             additionalOffset = Double(truncating: aNumber)
-            if let derivedParameters = calibrationManager.calibrationParameters {
-                CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
-                    slope_slope: derivedParameters.slope_slope,
-                    offset_slope: derivedParameters.offset_slope,
-                    slope_offset: derivedParameters.slope_offset,
-                    offset_offset: derivedParameters.offset_offset,
-                    additionalSlope: derivedParameters.additionalSlope,
+            if let temperatureParameters = temperatureParameterManager.temperatureParameters {
+                TemperatureParameterManager().temperatureParameters = TemperatureAlgorithmParameter(
+                    slope_slope: temperatureParameters.slope_slope,
+                    offset_slope: temperatureParameters.offset_slope,
+                    slope_offset: temperatureParameters.slope_offset,
+                    offset_offset: temperatureParameters.offset_offset,
+                    additionalSlope: temperatureParameters.additionalSlope,
                     additionalOffset: self.additionalOffset,
-                    isValidForFooterWithReverseCRCs: derivedParameters.isValidForFooterWithReverseCRCs
+                    isValidForFooterWithReverseCRCs: temperatureParameters.isValidForFooterWithReverseCRCs
                 )
             }
         default:
@@ -322,17 +327,28 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     }
     
     func presentReceivedNewParametersAlertController(newParameters: DerivedAlgorithmParameters) {
-        var message = "Old Parameterset:\n"
-        message.append(self.calibrationManager.calibrationParameters?.description ?? "-")
+        var message = "\nOld Parameterset from \(self.temperatureParametersDate?.text ?? ""):\n"
+        message.append("Slope_slope: \(self.temperatureParametersSlopeSlope.text ?? "")\n")
+        message.append("Offset_slope: \(self.temperatureParametersOffsetSlope.text ?? "")\n")
+        message.append("Slope_offset: \(self.temperatureParametersSlopeOffset.text ?? "")\n")
+        message.append("Offset_offset: \(self.temperatureParametersOffsetOffset.text ?? "")\n")
+        message.append("CRC: \(self.temperatureParametersIsValidForFooterCRCs.text ?? "")\n")
+//        message.append(self.temperatureParameterManager.temperatureParameters?.description ?? "-")
+
         message.append("\n\nNew Parameterset:\n")
-        message.append(newParameters.description)
+        message.append(String(format: "Slope_slope: %5.3g\n", arguments: [newParameters.slope_slope]))
+        message.append(String(format: "Offset_slope: %5.3g\n", arguments: [newParameters.offset_slope]))
+        message.append(String(format: "Slope_offset: %5.3g\n", arguments: [newParameters.slope_offset]))
+        message.append(String(format: "Offset_offset: %5.3g\n", arguments: [newParameters.offset_offset]))
+        message.append(String(format: "CRC: %d\n", arguments: [newParameters.isValidForFooterWithReverseCRCs]))
+//        message.append(newParameters.description)
         
-        let alertController = UIAlertController(title: "Parameter set recieved", message: message, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Parameter set received", message: message, preferredStyle: .actionSheet)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         let saveNewParametersAction = UIAlertAction(title: "Save", style: .default, handler: {uiAlertAction in
             print("I will save this stuff")
-            CalibrationManager().calibrationParameters = DerivedAlgorithmParameterSet(
+            TemperatureParameterManager().temperatureParameters = TemperatureAlgorithmParameter(
                 slope_slope: newParameters.slope_slope,
                 offset_slope: newParameters.offset_slope,
                 slope_offset: newParameters.slope_offset,

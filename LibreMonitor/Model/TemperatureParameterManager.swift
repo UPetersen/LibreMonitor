@@ -1,5 +1,5 @@
 //
-//  CalibrationManager.swift
+//  TemperatureParameterManager.swift
 //  LibreMonitor
 //
 //  Created by Uwe Petersen on 03.11.18.
@@ -8,9 +8,8 @@
 
 import Foundation
 
-struct DerivedAlgorithmParameterSet: Codable, CustomStringConvertible {
-    // uuid of the sensor which has to be tied to the parameters
-//    var serialNumber: String
+struct TemperatureAlgorithmParameter: Codable, CustomStringConvertible {
+    // Date when parameters were created
     var date = Date()
     
     // Parameters for temperature compensation algo, see here: https://github.com/UPetersen/LibreMonitor/wiki/Libre-OOP-Investigation#variation-of-temperature
@@ -26,9 +25,7 @@ struct DerivedAlgorithmParameterSet: Codable, CustomStringConvertible {
     // Additional offset put on top of the algo to compensate for sensors that e.g. continiously deliver too low values
     var additionalOffset: Double
     
-//    init(serialNumber: String, slope_slope: Double, offset_slope: Double, slope_offset: Double, offset_offset: Double, additionalSlope: Double, additionalOffset:
     init(slope_slope: Double, offset_slope: Double, slope_offset: Double, offset_offset: Double, additionalSlope: Double, additionalOffset: Double, isValidForFooterWithReverseCRCs: Int) {
-//        self.serialNumber = serialNumber
         self.slope_slope = slope_slope
         self.offset_slope = offset_slope
         self.slope_offset = slope_offset
@@ -39,13 +36,12 @@ struct DerivedAlgorithmParameterSet: Codable, CustomStringConvertible {
     }
     
     var description: String {
-//        return "Parameters for sensor with serial number '\(serialNumber)' created on \(date.description) \nSlope_slope:   \(slope_slope) \nOffset_slope:  \(offset_slope) \nSlope_offset:  \(slope_offset) \nOffset_offset: \(offset_offset) \nAdditional slope:  \(additionalSlope) \nAdditional offset: \(additionalOffset)"
-        return "Parameters created on \(date.description) \nSlope_slope:   \(slope_slope) \nOffset_slope:  \(offset_slope) \nSlope_offset:  \(slope_offset) \nOffset_offset: \(offset_offset) \nAdditional slope:  \(additionalSlope) \nAdditional offset: \(additionalOffset) for sensor with footer crc \(isValidForFooterWithReverseCRCs)"
+        return "Parameters created on \(date.description) \nSlope_slope:   \(slope_slope) \nOffset_slope:  \(offset_slope) \nSlope_offset:  \(slope_offset) \nOffset_offset: \(offset_offset) \nAdditional slope:  \(additionalSlope) \nAdditional offset: \(additionalOffset) \nfor sensor with footer crc \(isValidForFooterWithReverseCRCs)"
     }
 }
 
-class CalibrationManager {
-    var calibrationParameters: DerivedAlgorithmParameterSet? {
+class TemperatureParameterManager {
+    var temperatureParameters: TemperatureAlgorithmParameter? {
         set {
             if let parameters = newValue {
                 let aString = serializeAlgorithmParameters(parameters)
@@ -61,7 +57,7 @@ class CalibrationManager {
         }
     }
     
-    private func serializeAlgorithmParameters(_ params: DerivedAlgorithmParameterSet) -> String {
+    private func serializeAlgorithmParameters(_ params: TemperatureAlgorithmParameter) -> String {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         
@@ -78,13 +74,13 @@ class CalibrationManager {
         return aString
     }
     
-    private func deserializeAlgorithmParameters(text: String) -> DerivedAlgorithmParameterSet? {
+    private func deserializeAlgorithmParameters(text: String) -> TemperatureAlgorithmParameter? {
         
         if let jsonData = text.data(using: .utf8) {
             let decoder = JSONDecoder()
             
             do {
-                let parameters = try decoder.decode(DerivedAlgorithmParameterSet.self, from: jsonData)
+                let parameters = try decoder.decode(TemperatureAlgorithmParameter.self, from: jsonData)
                 
                 return parameters
             } catch {
@@ -95,12 +91,4 @@ class CalibrationManager {
         }
         return nil
     }
-//
-//    init(deriveAlgorithmParameterSet: DerivedAlgorithmParameterSet) {
-//        self.derivedAlgorithmParameterSet = derivedAlgorithmParameterSet
-//    }
-//
-////    public static func createInstanceFromUserDefaults() -> CalibrationManager? {
-////
-////    }
 }

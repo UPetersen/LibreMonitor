@@ -33,7 +33,7 @@
 		C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C66A49661F40D7CB0005DC78 /* Crypto.m */; };
 		C66A497C1F4227860005DC78 /* NSDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A497B1F4227860005DC78 /* NSDateFormatter.swift */; };
 		C6728304218C59AC00209032 /* MiaoMiao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728303218C59AC00209032 /* MiaoMiao.swift */; };
-		C6728306218D815900209032 /* CalibrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728305218D815900209032 /* CalibrationManager.swift */; };
+		C6728306218D815900209032 /* TemperatureParameterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728305218D815900209032 /* TemperatureParameterManager.swift */; };
 		C6728308218E1CF400209032 /* LibreUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728307218E1CF400209032 /* LibreUtils.swift */; };
 		C672830A218E1D2D00209032 /* LibreOOPDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6728309218E1D2D00209032 /* LibreOOPDefaults.swift */; };
 		C672830F218E1DEB00209032 /* AlgorithmTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672830B218E1DEA00209032 /* AlgorithmTester.swift */; };
@@ -145,7 +145,7 @@
 		C66A49661F40D7CB0005DC78 /* Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypto.m; sourceTree = "<group>"; };
 		C66A497B1F4227860005DC78 /* NSDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatter.swift; sourceTree = "<group>"; };
 		C6728303218C59AC00209032 /* MiaoMiao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiaoMiao.swift; path = Bluetooth/MiaoMiao.swift; sourceTree = "<group>"; };
-		C6728305218D815900209032 /* CalibrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalibrationManager.swift; path = Model/CalibrationManager.swift; sourceTree = "<group>"; };
+		C6728305218D815900209032 /* TemperatureParameterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TemperatureParameterManager.swift; path = Model/TemperatureParameterManager.swift; sourceTree = "<group>"; };
 		C6728307218E1CF400209032 /* LibreUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreUtils.swift; sourceTree = "<group>"; };
 		C6728309218E1D2D00209032 /* LibreOOPDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPDefaults.swift; sourceTree = "<group>"; };
 		C672830B218E1DEA00209032 /* AlgorithmTester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgorithmTester.swift; sourceTree = "<group>"; };
@@ -418,7 +418,7 @@
 				C6822DB21DB1618400D08393 /* Measurement.swift */,
 				C6822DB31DB1618400D08393 /* SensorData.swift */,
 				C6822DB41DB1618400D08393 /* SensorState.swift */,
-				C6728305218D815900209032 /* CalibrationManager.swift */,
+				C6728305218D815900209032 /* TemperatureParameterManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -751,7 +751,7 @@
 				C61E5D4E207BF6250099157F /* LibreOOPResponse.swift in Sources */,
 				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
-				C6728306218D815900209032 /* CalibrationManager.swift in Sources */,
+				C6728306218D815900209032 /* TemperatureParameterManager.swift in Sources */,
 				C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */,
 				C672830A218E1D2D00209032 /* LibreOOPDefaults.swift in Sources */,
 				C6CA13F7205EC40B0089C278 /* Data.swift in Sources */,

@@ -431,8 +431,18 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 }
             case 7:
                 cell.textLabel?.text = "OOP Glucose"
-                if let sensorData = sensorData, let oopCurrentValue = oopCurrentValue {
-                    cell.detailTextLabel?.text = "\(oopCurrentValue.currentBg) mg/dl, time: \(oopCurrentValue.currentTime), trend: \(oopCurrentValue.currentTrend) at \(timeFormatter.string(from: sensorData.date))"
+
+                if let sensorData = sensorData{
+                    if let oopCurrentValue = oopCurrentValue {
+                        cell.detailTextLabel?.text = "\(oopCurrentValue.currentBg) mg/dl, time: \(oopCurrentValue.currentTime), trend: \(oopCurrentValue.currentTrend) at \(timeFormatter.string(from: sensorData.date))"
+                    }
+                    if let temperatureAlgorithmParameterSet = sensorData.temperatureAlgorithmParameterSet,
+                        sensorData.footerCrc != UInt16(temperatureAlgorithmParameterSet.isValidForFooterWithReverseCRCs).byteSwapped {
+                        cell.detailTextLabel?.text?.append(", but parameters do not match current sensor. Get new Parameters?")
+                        cell.backgroundColor = UIColor.red
+                    } else {
+                        cell.backgroundColor = UIColor.white
+                    }
                 } else {
                     cell.detailTextLabel?.text = "-"
                 }

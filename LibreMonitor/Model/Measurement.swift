@@ -48,7 +48,7 @@ struct Measurement {
     let oopSlope: Double
     let oopOffset: Double
     ///
-    let derivedAlgorithmParameterSet: DerivedAlgorithmParameterSet?
+    let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameter?
 
 
     ///
@@ -58,8 +58,7 @@ struct Measurement {
     /// - parameter date:   date of the measurement
     ///
     /// - returns: Measurement
-    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date, derivedAlgorithmParameterSet: DerivedAlgorithmParameterSet? = nil) {
-//    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date) {
+    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date, derivedAlgorithmParameterSet: TemperatureAlgorithmParameter? = nil) {
         self.bytes = bytes
         self.byteString = bytes.reduce("", {$0 + String(format: "%02X", arguments: [$1])})
         self.rawGlucose = (Int(bytes[1] & 0x1F) << 8) + Int(bytes[0]) // switched to 13 bit mask on 2018-03-15
@@ -74,8 +73,8 @@ struct Measurement {
 //        self.oopOffset = slope_offset * Double(rawTemperature) + offset_offset
 //        self.oopGlucose = oopSlope * Double(rawGlucose) + oopOffset
 
-        self.derivedAlgorithmParameterSet = derivedAlgorithmParameterSet
-        if let derivedAlgorithmParameterSet = self.derivedAlgorithmParameterSet {
+        self.temperatureAlgorithmParameterSet = derivedAlgorithmParameterSet
+        if let derivedAlgorithmParameterSet = self.temperatureAlgorithmParameterSet {
             self.oopSlope = derivedAlgorithmParameterSet.slope_slope * Double(rawTemperature) + derivedAlgorithmParameterSet.offset_slope
             self.oopOffset = derivedAlgorithmParameterSet.slope_offset * Double(rawTemperature) + derivedAlgorithmParameterSet.offset_offset
             //        self.oopSlope = slope_slope * Double(rawTemperature) + slope_offset
@@ -153,8 +152,8 @@ struct Measurement {
     
     var description: String {
         var aString = String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes) \n")
-        aString.append("OOP: slope_slope: \(String(describing: derivedAlgorithmParameterSet?.slope_slope)), slope_offset: \(String(describing: derivedAlgorithmParameterSet?.slope_offset)), offset_slope: \(String(describing: derivedAlgorithmParameterSet?.offset_slope)), offset_offset: \(String(describing: derivedAlgorithmParameterSet?.offset_offset))\n")
-        aString.append("OOP: slope: \(oopSlope), offset: \(oopOffset)")
+        aString.append("OOP: slope_slope: \(String(describing: temperatureAlgorithmParameterSet?.slope_slope)), slope_offset: \(String(describing: temperatureAlgorithmParameterSet?.slope_offset)), offset_slope: \(String(describing: temperatureAlgorithmParameterSet?.offset_slope)), offset_offset: \(String(describing: temperatureAlgorithmParameterSet?.offset_offset))\n")
+        aString.append("OOP: slope: \(oopSlope), \noffset: \(oopOffset)")
         
         return aString
 //        return String("Glucose: \(glucose) (mg/dl), date:  \(date), slope: \(slope), offset: \(offset), rawGlucose: \(rawGlucose), rawTemperature: \(rawTemperature), bytes: \(bytes)  /n oop: slope_slope = " )
