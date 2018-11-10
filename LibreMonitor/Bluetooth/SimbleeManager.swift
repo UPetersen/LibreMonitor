@@ -1,3 +1,5 @@
+
+/*
 //
 //  SimbleeManager.swift
 //  LibreMonitor
@@ -347,7 +349,7 @@ final class SimbleeManager: NSObject, CBCentralManagerDelegate, CBPeripheralDele
 
 
 
-
+*/
 
 
 

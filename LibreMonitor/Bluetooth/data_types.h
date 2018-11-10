@@ -1,3 +1,5 @@
+/*
+
 // Data types for data to be transfered
 // Need a struct with one variable and the packed attribute to make this an array in swift (in a simple way
 
@@ -49,11 +51,11 @@ typedef struct  __attribute__((packed)) {
 } NFCState;
 
 
-/**
- @brief Complete packet of data received via bluetooth.
- 
- @detail This struct contains all relevant data collected from the Freestyle Libre sensor and transmitted via bluetooth.
- */
+
+// @brief Complete packet of data received via bluetooth.
+//
+// @detail This struct contains all relevant data collected from the Freestyle Libre sensor and transmitted via bluetooth.
+
 typedef struct  __attribute__((packed)) {
     
     /// State of BM019.
@@ -96,3 +98,4 @@ typedef struct  __attribute__((packed)) {
     uint8_t fram[344];
 } Transmission;
 
+*/

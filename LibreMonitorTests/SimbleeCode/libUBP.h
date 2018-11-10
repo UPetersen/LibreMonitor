@@ -1,3 +1,4 @@
+/*
 //
 // Uwe Petersen: Modified version to test transmission part in iOS
 
@@ -58,5 +59,5 @@ void _UBP_hostDisconnected();
 //extern void UBP_didConnect() __attribute__((weak));
 
 //extern void UBP_didDisconnect() __attribute__((weak));
-
+*/
 

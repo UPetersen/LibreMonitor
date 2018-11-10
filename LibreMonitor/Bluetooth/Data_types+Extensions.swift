@@ -6,6 +6,7 @@
 //  Copyright © 2016 Uwe Petersen. All rights reserved.
 //
 
+/*
 import Foundation
 
 extension IDNDataType {
@@ -153,5 +154,5 @@ extension initializableWithBytes {
         self = bytes.withUnsafeBytes { $0.pointee }
     }
 }
-
+*/
 

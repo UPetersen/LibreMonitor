@@ -1,3 +1,4 @@
+/*
 //
 // Uwe Petersen: Modified version to test transmission part in iOS
 
@@ -39,14 +40,12 @@ bool hostIsConnected = true;
 char simbleeBuffer[BUFFER_LENGTH];
 int simbleeBufferLength = 0;
 
-/*
-// Functions
-bool UBP_isBusy() {
-    
-    return UBP_isTxPending;
-}
- */
-void UBP_pump() {
+// // Functions
+// bool UBP_isBusy() {
+//     return UBP_isTxPending;
+// }
+
+ void UBP_pump() {
     
     _UBP_pumpTxQueue();
 }
@@ -95,7 +94,7 @@ void _UBP_pumpTxQueue() {
         }
     }
 }
-/*
+
 void _UBP_ingestRxBytes(char *receivedBytes, int byteCount) {
     
     Serial.print(byteCount);
@@ -164,7 +163,7 @@ void _UBP_ingestRxBytes(char *receivedBytes, int byteCount) {
     }  // else haven't RX'd final fragment yet, keep waiting
 }
 */
-
+/*
 // only needed to retreive the data for testing
 void getTxBuffer(char *txBuffer, int *txBufferLength) {
     for (int i=0; i<ubpTxBufferLength; i++) {
@@ -268,7 +267,7 @@ int _UBP_makeEscapedCopy(const char *inputBuffer, unsigned short inputBufferLeng
     return bytesCopied;
 }
 
-/*
+
 
 int _UBP_makeUnEscapedCopy(const char *inputBuffer, unsigned short inputBufferLength, char *outputBuffer) {
     
@@ -330,7 +329,6 @@ int _UBP_makeUnEscapedCopy(const char *inputBuffer, unsigned short inputBufferLe
     return (destinationBufferPtr - outputBuffer);  // Return the total number of bytes copied to the destination buffer
 }
 
- */
 
 void _UBP_hostDisconnected() {
     
@@ -375,3 +373,4 @@ void SimbleeBLE_onDisconnect() {
 }
 
 
+*/
