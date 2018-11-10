@@ -23,11 +23,13 @@ final class AdjustmentsTableViewController: UITableViewController, UITextFieldDe
         offsetTextField.delegate = self // for handling return key
         slopeTextField.delegate = self
         
-        let bloodGlucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
-        let bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
-        
-        offsetTextField.text = numberFormatter.string(from: NSNumber(value: bloodGlucoseOffset))
-        slopeTextField.text = numberFormatter.string(from: NSNumber(value: bloodGlucoseSlope))
+        let glucoseOffset = UserDefaults.standard.glucoseOffset
+        let glucoseSlope = UserDefaults.standard.glucoseSlope
+//        let glucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
+//        let glucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
+
+        offsetTextField.text = numberFormatter.string(from: NSNumber(value: glucoseOffset))
+        slopeTextField.text = numberFormatter.string(from: NSNumber(value: glucoseSlope))
                 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(AdjustmentsTableViewController.didTapSaveButton))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(AdjustmentsTableViewController.didTapUndoButton))
@@ -52,11 +54,13 @@ final class AdjustmentsTableViewController: UITableViewController, UITextFieldDe
         
         switch textField {
         case offsetTextField:
-            let bloodGlucoseOffset = Double(truncating: aNumber)
-            UserDefaults.standard.set(bloodGlucoseOffset, forKey: "bloodGlucoseOffset")
+            let glucoseOffset = Double(truncating: aNumber)
+            UserDefaults.standard.glucoseOffset = glucoseOffset
+//            UserDefaults.standard.set(bloodGlucoseOffset, forKey: "bloodGlucoseOffset")
         case slopeTextField:
-            let bloodGlucoseSlope = Double(truncating: aNumber)
-            UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
+            let glucoseSlope = Double(truncating: aNumber)
+            UserDefaults.standard.glucoseSlope = glucoseSlope
+//            UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
         default:
             fatalError("Fatal Error in \(#file): textField not handled in switch case")
             break

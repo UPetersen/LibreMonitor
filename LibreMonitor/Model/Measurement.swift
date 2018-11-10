@@ -48,7 +48,7 @@ struct Measurement {
     let oopSlope: Double
     let oopOffset: Double
     ///
-    let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameter?
+    let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameters?
 
 
     ///
@@ -58,7 +58,7 @@ struct Measurement {
     /// - parameter date:   date of the measurement
     ///
     /// - returns: Measurement
-    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date, derivedAlgorithmParameterSet: TemperatureAlgorithmParameter? = nil) {
+    init(bytes: [UInt8], slope: Double = 0.1, offset: Double = 0.0, counter: Int = 0, date: Date, derivedAlgorithmParameterSet: TemperatureAlgorithmParameters? = nil) {
         self.bytes = bytes
         self.byteString = bytes.reduce("", {$0 + String(format: "%02X", arguments: [$1])})
         self.rawGlucose = (Int(bytes[1] & 0x1F) << 8) + Int(bytes[0]) // switched to 13 bit mask on 2018-03-15

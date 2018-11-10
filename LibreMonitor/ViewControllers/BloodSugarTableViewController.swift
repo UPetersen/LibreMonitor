@@ -87,8 +87,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         }
     }
     
-    var bloodGlucoseOffset: Double!
-    var bloodGlucoseSlope: Double!
     var sensorSerialNumber: SensorSerialNumber?
 
     var deviceID = "-"
@@ -143,7 +141,9 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
             miaoMiaoManager.delegate = self
         }
         self.navigationItem.title = "LibreMonitor"
-        if let site = UserDefaults.standard.string(forKey: "nightscoutSite"), let siteURL = URL.init(string: site), let apiSecret = UserDefaults.standard.string(forKey: "nightscoutAPISecret") {
+        if let site = UserDefaults.standard.nightscoutSite,
+            let siteURL = URL.init(string: site),
+            let apiSecret = UserDefaults.standard.nightscoutAPISecret {
             uploader = NightscoutUploader(siteURL: siteURL, APISecret: apiSecret)
         }
         
@@ -151,22 +151,12 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         let conncectButton = UIBarButtonItem(title: connectButtonTitle, style: .plain, target: self, action: #selector(BloodSugarTableViewController.didTapConnectButton))
         self.navigationItem.rightBarButtonItem = conncectButton
         
-        bloodGlucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
-        bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
-        if bloodGlucoseSlope <= 0.00001 {
-            bloodGlucoseSlope = 1.0
-            UserDefaults.standard.set(bloodGlucoseSlope, forKey: "bloodGlucoseSlope")
-        }
-        
         dateFormatter.dateFormat = "yyyy-MM-dd"
         timeFormatter.dateFormat = "HH:mm:ss"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        bloodGlucoseOffset = UserDefaults.standard.double(forKey: "bloodGlucoseOffset")
-        bloodGlucoseSlope = UserDefaults.standard.double(forKey: "bloodGlucoseSlope")
         
         // Notification for updating table view after application did become active again
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -323,7 +313,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 }
             case 2:
                 cell.textLabel?.text = "Offset / Slope:"
-                cell.detailTextLabel?.text = String(format: "%.0f mg/dl, %.4f", arguments: [bloodGlucoseOffset, bloodGlucoseSlope])
+                cell.detailTextLabel?.text = String(format: "%.0f mg/dl, %.4f", arguments: [UserDefaults.standard.glucoseOffset, UserDefaults.standard.glucoseSlope])
                 cell.accessoryType = .disclosureIndicator
             default: break
             }
@@ -551,8 +541,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 getOOPGlucose(fram: sensorData.bytes)
                 
                 timeOfLastScan = Date()
-                trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
-                historyMeasurements = sensorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
+                trendMeasurements = sensorData.trendMeasurements(UserDefaults.standard.glucoseOffset, slope: UserDefaults.standard.glucoseSlope)
+                historyMeasurements = sensorData.historyMeasurements(UserDefaults.standard.glucoseOffset, slope: UserDefaults.standard.glucoseSlope)
                 
                 if let trendMeasurements = trendMeasurements {
                     setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
@@ -589,7 +579,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                             }
                             ///* 2018-10-27: Skip storing history data in core data for test purposes
                             // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                            if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+                            if storeMeasurement && (UserDefaults.standard.glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
                                 
                                 fetchedBloodGlucoses?.forEach({ bloodGlucose in
                                     os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
@@ -608,7 +598,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                             //*/
                         })
                         // send to nightscout
-                        if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {
+                        if UserDefaults.standard.uploadToNightscoutIsActivated {
                             uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
                             nightscoutEntries = []
                         }
@@ -671,8 +661,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     }
                     
                     timeOfLastScan = Date()
-                    trendMeasurements = sensorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
-                    historyMeasurements = sensorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
+                    trendMeasurements = sensorData.trendMeasurements(glucoseOffset, slope: glucoseSlope)
+                    historyMeasurements = sensorData.historyMeasurements(glucoseOffset, slope: glucoseSlope)
                     
                     if let trendMeasurements = trendMeasurements {
                         setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
@@ -709,7 +699,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                                 }
                                 /// 2018-10-27: Skip storing history data in core data for test purposes
                                 // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                                if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+                                if storeMeasurement && (glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
                                 
                                     fetchedBloodGlucoses?.forEach({ bloodGlucose in
                                         os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
@@ -832,8 +822,8 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 //            os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
 //
 //            if let sennsorData = sensorData {
-//                trendMeasurements = sennsorData.trendMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
-//                historyMeasurements = sennsorData.historyMeasurements(bloodGlucoseOffset, slope: bloodGlucoseSlope)
+//                trendMeasurements = sennsorData.trendMeasurements(glucoseOffset, slope: glucoseSlope)
+//                historyMeasurements = sennsorData.historyMeasurements(glucoseOffset, slope: glucoseSlope)
 //
 //                if let trendMeasurements = trendMeasurements {
 //                    setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
@@ -864,7 +854,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
 //                                }
 //                            }
 //                            // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-//                            if storeMeasurement && (bloodGlucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+//                            if storeMeasurement && (glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
 //                                let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
 //                                glucose.bytes = measurement.byteString
 //                                glucose.value = measurement.glucose
@@ -1017,11 +1007,11 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         
         // OOP Webinterface
         oopCurrentValue = nil
-        guard UserDefaults.standard.bool(forKey: "oopWebInterfaceIsActivated") else {
+        guard UserDefaults.standard.oopWebInterfaceIsActivated else {
             return
         }
-        if let accessToken = UserDefaults.standard.string(forKey: "oopWebInterfaceAPIToken"),
-            let site = UserDefaults.standard.string(forKey: "oopWebInterfaceSite") {
+        if let accessToken = UserDefaults.standard.oopWebInterfaceAPIToken,
+            let site = UserDefaults.standard.oopWebInterfaceSite {
             let libreOOPClient = LibreOOPClient(accessToken: accessToken, site: site)
             libreOOPClient.uploadReading(reading: fram) { (response, success, errormessage) in
                 guard success else {

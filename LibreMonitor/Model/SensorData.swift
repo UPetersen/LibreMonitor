@@ -14,7 +14,7 @@ import Foundation
 struct SensorData {
     
     /// Parameters for the temperature compensation algorithm
-    let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameter?
+    let temperatureAlgorithmParameterSet: TemperatureAlgorithmParameters?
 
     /// The uid of the sensor
     let uuid: Data
@@ -77,7 +77,7 @@ struct SensorData {
     }
     
     
-    init?(uuid: Data, bytes: [UInt8], date: Date = Date(), derivedAlgorithmParameterSet: TemperatureAlgorithmParameter? = nil) {
+    init?(uuid: Data, bytes: [UInt8], date: Date = Date(), derivedAlgorithmParameterSet: TemperatureAlgorithmParameters? = nil) {
         guard bytes.count == numberOfBytes else {
             return nil
         }

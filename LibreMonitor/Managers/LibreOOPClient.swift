@@ -481,7 +481,7 @@ class LibreOOPClient {
                     
                 }
                 self.getCalibrationStatus(uuid: uuid, { (success, errormessage, params) in
-                    print("inside handler for getCalibrationStatus in interval, success: \(success), message: \(errormessage), params:\(params)")
+                    print("inside handler for getCalibrationStatus in interval, success: \(success), message: \(errormessage), params:\(String(describing: params))")
                     if (success) {
                         succeeded = true
                         algoparams = params
