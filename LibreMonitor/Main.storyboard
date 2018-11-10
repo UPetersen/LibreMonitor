@@ -172,197 +172,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Parameters for new oop surrogate algorithm" id="CTS-62-XKm">
-                                <string key="footerTitle">If you are using the new algo with temperature compensation it requires the appropriate parameters that are sensor dependent. 
-You can enter them manually here (having derived them form @dabear's web interface) or let them automatically be calculated. </string>
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Taj-Ik-C9u">
-                                        <rect key="frame" x="0.0" y="234.66666666666669" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Taj-Ik-C9u" id="uRE-Y0-pSf">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Use temperature compensation algo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CQo-39-R9i">
-                                                    <rect key="frame" x="30" y="11.333333333333336" width="279" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Il-f6-Dpj">
-                                                    <rect key="frame" x="345" y="6" width="49" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="CQo-39-R9i" firstAttribute="leading" secondItem="uRE-Y0-pSf" secondAttribute="leadingMargin" constant="10" id="Htv-rX-Yzc"/>
-                                                <constraint firstItem="CQo-39-R9i" firstAttribute="centerY" secondItem="uRE-Y0-pSf" secondAttribute="centerY" id="sJb-Ou-NsN"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UVI-Ch-Gd6">
-                                        <rect key="frame" x="0.0" y="278.66666666666669" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UVI-Ch-Gd6" id="sP8-5Z-52t">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slope_slope" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="38p-nW-0cI">
-                                                    <rect key="frame" x="30" y="13.333333333333336" width="92" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="ual-6c-Z7d">
-                                                    <rect key="frame" x="274" y="11" width="120" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="RYC-jD-Zfg"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="ual-6c-Z7d" firstAttribute="trailing" secondItem="sP8-5Z-52t" secondAttribute="trailingMargin" id="3aj-hl-aWr"/>
-                                                <constraint firstItem="38p-nW-0cI" firstAttribute="leading" secondItem="sP8-5Z-52t" secondAttribute="leadingMargin" constant="10" id="BOh-WK-Ce5"/>
-                                                <constraint firstItem="ual-6c-Z7d" firstAttribute="baseline" secondItem="38p-nW-0cI" secondAttribute="baseline" id="OsF-6v-blB"/>
-                                                <constraint firstItem="ual-6c-Z7d" firstAttribute="top" secondItem="sP8-5Z-52t" secondAttribute="topMargin" id="tbQ-o9-vCF"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="auf-fo-WrW">
-                                        <rect key="frame" x="0.0" y="322.66666666666669" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="auf-fo-WrW" id="oz4-8R-eBa">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Offset_slope" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxW-rE-wn7">
-                                                    <rect key="frame" x="30" y="11.333333333333336" width="96" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="lQd-Ct-HOU">
-                                                    <rect key="frame" x="274" y="7" width="120" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="cMX-lI-Oej"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="lQd-Ct-HOU" firstAttribute="trailing" secondItem="oz4-8R-eBa" secondAttribute="trailingMargin" id="6Iq-on-dd0"/>
-                                                <constraint firstItem="bxW-rE-wn7" firstAttribute="centerY" secondItem="oz4-8R-eBa" secondAttribute="centerY" id="Lwg-UU-1rp"/>
-                                                <constraint firstItem="bxW-rE-wn7" firstAttribute="leading" secondItem="oz4-8R-eBa" secondAttribute="leadingMargin" constant="10" id="QA3-xw-r6O"/>
-                                                <constraint firstItem="lQd-Ct-HOU" firstAttribute="centerY" secondItem="bxW-rE-wn7" secondAttribute="centerY" id="dR4-Re-Rfg"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="nLB-Fk-pv5">
-                                        <rect key="frame" x="0.0" y="366.66666666666669" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nLB-Fk-pv5" id="wZ7-Li-VpX">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Slope_offset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLx-hP-dnC">
-                                                    <rect key="frame" x="30" y="11.333333333333336" width="95" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="s2S-NF-3W2">
-                                                    <rect key="frame" x="274" y="7" width="120" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="U63-1i-6Ld"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="s2S-NF-3W2" firstAttribute="trailing" secondItem="wZ7-Li-VpX" secondAttribute="trailingMargin" id="2Z4-tW-G8z"/>
-                                                <constraint firstItem="xLx-hP-dnC" firstAttribute="centerY" secondItem="wZ7-Li-VpX" secondAttribute="centerY" id="6aU-h0-tsZ"/>
-                                                <constraint firstItem="xLx-hP-dnC" firstAttribute="leading" secondItem="wZ7-Li-VpX" secondAttribute="leadingMargin" constant="10" id="oob-jM-N0g"/>
-                                                <constraint firstItem="s2S-NF-3W2" firstAttribute="centerY" secondItem="xLx-hP-dnC" secondAttribute="centerY" id="zha-fb-QTp"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="FX2-ot-Y30">
-                                        <rect key="frame" x="0.0" y="410.66666666666669" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FX2-ot-Y30" id="MBu-ah-vRt">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Offset_offset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bif-qR-8wb">
-                                                    <rect key="frame" x="30" y="11.333333333333336" width="99" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hPm-rJ-HC8">
-                                                    <rect key="frame" x="274" y="7" width="120" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="8s3-Im-d8b"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="bif-qR-8wb" firstAttribute="centerY" secondItem="MBu-ah-vRt" secondAttribute="centerY" id="7mX-Qe-LeW"/>
-                                                <constraint firstItem="bif-qR-8wb" firstAttribute="leading" secondItem="MBu-ah-vRt" secondAttribute="leadingMargin" constant="10" id="EaN-Aa-1Z3"/>
-                                                <constraint firstItem="hPm-rJ-HC8" firstAttribute="trailing" secondItem="MBu-ah-vRt" secondAttribute="trailingMargin" id="cx6-Mb-4jj"/>
-                                                <constraint firstItem="hPm-rJ-HC8" firstAttribute="centerY" secondItem="bif-qR-8wb" secondAttribute="centerY" id="yII-nd-La5"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZUG-jV-Q43">
-                                        <rect key="frame" x="0.0" y="454.66666666666674" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZUG-jV-Q43" id="6cV-gH-RPA">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H5v-nz-Hi5">
-                                                    <rect key="frame" x="151" y="7" width="112" height="30"/>
-                                                    <state key="normal" title="Start Calibration"/>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="H5v-nz-Hi5" firstAttribute="centerX" secondItem="6cV-gH-RPA" secondAttribute="centerX" id="FvI-cd-Y2p"/>
-                                                <constraint firstItem="H5v-nz-Hi5" firstAttribute="centerY" secondItem="6cV-gH-RPA" secondAttribute="centerY" id="aMy-Qj-9dY"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="2Ug-ox-euV">
-                                        <rect key="frame" x="0.0" y="498.66666666666674" width="414" height="85"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Ug-ox-euV" id="K2z-XK-6ZF">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="84.666666666666671"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="XaY-tZ-vT2">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="84.666666666666671"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="XaY-tZ-vT2" firstAttribute="centerX" secondItem="K2z-XK-6ZF" secondAttribute="centerX" id="0Og-9T-kgf"/>
-                                                <constraint firstItem="XaY-tZ-vT2" firstAttribute="height" secondItem="K2z-XK-6ZF" secondAttribute="height" id="2eX-KL-6fG"/>
-                                                <constraint firstItem="XaY-tZ-vT2" firstAttribute="centerY" secondItem="K2z-XK-6ZF" secondAttribute="centerY" id="qEP-Uc-zZc"/>
-                                                <constraint firstItem="XaY-tZ-vT2" firstAttribute="width" secondItem="K2z-XK-6ZF" secondAttribute="width" id="qpK-5I-vs1"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="p1I-y2-sJ2" id="iFC-8a-rKQ"/>
@@ -1120,8 +929,8 @@ SOFTWARE.</string>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <sections>
-                            <tableViewSection headerTitle="Calibration" id="RBe-By-JGo">
-                                <string key="footerTitle">"Raw" values of the sensor have to be transformed to a glucose euqivalent. Use offset and slope to adjust/calibrate the values as good as possible to those of the Freestyle Libre Reader. </string>
+                            <tableViewSection headerTitle="Calibration for standard algorithm" id="RBe-By-JGo">
+                                <string key="footerTitle">Parameters for the standard algorithm, the most simple but least accurate algorithm. "Raw" values of the sensor have to be transformed to a glucose euqivalent, using offset and slope to adjust/calibrate the values as good as possible to those of the Freestyle Libre Reader. Mostly slope = 0.117 mg/dl * raw and offset = -22 mg/dl are a good values to start with. </string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="VNJ-up-mMq">
                                         <rect key="frame" x="0.0" y="55.333333333333336" width="414" height="44"/>
@@ -1186,10 +995,10 @@ SOFTWARE.</string>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="NIGHTSCOUT UPLOAD" id="aM6-QI-tjZ">
-                                <string key="footerTitle">Blood sugar data can be uploaded to your nighscout site. Set your credentials here and press "verify account" to verify if a connection can be established successfully.</string>
+                                <string key="footerTitle">Glucose data can be uploaded to your nighscout site. Set your credentials here and press "verify account" to verify if a connection can be established successfully.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="9CD-ra-T2P">
-                                        <rect key="frame" x="0.0" y="266.66666666666669" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="314.66666666666669" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9CD-ra-T2P" id="BHI-8T-x8a">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1217,7 +1026,7 @@ SOFTWARE.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="ttR-S2-Z45">
-                                        <rect key="frame" x="0.0" y="310.66666666666669" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="358.66666666666674" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ttR-S2-Z45" id="3kJ-Ho-6MN">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1247,7 +1056,7 @@ SOFTWARE.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="rVe-eX-5uc">
-                                        <rect key="frame" x="0.0" y="354.66666666666669" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="402.66666666666674" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rVe-eX-5uc" id="6A8-Df-nAQ">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1277,7 +1086,7 @@ SOFTWARE.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="qhp-cn-33f">
-                                        <rect key="frame" x="0.0" y="398.66666666666669" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="446.66666666666674" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qhp-cn-33f" id="hSE-e8-8Iy">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1315,10 +1124,10 @@ SOFTWARE.</string>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Libre OOP web interface (experimental)" id="68M-Gb-dxm">
-                                <string key="footerTitle">Blood sugar data can be calculated using the original Abbott algorithm. In this case sensor data is sent to a webserver that sends the data to an Android phone which uses the original LibreLink Software to calculate the current glucose value. This is higly experimental and currently only available for internal development.</string>
+                                <string key="footerTitle">Blood sugar data can be calculated using the original Abbott algorithm. In this case sensor data is sent to a webserver that sends the data to an Android phone which uses the original LibreLink software to calculate the current glucose value and history values for the last eight hours. This is higly experimental and currently only available for internal development. </string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="hQf-ri-ELi">
-                                        <rect key="frame" x="0.0" y="550.00000000000011" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="598.00000000000011" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hQf-ri-ELi" id="XYQ-g6-qcV">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1346,7 +1155,7 @@ SOFTWARE.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="f1J-oj-xrx">
-                                        <rect key="frame" x="0.0" y="594.00000000000011" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="642.00000000000011" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f1J-oj-xrx" id="Ag6-g4-KRL">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1375,7 +1184,7 @@ SOFTWARE.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="R0v-sy-IdI">
-                                        <rect key="frame" x="0.0" y="638.00000000000011" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="686.00000000000011" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R0v-sy-IdI" id="RWf-Oc-lMr">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1408,10 +1217,10 @@ SOFTWARE.</string>
                             </tableViewSection>
                             <tableViewSection headerTitle="Temperature compensation algorithm (EXPERIMENTAL)" id="H7N-XM-7NO">
                                 <string key="footerTitle">Requires Libre OOP web interface (site and token).
-Additional Slope and Offset allow e.g. for "lifting up" the value of a bad sensor that continiously provides too low values.</string>
+Additional Slope and Offset allow e.g. for "lifting up" the values of a bad sensor that continiously provides too low values.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Yzp-Fl-PmM">
-                                        <rect key="frame" x="0.0" y="837.33333333333348" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="901.33333333333348" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yzp-Fl-PmM" id="KQz-cK-hor">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1438,7 +1247,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KQe-lI-etx">
-                                        <rect key="frame" x="0.0" y="881.33333333333348" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="945.33333333333348" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KQe-lI-etx" id="kRn-mb-kYE">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1468,7 +1277,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Fsk-sf-npj">
-                                        <rect key="frame" x="0.0" y="925.33333333333348" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="989.33333333333348" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fsk-sf-npj" id="dX9-ES-8sT">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1498,7 +1307,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="12i-fl-6Np">
-                                        <rect key="frame" x="0.0" y="969.33333333333348" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1033.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="12i-fl-6Np" id="uHX-Ta-kxV">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1528,7 +1337,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="yDJ-az-IYh">
-                                        <rect key="frame" x="0.0" y="1013.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1077.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yDJ-az-IYh" id="PEk-hi-4ad">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1558,7 +1367,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2oO-Ii-WSY">
-                                        <rect key="frame" x="0.0" y="1057.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1121.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2oO-Ii-WSY" id="DqF-hd-hlG">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1588,7 +1397,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="hmF-U6-WnU">
-                                        <rect key="frame" x="0.0" y="1101.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1165.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hmF-U6-WnU" id="42F-gd-a0N">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1618,7 +1427,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="73H-av-evJ">
-                                        <rect key="frame" x="0.0" y="1145.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1209.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="73H-av-evJ" id="Osg-F0-khC">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1648,7 +1457,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="c2I-ur-epK">
-                                        <rect key="frame" x="0.0" y="1189.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1253.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c2I-ur-epK" id="fcM-fY-vdh">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1678,7 +1487,7 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jj2-B9-fp2">
-                                        <rect key="frame" x="0.0" y="1233.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1297.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jj2-B9-fp2" id="Stz-yW-z72">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1709,10 +1518,10 @@ Additional Slope and Offset allow e.g. for "lifting up" the value of a bad senso
                             <tableViewSection footerTitle="" id="wBb-Be-jdz">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="d4U-yb-bOe">
-                                        <rect key="frame" x="0.0" y="1357.3333333333335" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1437.3333333333335" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d4U-yb-bOe" id="r4l-MQ-3J0">
-                                            <rect key="frame" x="0.0" y="0.0" width="388" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="376" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Acknowledgements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FcQ-X5-QWb">

@@ -23,15 +23,10 @@ extension UserDefaults {
         case glucoseOffset = "bloodGlucoseOffset"
         // Temperature compensation algorithm
         case useTemperatureAlgorithm = "useTemperatureAlgorithm"
-//        case temperatureParameters = "temperatureParameters"
         case DerivedAlgorithmParameters = "DerivedAlgorithmParameters"
-//        case additionalSlope = "additionalSlope"
-//        case additionalOffset = "additionalOffset"
     }
-//    let bloodGlucoseOffset = Double(truncating: aNumber)
-//    UserDefaults.standard.set(bloodGlucoseOffset, forKey: "bloodGlucoseOffset")
 
-    // MARK: - temperature compensation algorithm
+    // MARK: - Temperature compensation algorithm
     
     var useTemperatureAlgorithm: Bool {
         get {
@@ -48,12 +43,10 @@ extension UserDefaults {
                 let aString = serializeAlgorithmParameters(parameters)
                 print(aString)
                 set(aString, forKey: Key.DerivedAlgorithmParameters.rawValue)
-//                UserDefaults.standard.set(aString, forKey: "DerivedAlgorithmParameters")
             }
         }
         get {
             if let aString = UserDefaults.standard.string(forKey: Key.DerivedAlgorithmParameters.rawValue) {
-//                if let aString = UserDefaults.standard.string(forKey: "DerivedAlgorithmParameters") {
                 return deserializeAlgorithmParameters(text: aString)
             }
             return nil
@@ -95,27 +88,6 @@ extension UserDefaults {
         return nil
     }
 
-    
-    
-    
-    
-    
-//    var additionalSlope: Double {
-//        get {
-//            return double(forKey: Key.additionalSlope.rawValue)
-//        }
-//        set {
-//            set(newValue, forKey: Key.additionalSlope.rawValue)
-//        }
-//    }
-//    var additionalOffset: Double {
-//        get {
-//            return double(forKey: Key.additionalOffset.rawValue)
-//        }
-//        set {
-//            set(newValue, forKey: Key.additionalOffset.rawValue)
-//        }
-//    }
 
 
     // MARK: - Standard algorithm with just constant slope and offset

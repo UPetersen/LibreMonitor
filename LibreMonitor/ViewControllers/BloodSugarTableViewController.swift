@@ -42,7 +42,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var sensor: SensorData?
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
-    var batteryVoltage = 0.0
+//    var batteryVoltage = 0.0
     var fetchedGlucoses: [BloodGlucose]?
     var oopCurrentValue: OOPCurrentValue? {
         didSet {
@@ -375,10 +375,11 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     }
                 case .simblee:
                     cell.textLabel?.text = "Environment"
-                    cell.detailTextLabel?.text = String(format: "%3.1f V", arguments: [batteryVoltage]) + ", " + temperatureString
-                    if batteryVoltage < 3.5 {
-                        cell.backgroundColor = UIColor.orange
-                    }                }
+//                    cell.detailTextLabel?.text = String(format: "%3.1f V", arguments: [batteryVoltage]) + ", " + temperatureString
+//                    if batteryVoltage < 3.5 {
+//                        cell.backgroundColor = UIColor.orange
+//                    }
+                }
 
             case 3:
                 cell.textLabel?.text = "Blocks"
@@ -532,85 +533,84 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         
         self.sensorData = sensorData
         
-        batteryVoltage = Double(miaoMiao.battery)
-        
+//        batteryVoltage = Double(miaoMiao.battery)
 //        if let sensorData = sensorData {
         
-            if sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC {
-                
-                getOOPGlucose(fram: sensorData.bytes)
-                
-                timeOfLastScan = Date()
-                trendMeasurements = sensorData.trendMeasurements(UserDefaults.standard.glucoseOffset, slope: UserDefaults.standard.glucoseSlope)
-                historyMeasurements = sensorData.historyMeasurements(UserDefaults.standard.glucoseOffset, slope: UserDefaults.standard.glucoseSlope)
-                
-                if let trendMeasurements = trendMeasurements {
-                    setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
-                }
-                
-                if let historyMeasurements = historyMeasurements, sensorData.state == .ready {
-                    
-                    // fetch all records that are newer than the oldest history measurement of the new data
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                    
-                    let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
-                    do {
-                        let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
-                        
-                        // Loop over all and check if new data exists and store the new data if not yet existent
-                        historyMeasurements.forEach({measurement in
-                            
-                            os_log("HistoryMeasurement: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
-                            
-                            var storeMeasurement = true
-                            // Check if there is already a record stored for the same time
-                            for bloodGlucose in fetchedBloodGlucoses! {
-                                
-                                // Found a value within time range that is already stored, so do not store the value just read from the sensor (since it is already stored)
-                                // Time range criteria is fulfilled if dates of stored value and value just read from sensor are less than two minutes apart from each other (in either direction)
-                                if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 120.0 {
-                                    
-                                    os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
-                                    os_log("Do not store: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(measurement.glucose) at \(String(describing: measurement.date))"))
-                                    storeMeasurement = false
-                                    break
-                                }
-                            }
-                            ///* 2018-10-27: Skip storing history data in core data for test purposes
-                            // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                            if storeMeasurement && (UserDefaults.standard.glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
-                                
-                                fetchedBloodGlucoses?.forEach({ bloodGlucose in
-                                    os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
-                                })
-                                os_log("Store this one: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
-                                
-                                let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
-                                glucose.bytes = measurement.byteString
-                                glucose.value = measurement.glucose
-                                glucose.date = measurement.date as NSDate
-                                glucose.dateString = dateFormatter.string(from: measurement.date)
-                                
-                                // Prepare for nightscout
-                                nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
-                            }
-                            //*/
-                        })
-                        // send to nightscout
-                        if UserDefaults.standard.uploadToNightscoutIsActivated {
-                            uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
-                            nightscoutEntries = []
-                        }
-                        try? persistentContainer?.viewContext.save()
-                        
-                    } catch {
-                        fatalError("Failed to fetch BloodGlucose: \(error)")
-                    }
-                }
-                
+        if sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC {
+            
+            getOOPGlucose(fram: sensorData.bytes)
+            
+            timeOfLastScan = Date()
+            trendMeasurements = sensorData.trendMeasurements(UserDefaults.standard.glucoseOffset, slope: UserDefaults.standard.glucoseSlope)
+            historyMeasurements = sensorData.historyMeasurements(UserDefaults.standard.glucoseOffset, slope: UserDefaults.standard.glucoseSlope)
+            
+            if let trendMeasurements = trendMeasurements {
+                setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
             }
             
+            if let historyMeasurements = historyMeasurements, sensorData.state == .ready {
+                
+                // fetch all records that are newer than the oldest history measurement of the new data
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                
+                let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
+                do {
+                    let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
+                    
+                    // Loop over all and check if new data exists and store the new data if not yet existent
+                    historyMeasurements.forEach({measurement in
+                        
+                        os_log("HistoryMeasurement: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+                        
+                        var storeMeasurement = true
+                        // Check if there is already a record stored for the same time
+                        for bloodGlucose in fetchedBloodGlucoses! {
+                            
+                            // Found a value within time range that is already stored, so do not store the value just read from the sensor (since it is already stored)
+                            // Time range criteria is fulfilled if dates of stored value and value just read from sensor are less than two minutes apart from each other (in either direction)
+                            if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 120.0 {
+                                
+                                os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+                                os_log("Do not store: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(measurement.glucose) at \(String(describing: measurement.date))"))
+                                storeMeasurement = false
+                                break
+                            }
+                        }
+                        ///* 2018-10-27: Skip storing history data in core data for test purposes
+                        // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
+                        if storeMeasurement && (UserDefaults.standard.glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+                            
+                            fetchedBloodGlucoses?.forEach({ bloodGlucose in
+                                os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+                            })
+                            os_log("Store this one: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+                            
+                            let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
+                            glucose.bytes = measurement.byteString
+                            glucose.value = measurement.glucose
+                            glucose.date = measurement.date as NSDate
+                            glucose.dateString = dateFormatter.string(from: measurement.date)
+                            
+                            // Prepare for nightscout
+                            nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
+                        }
+                        //*/
+                    })
+                    // send to nightscout
+                    if UserDefaults.standard.uploadToNightscoutIsActivated {
+                        uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
+                        nightscoutEntries = []
+                    }
+                    try? persistentContainer?.viewContext.save()
+                    
+                } catch {
+                    fatalError("Failed to fetch BloodGlucose: \(error)")
+                }
+            }
+            
+        }
+        
             
         tableView.reloadData()
     }
@@ -763,144 +763,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     
     
     func simbleeManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
-//
-//        os_log("Received message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
-//        NotificationManager.scheduleDataTransferInterruptedNotification(wait: 400)
-//
-//        guard let receivedDataType = ReceivedDataType(rawValue: messageIdentifier) else {
-//            os_log("Received message with unknown identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
-//            return
-//        }
-//        os_log("Received data type: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: receivedDataType.rawValue))
-//
-//        switch receivedDataType {
-//        case .NFC_STATE:
-//
-//            let nfcState = NFCState(bytes: payloadData)
-//            os_log("NFCState is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: nfcState.nfcReady))
-//
-//
-//        case .SYSTEM_INFORMATION_DATA: // system information data, including UID (e.g. E0:07:A0:00:00:0C:48:BD")
-//
-//            // Convention: System Information data is the first packet sent via bluetooth, thus delete all internal data and reload table view
-//
-//            timeOfTransmissionStart = Date()
-//            nfcReadingStart = Date()
-//            deviceID = "-"
-//
-//            let systemInformationData = SystemInformationDataType(bytes: payloadData)
-//            sensorSerialNumber = SensorSerialNumber(withUID: Data(systemInformationData.uidArray))
-//            os_log("System information data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: systemInformationData.description))
-//
-//            //  Convention: System Information data is the first packet sent from RFDuino, thus delete all internal data and reload table view
-//            tableView.reloadData()
-//
-//
-//        case .BATTERY_DATA: // Battery
-//
-//            nfcReadingDuration = Date().timeIntervalSince(nfcReadingStart)
-//            bluetoothTransmissionStart = Date()
-//
-//            let battery = BatteryDataType(bytes: payloadData)
-//
-//            batteryVoltage = Double(battery.voltage)
-//            temperatureString = String(format: "%4.1f °C", arguments: [battery.temperature])
-//
-//            os_log("Battery data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(battery.voltage) Volts and \(battery.temperature) °C"))
-//
-//            if battery.voltage < 3.5 {
-//                NotificationManager.setLowBatteryNotification(voltage: Double(battery.voltage))
-//            }
-//
-//
-//        case .ALL_BYTES: // all data bytes (all 344 bytes, i.e. 43 blocks)
-//
-//            var bytes = [UInt8](repeating: 0, count: 344)
-//            (payloadData as NSData).getBytes(&bytes, length: 344)
-//
-//            sensorData = SensorData(bytes: bytes, date: Date())
-//            os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
-//
-//            if let sennsorData = sensorData {
-//                trendMeasurements = sennsorData.trendMeasurements(glucoseOffset, slope: glucoseSlope)
-//                historyMeasurements = sennsorData.historyMeasurements(glucoseOffset, slope: glucoseSlope)
-//
-//                if let trendMeasurements = trendMeasurements {
-//                    setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
-//                }
-//
-//                if let historyMeasurements = historyMeasurements,  sennsorData.hasValidBodyCRC && sennsorData.hasValidHeaderCRC && sennsorData.state == .ready {
-//
-//                    // fetch all records that are newer than the oldest history measurement of the new data
-//                    let dateFormatter = DateFormatter()
-//                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//
-//                    let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
-//                    do {
-//                        let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
-//
-//                        // Loop over all and check if new data exists and store the new data if not yet existent
-//                        historyMeasurements.forEach({measurement in
-//
-//                            var storeMeasurement = true
-//
-//                            // Check if there is already a record stored for the same time
-//                            for bloodGlucose in fetchedBloodGlucoses! {
-//
-//                                // Store value if dates are less than two minutes apart from each other (in either direction)
-//                                if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 2.0 * 60.0 {
-//                                    storeMeasurement = false
-//                                    break
-//                                }
-//                            }
-//                            // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-//                            if storeMeasurement && (glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
-//                                let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
-//                                glucose.bytes = measurement.byteString
-//                                glucose.value = measurement.glucose
-//                                glucose.date = measurement.date as NSDate
-//                                glucose.dateString = dateFormatter.string(from: measurement.date)
-//
-//                                // Prepare for nightscout
-//                                nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
-//                            }
-//                        })
-//                        // send to nightscout
-//                        if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {
-//                            uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
-//                            nightscoutEntries = []
-//                        }
-//                        try? persistentContainer?.viewContext.save()
-//
-//                    } catch {
-//                        fatalError("Failed to fetch BloodGlucose: \(error)")
-//                    }
-//                }
-//
-//            } else {
-//                trendMeasurements = nil
-//                historyMeasurements = nil
-//            }
-//            tableView.reloadData()
-//
-//
-//        case .IDN_DATA: // IDN data, including device ID, example: RESPONSE CODE: 0 LENGTH: 15, DEVICE ID: 4E 46 43 20 46 53 32 4A 41 53 54 32 0, ROM CRC: 75D2
-//
-//            let idnData = IDNDataType(bytes: payloadData)
-//            self.deviceID = idnData.idPrettyString
-//
-//            os_log("Idn data is \n%{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: idnData.description))
-//
-//
-//            timeOfLastScan = Date()
-//            transmissionDuration = Date().timeIntervalSince(timeOfTransmissionStart)
-//            bluetoothTransmissionDuration = Date().timeIntervalSince(bluetoothTransmissionStart)
-//
-//            // Convention: the idn data is the last packet sent from RFDuino within a cycle, thus reload table view after having received it
-//            tableView.reloadData()
-//
-//        }
-//        os_log("Blood sugar table view controller handled message with identifier %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: messageIdentifier))
+
     }
     
     

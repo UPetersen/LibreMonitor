@@ -566,9 +566,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                             firmware: String(describing: rxBuffer[14...15].hexEncodedString()),
                             battery: Int(rxBuffer[13]))
 
-//        let sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date())
         sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date(), derivedAlgorithmParameterSet: UserDefaults.standard.temperatureParameters)
-//        sensorData = SensorData(uuid: Data(rxBuffer.subdata(in: 5..<13)), bytes: [UInt8](rxBuffer.subdata(in: 18..<362)), date: Date(), derivedAlgorithmParameterSet: TemperatureParameterManager().temperatureParameters)
 
         guard let miaoMiao = miaoMiao else {
             return
@@ -582,8 +580,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             NotificationManager.setLowBatteryNotification(voltage: Double(miaoMiao.battery))
         }
 
-        // Check if sensor data is valid and reread, if this is not the case
-        
+        // Check if sensor data is valid and, if this is not the case, request data again after thirty second
         if let sensorData = sensorData {
             if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) {
                 Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {_ in
@@ -593,7 +590,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         }
 
         
-        // Inform delegate
+        // Inform delegate that new data is available
         delegate?.miaoMiaoManagerDidUpdateSensorAndMiaoMiao(sensorData: sensorData!, miaoMiao: miaoMiao)
 
         

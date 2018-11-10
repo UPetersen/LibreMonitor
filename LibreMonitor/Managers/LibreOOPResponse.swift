@@ -249,6 +249,6 @@ struct GetCalibrationStatusResult: Codable, CustomStringConvertible{
         case isValidForFooterWithReverseCRCs  = "isValidForFooterWithReverseCRCs"
     }
     var description: String {
-        return "calibrationparams:: slopeslope: \(slopeSlope), slopeoffset: \(slopeOffset), offsetoffset: \(offsetOffset), offsetSlope: \(offsetSlope), isValidForFooterWithReverseCRCs: \(isValidForFooterWithReverseCRCs)"
+        return "calibrationparams:: slopeslope: \(String(describing: slopeSlope)), slopeoffset: \(String(describing: slopeOffset)), offsetoffset: \(String(describing: offsetOffset)), offsetSlope: \(String(describing: offsetSlope)), isValidForFooterWithReverseCRCs: \(String(describing: isValidForFooterWithReverseCRCs))"
     }
 }
