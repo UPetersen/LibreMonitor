@@ -24,15 +24,14 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     }
     
     let device: Device = .miaoMaio
-//    let device: Device = .simblee
     var firmware = String()
     var hardware = String()
 
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "BloodSugarTableViewController")
     
     var persistentContainer: NSPersistentContainer?
-//    var miaoMiaoManager = MiaoMiaoManager()
     var miaoMiaoManager: MiaoMiaoManager!
+
     var simbleeManager = SimbleeManager()
     var uploader: NightscoutUploader?
     private(set) var nightscoutEntries = [NightscoutEntry]()
@@ -42,7 +41,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     var sensor: SensorData?
     var trendMeasurements: [Measurement]?
     var historyMeasurements: [Measurement]?
-//    var batteryVoltage = 0.0
     var fetchedGlucoses: [BloodGlucose]?
     var oopCurrentValue: OOPCurrentValue? {
         didSet {
@@ -179,20 +177,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
     @objc func didTapConnectButton() {
         switch device {
         case .simblee:
-            
             return
-            
-//            switch (simbleeManager.state) {
-//            case .Unassigned:
-//                simbleeManager.scanForSimblee()
-//            case .Scanning:
-//                simbleeManager.centralManager.stopScan()
-//                simbleeManager.state = .Disconnected
-//            case .Connected, .Connecting, .Notifying:
-//                simbleeManager.disconnectManually()
-//            case .Disconnected, .DisconnectingDueToButtonPress:
-//                simbleeManager.connect()
-//            }
         case .miaoMaio:
             switch (miaoMiaoManager.state) {
             case .Unassigned:
@@ -206,7 +191,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                 miaoMiaoManager.connect()
             }
         }
-        
     }
     
     
@@ -336,7 +320,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     var color = UIColor()
                     if let sensorData = sensorData {
                         crcString.append(", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
-                        color = colorForSensorCRCs( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC )) // only header and body crc
+                        color = colorForSensorCRCs( (sensorData.hasValidCRCs ))
                     } else {
                         crcString = ", nil"
                         color = UIColor.lightGray
@@ -350,7 +334,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     if let sensorData = sensorData {
                         
                         crcString.append(", crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
-                        color = colorForSensorCRCs( (sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) )
+                        color = colorForSensorCRCs( (sensorData.hasValidCRCs) )
                     } else {
                         crcString = ", nil"
                         color = UIColor.lightGray
@@ -375,10 +359,6 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
                     }
                 case .simblee:
                     cell.textLabel?.text = "Environment"
-//                    cell.detailTextLabel?.text = String(format: "%3.1f V", arguments: [batteryVoltage]) + ", " + temperatureString
-//                    if batteryVoltage < 3.5 {
-//                        cell.backgroundColor = UIColor.orange
-//                    }
                 }
 
             case 3:
@@ -533,10 +513,7 @@ final class BloodSugarTableViewController: UITableViewController, SimbleeManager
         
         self.sensorData = sensorData
         
-//        batteryVoltage = Double(miaoMiao.battery)
-//        if let sensorData = sensorData {
-        
-        if sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC {
+        if sensorData.hasValidCRCs {
             
             getOOPGlucose(fram: sensorData.bytes)
             

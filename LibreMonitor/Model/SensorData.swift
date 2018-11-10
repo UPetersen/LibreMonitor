@@ -38,19 +38,22 @@ struct SensorData {
     let nextTrendBlock: Int
     /// Index on the next block of history data that the sensor will create from trend data and store
     let nextHistoryBlock: Int
-    /// true if the header crc, stored in the first two bytes, is equal to the calculated crc
+    /// true if all crc's are valid
+    var hasValidCRCs: Bool {
+        return hasValidHeaderCRC && hasValidBodyCRC && hasValidFooterCRC
+    }
+    /// true if the header crc, stored in the first two header bytes, is equal to the calculated crc
     var hasValidHeaderCRC: Bool {
         return Crc.hasValidCrc16InFirstTwoBytes(header)
     }
-    /// true if the body crc, stored in the first two bytes, is equal to the calculated crc
+    /// true if the body crc, stored in the first two body bytes, is equal to the calculated crc
     var hasValidBodyCRC: Bool {
         return Crc.hasValidCrc16InFirstTwoBytes(body)
     }
-    /// true if the footer crc, stored in the first two bytes, is equal to the calculated crc
+    /// true if the footer crc, stored in the first two footer bytes, is equal to the calculated crc
     var hasValidFooterCRC: Bool {
         return Crc.hasValidCrc16InFirstTwoBytes(footer)
     }
-    
     /// Footer crc needed for checking integrity of SwiftLibreOOPWeb response
     var footerCrc: UInt16 {
         return  Crc.crc16(Array(footer.dropFirst(2)), seed: 0xffff)
