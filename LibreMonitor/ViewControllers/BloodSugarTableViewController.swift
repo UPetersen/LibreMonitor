@@ -133,13 +133,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: UIApplication.didBecomeActiveNotification, object: nil)
         // Notification for updating table view after having changed the offset and/of slope
         NotificationCenter.default.addObserver(self, selector: #selector(BloodSugarTableViewController.updateTableView), name: NSNotification.Name(rawValue: "updateBloodSugarTableViewController"), object: nil)
-    
-        // Timer to update diplayed time
-        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: {timer in
-            self.updateTableView()
-        })
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         super.viewWillDisappear(true)
@@ -438,6 +433,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         
         self.sensorData = sensorData
         
+        resetTimer()
         if sensorData.hasValidCRCs {
             if UserDefaults.standard.oopWebInterfaceIsActivated {
                 getOOPGlucose(fram: sensorData.bytes)
@@ -649,6 +645,14 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     // MARK: - Helper functions
     
+    // Timer to update diplayed time every five seconds
+    // TODO: This way the whole section is reloaded every five seconds. Solve this by moving the displayed time into a table view row or dedicated view
+    func resetTimer() {
+        timer.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: {timer in
+            self.tableView.reloadSections(IndexSet(integer: Section.graph.rawValue), with: .none)
+        })
+    }
 
     func colorForConnectionMiaoMiaoState() -> UIColor {
         switch (miaoMiaoManager.state) {
