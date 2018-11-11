@@ -1,9 +1,16 @@
 //
-//  Use this file to import your target's public headers that you would like to expose to Swift.
+//  LibreMonitorTests-Bridging-Header.h
+//  LibreMonitor
 //
-#import "NSData+CRC8.h"
-#import "NSData+SLIP.h"
-#import "constants.h"
-#import "data_types.h"
+//  Created by Uwe Petersen on 11.11.18.
+//  Copyright © 2018 Uwe Petersen. All rights reserved.
+//
+
+#ifndef LibreMonitorTests_Bridging_Header_h
+#define LibreMonitorTests_Bridging_Header_h
+
+
+#endif /* LibreMonitorTests_Bridging_Header_h */
+
+
 #import "Crypto.h"
-//#import "ISO8601DateFormatter.h"

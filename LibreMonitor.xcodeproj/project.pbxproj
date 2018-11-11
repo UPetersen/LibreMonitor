@@ -115,9 +115,9 @@
 		C61E5D4A207BF6250099157F /* LibreOOPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPClient.swift; sourceTree = "<group>"; };
 		C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPResponse.swift; sourceTree = "<group>"; };
 		C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPWebExtensions.swift; sourceTree = "<group>"; };
+		C62EBAC7219808C500ECD51F /* LibreMonitor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LibreMonitor-Bridging-Header.h"; sourceTree = "<group>"; };
 		C65E6DA11E45070800A85E0E /* TransmissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransmissionTests.swift; sourceTree = "<group>"; };
 		C6652F201DB1812C00237E7D /* LibreMonitorTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreMonitorTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		C6652F211DB181E900237E7D /* LibreMonitor-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreMonitor-Bridging-Header.h"; sourceTree = "<group>"; };
 		C665A8CE1F4AE5CE00F204B1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		C66A0ECC21960B4A00F331A3 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		C66A0ECE2196C6E700F331A3 /* TemperatureAlgorithmParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TemperatureAlgorithmParameters.swift; path = Model/TemperatureAlgorithmParameters.swift; sourceTree = "<group>"; };
@@ -340,7 +340,7 @@
 				C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */,
 				C6822D761DB13F2200D08393 /* Info.plist */,
 				C6822D671DB13F2200D08393 /* LibreMonitor.xcdatamodeld */,
-				C6652F211DB181E900237E7D /* LibreMonitor-Bridging-Header.h */,
+				C62EBAC7219808C500ECD51F /* LibreMonitor-Bridging-Header.h */,
 			);
 			path = LibreMonitor;
 			sourceTree = "<group>";
@@ -854,7 +854,9 @@
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-function-bodies=300";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -906,7 +908,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
