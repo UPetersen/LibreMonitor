@@ -75,19 +75,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         }
     }
     
-    var deviceID = "-"
-    var temperatureString = "_"
-    
-    var timeInMinutesSinceStartOfSensor = 0
     var timeOfLastScan = Date()
-    var transmissionDuration = TimeInterval()
-    var nfcReadingDuration = TimeInterval() // receiving system information data -> receiving battery voltage
-    var bluetoothTransmissionDuration = TimeInterval()  // receiving battery voltage -> receiving IDN-Data
-    var nfcReadingStart = Date()
-    var bluetoothTransmissionStart = Date()
-    var timeOfTransmissionStart = Date()
-    var timer = Timer()
-    
+    var timer = Timer() // used to update the display regularly
     
     var dateFormatter = DateFormatter()
     var timeFormatter = DateFormatter()
@@ -261,7 +250,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
             case 1:
                 cell.textLabel?.text = "Last scan:"
                 if let sensorData = sensorData {
-                    cell.detailTextLabel?.text = String(format: "\(dateFormatter.string(from: sensorData.date as Date)), at \(timeFormatter.string(from: sensorData.date as Date)), in %.2f s (%.2f+%.2f NFC/Bluetooth)", arguments: [transmissionDuration, nfcReadingDuration, bluetoothTransmissionDuration])
+                    cell.detailTextLabel?.text = "\(dateFormatter.string(from: sensorData.date as Date)), at \(timeFormatter.string(from: sensorData.date as Date))"
                     
                     if Date().timeIntervalSince(sensorData.date as Date) > 450.0 {
                         cell.backgroundColor = UIColor.red
