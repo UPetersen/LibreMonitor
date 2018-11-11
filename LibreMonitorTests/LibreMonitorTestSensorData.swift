@@ -17,11 +17,6 @@ class LibreMonitorTestSensorData: XCTestCase {
     // Adaptions for the c-code from the arduino part
     typealias byte = UInt8
     
-    // local properties for string slip Buffer content
-    var slipBufferPayloadData: Data = Data()
-    var slipBufferPayloadIdentifier: UInt16 = 0
-    var slipBufferTxFlags: UInt8 = 0
-    
     
     override func setUp() {
         super.setUp()
@@ -142,7 +137,7 @@ class LibreMonitorTestSensorData: XCTestCase {
         print("------- valid test cases for crc and other ------")
         let validTestCaseBytes = arrayOfValidTestInputs().last!
         let date = Date()
-        if let sensorData = SensorData(bytes: validTestCaseBytes, date: date) {
+        if let sensorData = SensorData(uuid: Data(bytes: [UInt8(0x00)]), bytes: validTestCaseBytes, date: date) {
             print(sensorData)
             print("Header validity: " + String(sensorData.hasValidHeaderCRC))
             print("Body validity:" + String(sensorData.hasValidBodyCRC))
@@ -164,7 +159,7 @@ class LibreMonitorTestSensorData: XCTestCase {
             let byteTrendStringAsReadFromSensor = "C204C878DA80"
             XCTAssert(byteStringInTrendMeasurement == byteTrendStringAsReadFromSensor, "Wrong byte string") // "[194, 4, 200, 120, 218, 128]" or "C204C878DA80"
             XCTAssert(trendMeasurements[0].date == date, "Wrong date")
-            XCTAssert(trendMeasurements[0].rawValue == 1218, "Wrong raw value")
+            XCTAssert(trendMeasurements[0].rawGlucose == 1218, "Wrong raw value")
             XCTAssert((trendMeasurements[0].glucose - 121.8) < 0.001, "Wrong glucose value")
             
             // Test count and byte strings of history glucose measurement
@@ -182,7 +177,7 @@ class LibreMonitorTestSensorData: XCTestCase {
             XCTAssert( Int(round(date.timeIntervalSince(historyMeasurements[1].date))) == twentyFiveMintues, "Wrong history date, not 25 minutes apart")
 
             // Test raw values and glucose values of history measurements
-            XCTAssert(historyMeasurements[0].rawValue == 1319, "Wrong raw value")
+            XCTAssert(historyMeasurements[0].rawGlucose == 1319, "Wrong raw value")
             XCTAssert((historyMeasurements[0].glucose - 131.9) < 0.001, "Wrong glucose value")
 
         }
@@ -192,7 +187,7 @@ class LibreMonitorTestSensorData: XCTestCase {
         var invalidTestCaseBytes = validTestCaseBytes
         let endIndex = invalidTestCaseBytes.endIndex-1
         invalidTestCaseBytes[endIndex] = invalidTestCaseBytes[endIndex] | 0xff  // change data such that crc will not match any more
-        if let sensorData = SensorData(bytes: invalidTestCaseBytes, date: Date()) {
+        if let sensorData = SensorData(uuid: Data(bytes: [0x00]), bytes: invalidTestCaseBytes, date: Date()) {
             print(sensorData)
             print("Header validity: " + String(sensorData.hasValidHeaderCRC))
             
@@ -212,11 +207,10 @@ class LibreMonitorTestSensorData: XCTestCase {
         
         var theBytes = [UInt8]()
         for index in stride(from: 0, to: length, by: 2) {
-            let aIndex = theString.characters.index(theString.startIndex, offsetBy: index)
-            let bIndex = theString.characters.index(theString.startIndex, offsetBy: index+2)
+            let aIndex = theString.index(theString.startIndex, offsetBy: index)
+            let bIndex = theString.index(theString.startIndex, offsetBy: index+2)
             let range = aIndex..<bIndex
-//            let range = Range(start: aIndex, end: bIndex)
-            let string = String(theString.substring(with: range))
+            let string = theString[range]
             let aByte = UInt8(string, radix: 16)
             theBytes.append(aByte!)
         }

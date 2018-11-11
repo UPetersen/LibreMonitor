@@ -18,7 +18,6 @@ struct BluetoothTestData {
     static func data() -> [String] {
         var sensorData = [String]()
 
-        // # ID: E0:07:A0:00:00:25:90:5E
         // # Memory content: Sensor 1
         var aString = String()
         aString.append("73 C3 18 59 05 00 03 39") // 0x00
@@ -269,7 +268,6 @@ struct BluetoothTestData {
          */
         sensorData.append(aString)
         
-        // # ID: E0:07:A0:00:00:43:98:59
         // # Memory content: Sensor 2
         aString = String()
         aString.append("E6 84 70 50 05 00 03 D9") // 0x00
@@ -520,7 +518,6 @@ struct BluetoothTestData {
          */
         sensorData.append(aString)
         
-        // # ID: E0:07:A0:00:00:50:DE:AE
         // # Memory content: Sensor 3
         aString = String()
         aString.append("78 13 88 53 05 00 03 7D") // 0x00
@@ -772,7 +769,6 @@ struct BluetoothTestData {
         sensorData.append(aString)
         
         
-        // # ID: E0:07:A0:00:00:46:5C:54
         // # Memory content: Sensor 4
         aString = String()
         aString.append("85 44 88 53 05 00 03 95") // 0x00

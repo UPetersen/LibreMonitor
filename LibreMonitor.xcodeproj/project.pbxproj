@@ -17,8 +17,6 @@
 		C61E5D4E207BF6250099157F /* LibreOOPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */; };
 		C61E5D4F207BF6250099157F /* LibreOOPWebExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */; };
 		C65E6DA21E45070800A85E0E /* TransmissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E6DA11E45070800A85E0E /* TransmissionTests.swift */; };
-		C6652F1E1DB1801D00237E7D /* crc8.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1B1DB1801D00237E7D /* crc8.m */; };
-		C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */ = {isa = PBXBuildFile; fileRef = C6652F1D1DB1801D00237E7D /* libUBP.m */; };
 		C665A8CF1F4AE5CE00F204B1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C665A8CE1F4AE5CE00F204B1 /* SettingsViewController.swift */; };
 		C66A0ECD21960B4A00F331A3 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A0ECC21960B4A00F331A3 /* UserDefaults.swift */; };
 		C66A0ECF2196C6E700F331A3 /* TemperatureAlgorithmParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66A0ECE2196C6E700F331A3 /* TemperatureAlgorithmParameters.swift */; };
@@ -48,11 +46,6 @@
 		C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6822D731DB13F2200D08393 /* LaunchScreen.storyboard */; };
 		C6822D801DB13F2200D08393 /* LibreMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D7F1DB13F2200D08393 /* LibreMonitorTests.swift */; };
 		C6822D8B1DB13F2200D08393 /* LibreMonitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822D8A1DB13F2200D08393 /* LibreMonitorUITests.swift */; };
-		C6822DAA1DB1616300D08393 /* Data_types+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DA31DB1616300D08393 /* Data_types+Extensions.swift */; };
-		C6822DAB1DB1616300D08393 /* NSData+CRC8.m in Sources */ = {isa = PBXBuildFile; fileRef = C6822DA51DB1616300D08393 /* NSData+CRC8.m */; };
-		C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */ = {isa = PBXBuildFile; fileRef = C6822DA71DB1616300D08393 /* NSData+SLIP.m */; };
-		C6822DAD1DB1616300D08393 /* SimbleeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DA81DB1616300D08393 /* SimbleeManager.swift */; };
-		C6822DAE1DB1616300D08393 /* SLIPBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DA91DB1616300D08393 /* SLIPBuffer.swift */; };
 		C6822DB51DB1618400D08393 /* CRC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DB01DB1618400D08393 /* CRC.swift */; };
 		C6822DB71DB1618400D08393 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DB21DB1618400D08393 /* Measurement.swift */; };
 		C6822DB81DB1618400D08393 /* SensorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6822DB31DB1618400D08393 /* SensorData.swift */; };
@@ -83,7 +76,6 @@
 		C690FD551FC9FF4A003E1E99 /* iconUpUp60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4B1FC9FF49003E1E99 /* iconUpUp60@3x.png */; };
 		C690FD561FC9FF4A003E1E99 /* iconConstant60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4C1FC9FF49003E1E99 /* iconConstant60@3x.png */; };
 		C690FD571FC9FF4A003E1E99 /* iconDown60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4D1FC9FF49003E1E99 /* iconDown60@3x.png */; };
-		C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B537B41EBF6852000456B3 /* constands+Extensions.swift */; };
 		C6CA13F52053EA9D0089C278 /* MiaoMiaoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */; };
 		C6CA13F7205EC40B0089C278 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F6205EC40B0089C278 /* Data.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
@@ -124,10 +116,6 @@
 		C61E5D4B207BF6250099157F /* LibreOOPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPResponse.swift; sourceTree = "<group>"; };
 		C61E5D4C207BF6250099157F /* LibreOOPWebExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibreOOPWebExtensions.swift; sourceTree = "<group>"; };
 		C65E6DA11E45070800A85E0E /* TransmissionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransmissionTests.swift; sourceTree = "<group>"; };
-		C6652F1A1DB1801D00237E7D /* crc8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc8.h; path = SimbleeCode/crc8.h; sourceTree = "<group>"; };
-		C6652F1B1DB1801D00237E7D /* crc8.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = crc8.m; path = SimbleeCode/crc8.m; sourceTree = "<group>"; };
-		C6652F1C1DB1801D00237E7D /* libUBP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libUBP.h; path = SimbleeCode/libUBP.h; sourceTree = "<group>"; };
-		C6652F1D1DB1801D00237E7D /* libUBP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = libUBP.m; path = SimbleeCode/libUBP.m; sourceTree = "<group>"; };
 		C6652F201DB1812C00237E7D /* LibreMonitorTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreMonitorTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C6652F211DB181E900237E7D /* LibreMonitor-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreMonitor-Bridging-Header.h"; sourceTree = "<group>"; };
 		C665A8CE1F4AE5CE00F204B1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
@@ -167,15 +155,6 @@
 		C6822D861DB13F2200D08393 /* LibreMonitorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibreMonitorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6822D8A1DB13F2200D08393 /* LibreMonitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreMonitorUITests.swift; sourceTree = "<group>"; };
 		C6822D8C1DB13F2200D08393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C6822DA11DB1616300D08393 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = constants.h; path = Bluetooth/constants.h; sourceTree = "<group>"; };
-		C6822DA21DB1616300D08393 /* data_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = data_types.h; path = Bluetooth/data_types.h; sourceTree = "<group>"; };
-		C6822DA31DB1616300D08393 /* Data_types+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Data_types+Extensions.swift"; path = "Bluetooth/Data_types+Extensions.swift"; sourceTree = "<group>"; };
-		C6822DA41DB1616300D08393 /* NSData+CRC8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+CRC8.h"; path = "Bluetooth/NSData+CRC8.h"; sourceTree = "<group>"; };
-		C6822DA51DB1616300D08393 /* NSData+CRC8.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+CRC8.m"; path = "Bluetooth/NSData+CRC8.m"; sourceTree = "<group>"; };
-		C6822DA61DB1616300D08393 /* NSData+SLIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+SLIP.h"; path = "Bluetooth/NSData+SLIP.h"; sourceTree = "<group>"; };
-		C6822DA71DB1616300D08393 /* NSData+SLIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+SLIP.m"; path = "Bluetooth/NSData+SLIP.m"; sourceTree = "<group>"; };
-		C6822DA81DB1616300D08393 /* SimbleeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimbleeManager.swift; path = Bluetooth/SimbleeManager.swift; sourceTree = "<group>"; };
-		C6822DA91DB1616300D08393 /* SLIPBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SLIPBuffer.swift; path = Bluetooth/SLIPBuffer.swift; sourceTree = "<group>"; };
 		C6822DB01DB1618400D08393 /* CRC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRC.swift; path = Model/CRC.swift; sourceTree = "<group>"; };
 		C6822DB21DB1618400D08393 /* Measurement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Measurement.swift; path = Model/Measurement.swift; sourceTree = "<group>"; };
 		C6822DB31DB1618400D08393 /* SensorData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SensorData.swift; path = Model/SensorData.swift; sourceTree = "<group>"; };
@@ -206,7 +185,6 @@
 		C690FD4B1FC9FF49003E1E99 /* iconUpUp60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconUpUp60@3x.png"; sourceTree = "<group>"; };
 		C690FD4C1FC9FF49003E1E99 /* iconConstant60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconConstant60@3x.png"; sourceTree = "<group>"; };
 		C690FD4D1FC9FF49003E1E99 /* iconDown60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDown60@3x.png"; sourceTree = "<group>"; };
-		C6B537B41EBF6852000456B3 /* constands+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "constands+Extensions.swift"; path = "Bluetooth/constands+Extensions.swift"; sourceTree = "<group>"; };
 		C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiaoMiaoManager.swift; path = Bluetooth/MiaoMiaoManager.swift; sourceTree = "<group>"; };
 		C6CA13F6205EC40B0089C278 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
@@ -287,10 +265,6 @@
 		C6652F121DB17FC100237E7D /* SimbleeCode */ = {
 			isa = PBXGroup;
 			children = (
-				C6652F1A1DB1801D00237E7D /* crc8.h */,
-				C6652F1B1DB1801D00237E7D /* crc8.m */,
-				C6652F1C1DB1801D00237E7D /* libUBP.h */,
-				C6652F1D1DB1801D00237E7D /* libUBP.m */,
 			);
 			name = SimbleeCode;
 			sourceTree = "<group>";
@@ -397,18 +371,8 @@
 		C6822DA01DB1614C00D08393 /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
-				C6822DA11DB1616300D08393 /* constants.h */,
-				C6B537B41EBF6852000456B3 /* constands+Extensions.swift */,
-				C6822DA21DB1616300D08393 /* data_types.h */,
-				C6822DA31DB1616300D08393 /* Data_types+Extensions.swift */,
-				C6822DA41DB1616300D08393 /* NSData+CRC8.h */,
-				C6822DA51DB1616300D08393 /* NSData+CRC8.m */,
-				C6822DA61DB1616300D08393 /* NSData+SLIP.h */,
-				C6822DA71DB1616300D08393 /* NSData+SLIP.m */,
-				C6822DA81DB1616300D08393 /* SimbleeManager.swift */,
 				C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */,
 				C6728303218C59AC00209032 /* MiaoMiao.swift */,
-				C6822DA91DB1616300D08393 /* SLIPBuffer.swift */,
 			);
 			name = Bluetooth;
 			sourceTree = "<group>";
@@ -737,7 +701,6 @@
 				C61E5D4F207BF6250099157F /* LibreOOPWebExtensions.swift in Sources */,
 				C66A49681F40D7CB0005DC78 /* TimeFormat.swift in Sources */,
 				C6822DDA1DB1631D00D08393 /* Sensor+CoreDataProperties.swift in Sources */,
-				C6B537B51EBF6852000456B3 /* constands+Extensions.swift in Sources */,
 				C6728304218C59AC00209032 /* MiaoMiao.swift in Sources */,
 				C6728308218E1CF400209032 /* LibreUtils.swift in Sources */,
 				C66A49691F40D7CB0005DC78 /* TimeInterval.swift in Sources */,
@@ -752,7 +715,6 @@
 				C66A49671F40D7CB0005DC78 /* NSUserDefaults.swift in Sources */,
 				C66A496B1F40D7CB0005DC78 /* NightscoutEntry.swift in Sources */,
 				C61E5D4E207BF6250099157F /* LibreOOPResponse.swift in Sources */,
-				C6822DAC1DB1616300D08393 /* NSData+SLIP.m in Sources */,
 				C6822D661DB13F2200D08393 /* AppDelegate.swift in Sources */,
 				C66A496A1F40D7CB0005DC78 /* MessageBody.swift in Sources */,
 				C672830A218E1D2D00209032 /* LibreOOPDefaults.swift in Sources */,
@@ -785,11 +747,7 @@
 				C6822DBE1DB161AB00D08393 /* BloodSugarTableViewController.swift in Sources */,
 				C61DA67D1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift in Sources */,
 				C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */,
-				C6822DAD1DB1616300D08393 /* SimbleeManager.swift in Sources */,
 				C6822DB51DB1618400D08393 /* CRC.swift in Sources */,
-				C6822DAE1DB1616300D08393 /* SLIPBuffer.swift in Sources */,
-				C6822DAB1DB1616300D08393 /* NSData+CRC8.m in Sources */,
-				C6822DAA1DB1616300D08393 /* Data_types+Extensions.swift in Sources */,
 				C6822DD91DB1631D00D08393 /* Sensor+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -800,9 +758,7 @@
 			files = (
 				C60178961E3E7FE5008FCF3A /* BluetoothTestData.swift in Sources */,
 				C6822DC51DB161F900D08393 /* LibreMonitorTestSensorData.swift in Sources */,
-				C6652F1F1DB1801D00237E7D /* libUBP.m in Sources */,
 				C65E6DA21E45070800A85E0E /* TransmissionTests.swift in Sources */,
-				C6652F1E1DB1801D00237E7D /* crc8.m in Sources */,
 				C6822D801DB13F2200D08393 /* LibreMonitorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -892,7 +848,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-function-bodies=300";
@@ -947,7 +903,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
