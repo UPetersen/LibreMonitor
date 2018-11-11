@@ -83,15 +83,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     
     /// Enum for the sections of this table view
-    fileprivate enum Section: Int {
-        case connectionData, generalData, graph, trendData, historyData
-        /// Count of enum cases (has to be adjusted to this/each very enum)
-        /// Source: http://stackoverflow.com/questions/27094878/how-do-i-get-the-count-of-a-swift-enum
-        static let count: Int = {
-            var max: Int = 0
-            while let _ = Section(rawValue: max) { max += 1 }
-            return max
-        }()
+    fileprivate enum Section: Int, CaseIterable {
+        case connectionData, generalData, graphHeader, graph, trendData, historyData
     }
     
     
@@ -170,13 +163,14 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     // MARK: - Table View
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return Section.count
+        return Section.allCases.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .connectionData: return 3
         case .generalData: return 8
+        case .graphHeader: return 0
         case .graph: return 1
         case .trendData: return 16
         case .historyData: return 32
@@ -185,7 +179,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if (indexPath as NSIndexPath).section == 2 {
+        if (indexPath as NSIndexPath).section == Section.graph.rawValue {
             
             // Draw graph
             let cell = tableView.dequeueReusableCell(withIdentifier: "BloodSugarGraphTableViewCell", for: indexPath)
@@ -215,16 +209,20 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0: return "Connection"
-        case 1: return "General data"
-        case 2:
+        case Section.connectionData.rawValue:
+            return "Connection"
+        case Section.generalData.rawValue:
+            return "General data"
+        case Section.graphHeader.rawValue:
             let seconds = (NSDate() as NSDate).timeIntervalSince(timeOfLastScan).truncatingRemainder(dividingBy: 60.0)
             let minutes = (Date().timeIntervalSince(timeOfLastScan) - seconds) / 60.0
             return String(format: "Graph from %2.0f:%02.0f minutes ago", arguments: [minutes, seconds])
-        case 3: return "Last 15 minutes"
-        case 4: return "Last eight hours"
-        case 5: return "Neue Letzte 15 Minuten"
-        case 6: return "Neue Letzte 8 Stunden"
+        case Section.graph.rawValue:
+            return nil
+        case Section.trendData.rawValue:
+            return "Last 15 minutes"
+        case Section.historyData.rawValue:
+            return "Last eight hours"
         default: return nil
         }
     }
@@ -343,6 +341,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                 cell.textLabel?.text = "Something ..."
                 cell.detailTextLabel?.text = "... didn't work"
             }
+        case .graphHeader:
+            break
         case .graph:
             break
             
@@ -374,7 +374,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath as NSIndexPath).section == 2 {
+        if (indexPath as NSIndexPath).section == Section.graph.rawValue {
             return CGFloat(300)
         }
         return CGFloat(20)
@@ -507,139 +507,13 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                     fatalError("Failed to fetch BloodGlucose: \(error)")
                 }
             }
-            
         }
-        
-            
         tableView.reloadData()
     }
     
     
     func miaoMiaoManagerReceivedMessage(_ messageIdentifier: UInt16, txFlags: UInt8, payloadData: Data) {
- /*
-        NotificationManager.scheduleApplicationTerminatedNotification(wait: 500)
-        
-        os_log("Received message with txFlags %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: txFlags))
-        
-        firmware = String(describing: Data(bytes: [txFlags]).hexEncodedString()) + " " + String(describing: payloadData.prefix(40).hexEncodedString())
-        hardware = String(describing: payloadData.count) + " " + String(describing: payloadData.suffix(30).hexEncodedString())
-        
-        if txFlags == 0x28 || txFlags == 0x29 {
-
-            batteryVoltage = Double([UInt8](payloadData.subdata(in: 13..<14)).first ?? 0)
-            os_log("Battery data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(batteryVoltage) %"))
-            if batteryVoltage < 10 {
-                NotificationManager.setLowBatteryNotification(voltage: Double(batteryVoltage))
-            }
-
-            
-            sensorSerialNumber = SensorSerialNumber(withUID: Data(payloadData.subdata(in: 5..<13)))
-            sensorData = SensorData(uuid: Data(payloadData.subdata(in: 5..<13)), bytes: [UInt8](payloadData.subdata(in: 18..<362)), date: Date())
-//            sensorData = SensorData(bytes: [UInt8](payloadData.subdata(in: 18..<362)), date: Date())
-            
-//            os_log("All bytes data is %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData.debugDescription))
-            os_log("FRAM indices: %{public}@, %{public}@ and counter: %{public}@, date: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: sensorData?.nextTrendBlock), String(describing: sensorData?.nextHistoryBlock), String(describing: sensorData?.minutesSinceStart), String(describing: sensorData?.date))
-
-            if let sensorData = sensorData {
-                
-                
-                // if crc (header or body) is wrong. Request data again.
-                if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC) {
-                    let crcString = String("crcs: \(sensorData.hasValidHeaderCRC), \(sensorData.hasValidBodyCRC), \(sensorData.hasValidFooterCRC)")
-
-                    os_log("At least one CRC is wrong %{public}@. Request data again in some seconds", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: crcString))
-                    Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {_ in
-                        self.miaoMiaoManager.requestData()
-                    })
-                    
-                } else {
-                    NotificationManager.scheduleDataTransferInterruptedNotification(wait: 400)
-
-                    if sensorData.hasValidFooterCRC {
-                        getOOPGlucose(fram: sensorData.bytes)
-                    }
-                    
-                    timeOfLastScan = Date()
-                    trendMeasurements = sensorData.trendMeasurements(glucoseOffset, slope: glucoseSlope)
-                    historyMeasurements = sensorData.historyMeasurements(glucoseOffset, slope: glucoseSlope)
-                    
-                    if let trendMeasurements = trendMeasurements {
-                        setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: trendMeasurements)
-                    }
-                    
-                    if let historyMeasurements = historyMeasurements,  sensorData.hasValidBodyCRC && sensorData.hasValidHeaderCRC && sensorData.state == .ready {
-                        
-                        // fetch all records that are newer than the oldest history measurement of the new data
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                        
-                        let request = BloodGlucose.fetchRequest(from: Date(timeIntervalSinceNow: TimeInterval(-30600))) as NSFetchRequest<BloodGlucose> // 8.5 h = 30600 s
-                        do {
-                            let fetchedBloodGlucoses = try persistentContainer?.viewContext.fetch(request)
-                            
-                            // Loop over all and check if new data exists and store the new data if not yet existent
-                            historyMeasurements.forEach({measurement in
-                                
-                                os_log("HistoryMeasurement: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
-
-                                var storeMeasurement = true
-                                // Check if there is already a record stored for the same time
-                                for bloodGlucose in fetchedBloodGlucoses! {
-                                    
-                                    // Found a value within time range that is already stored, so do not store the value just read from the sensor (since it is already stored)
-                                    // Time range criteria is fulfilled if dates of stored value and value just read from sensor are less than two minutes apart from each other (in either direction)
-                                    if let bloodGlucoseDate = bloodGlucose.date, abs(bloodGlucoseDate.timeIntervalSince(measurement.date)) < 120.0 {
-                                        
-                                        os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
-                                        os_log("Do not store: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(measurement.glucose) at \(String(describing: measurement.date))"))
-                                        storeMeasurement = false
-                                        break
-                                    }
-                                }
-                                /// 2018-10-27: Skip storing history data in core data for test purposes
-                                // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                                if storeMeasurement && (glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
-                                
-                                    fetchedBloodGlucoses?.forEach({ bloodGlucose in
-                                        os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
-                                    })
-                                    os_log("Store this one: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
-
-                                    let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
-                                    glucose.bytes = measurement.byteString
-                                    glucose.value = measurement.glucose
-                                    glucose.date = measurement.date as NSDate
-                                    glucose.dateString = dateFormatter.string(from: measurement.date)
-                                    
-                                    // Prepare for nightscout
-                                    nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
-                                }
-                            ///
-                            })
-                            // send to nightscout
-                            if UserDefaults.standard.bool(forKey: "uploadToNightscoutIsActivated") {
-                                uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
-                                nightscoutEntries = []
-                            }
-                            try? persistentContainer?.viewContext.save()
-                            
-                        } catch {
-                            fatalError("Failed to fetch BloodGlucose: \(error)")
-                        }
-                    }
-
-                }
-                
-                
-            } else {
-                trendMeasurements = nil
-                historyMeasurements = nil
-            }
-
-        }
-        tableView.reloadData()
-*/
-    }
+     }
     
     
     
@@ -650,7 +524,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     func resetTimer() {
         timer.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: {timer in
-            self.tableView.reloadSections(IndexSet(integer: Section.graph.rawValue), with: .none)
+            self.tableView.reloadSections(IndexSet(integer: Section.graphHeader.rawValue), with: .none)
         })
     }
 
