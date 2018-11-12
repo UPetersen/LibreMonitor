@@ -258,9 +258,12 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         case .generalData:
             switch (indexPath as NSIndexPath).row {
             case 0:
-                let hugo = String(describing: miaoMiaoManager.rxBuffer.prefix(40).hexEncodedString())
-                cell.textLabel?.text = "Firmware"
-                cell.detailTextLabel?.text = (miaoMiaoManager.miaoMiaoResponseState?.description ?? "-") + " "  + hugo //firmware
+                cell.textLabel?.text = "Hard-/Firmware"
+                if let miaoMiao = miaoMiaoManager.miaoMiao, let responseState = miaoMiaoManager.miaoMiaoResponseState {
+                    cell.detailTextLabel?.text = miaoMiao.hardware + "/" + miaoMiao.firmware + ", Response state: " + responseState.description
+                } else {
+                    cell.detailTextLabel?.text = nil
+                }
             case 1:
                 var crcString = String()
                 var color = UIColor()

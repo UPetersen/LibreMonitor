@@ -338,8 +338,12 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         message.append(String(format: "CRC: %d\n", arguments: [newParameters.isValidForFooterWithReverseCRCs]))
         
         message.append("\nExamplary slope and offset for various temperatures:›\n\n")
+        message.append(String(format: "slope(5500) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 5500 + newParameters.offset_slope]))
+        message.append(String(format: "offset(5500) = %5.3g mg/dl\n\n", arguments: [newParameters.slope_offset * 5500 + newParameters.offset_offset]))
         message.append(String(format: "slope(6000) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 6000 + newParameters.offset_slope]))
-        message.append(String(format: "offset(6000) = %5.3g mg/dl\n\n", arguments: [newParameters.slope_offset * 6000 + newParameters.offset_offset]))
+        message.append(String(format: "offset(6500) = %5.3g mg/dl\n\n", arguments: [newParameters.slope_offset * 6000 + newParameters.offset_offset]))
+        message.append(String(format: "slope(6500) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 6500 + newParameters.offset_slope]))
+        message.append(String(format: "offset(6000) = %5.3g mg/dl\n\n", arguments: [newParameters.slope_offset * 6500 + newParameters.offset_offset]))
         message.append(String(format: "slope(7000) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 7000 + newParameters.offset_slope]))
         message.append(String(format: "offset(7000) = %5.3g mg/dl\n", arguments: [newParameters.slope_offset * 7000 + newParameters.offset_offset]))
 
