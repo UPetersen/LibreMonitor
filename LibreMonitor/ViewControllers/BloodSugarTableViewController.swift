@@ -367,8 +367,9 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
                 var rawString = String(format: "%0d, %0d, %0d, %d", measurements[index].rawGlucose, measurements[index].rawTemperature, measurements[index].counter, Int(measurements[index].oopGlucose))
-                if let oopCurrentValue = self.oopCurrentValue {
-                    let aString = String(format: ", oop: %0d, %0d, %0d", Int(round(oopCurrentValue.historyValues[31-index].bg)), oopCurrentValue.historyValues[31-index].time, oopCurrentValue.historyValues[31-index].quality)
+                if let oopCurrentValue = self.oopCurrentValue, index < oopCurrentValue.historyValues.count {
+                    let theIndex = oopCurrentValue.historyValues.count - 1 - index
+                    let aString = String(format: ", oop: %0d, %0d, %0d", Int(round(oopCurrentValue.historyValues[theIndex].bg)), oopCurrentValue.historyValues[theIndex].time, oopCurrentValue.historyValues[theIndex].quality)
                     rawString.append(aString)
                 }
                 cell.textLabel?.text = String(format: "%0.1f mg/dl", measurements[index].glucose)
