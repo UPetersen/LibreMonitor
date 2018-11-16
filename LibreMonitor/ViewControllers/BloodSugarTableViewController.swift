@@ -313,6 +313,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                     let hours = Int( Double(minutes) / 60.0 ) - days*24
                     let minutesRest = minutes - days*24*60 - hours*60
                     cell.detailTextLabel?.text = String(format: "%d day(s), %d hour(s) and %d minute(s) ago", arguments: [days, hours, minutesRest])
+                    cell.backgroundColor = colorForSensorAge(days: days)
                 }
             case 6:
                 cell.textLabel?.text = "Sensor status"
@@ -542,6 +543,16 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         }
     }
 
+    func colorForSensorAge(days: Int) -> UIColor {
+        if days < 13 {
+            return UIColor.white
+        } else if days < 14 {
+            return UIColor.yellow
+        } else {
+            return UIColor.red
+        }
+    }
+    
     func colorForSensorState(sensorState: SensorState) -> UIColor {
         switch sensorState {
         case .ready:
