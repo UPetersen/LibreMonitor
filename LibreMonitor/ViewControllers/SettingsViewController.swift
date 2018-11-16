@@ -330,7 +330,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         message.append("Offset_offset: \(self.temperatureParametersOffsetOffset.text ?? "")\n")
         message.append("CRC: \(self.temperatureParametersIsValidForFooterCRCs.text ?? "")\n")
 
-        message.append("\n\nNew Parameterset:\n")
+        message.append("\nNew Parameterset:\n")
         message.append(String(format: "Slope_slope: %5.3g\n", arguments: [newParameters.slope_slope]))
         message.append(String(format: "Offset_slope: %5.3g\n", arguments: [newParameters.offset_slope]))
         message.append(String(format: "Slope_offset: %5.3g\n", arguments: [newParameters.slope_offset]))
@@ -345,7 +345,9 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         message.append(String(format: "slope(6500) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 6500 + newParameters.offset_slope]))
         message.append(String(format: "offset(6000) = %5.3g mg/dl\n\n", arguments: [newParameters.slope_offset * 6500 + newParameters.offset_offset]))
         message.append(String(format: "slope(7000) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 7000 + newParameters.offset_slope]))
-        message.append(String(format: "offset(7000) = %5.3g mg/dl\n", arguments: [newParameters.slope_offset * 7000 + newParameters.offset_offset]))
+        message.append(String(format: "offset(7000) = %5.3g mg/dl\n\n", arguments: [newParameters.slope_offset * 7000 + newParameters.offset_offset]))
+        message.append(String(format: "slope(7500) = %5.3g mg/(dl * raw)\n", arguments: [newParameters.slope_slope * 7500 + newParameters.offset_slope]))
+        message.append(String(format: "offset(7500) = %5.3g mg/dl\n", arguments: [newParameters.slope_offset * 7500 + newParameters.offset_offset]))
 
         let alertController = UIAlertController(title: "Parameter set received", message: message, preferredStyle: .actionSheet)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
