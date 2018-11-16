@@ -197,6 +197,9 @@ final class BloodSugarGraphView: LineChartView {
         newHistoryLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
         newHistoryLineChartDataSet.setCircleColor(NSUIColor.darkGray)
         newHistoryLineChartDataSet.circleRadius = 3.0
+        newHistoryLineChartDataSet.mode = .cubicBezier
+        newHistoryLineChartDataSet.cubicIntensity = 0.1
+
         //        print("newHistoryLineChartDataSet:")
         //        print(newHistoryLineChartDataSet.debugDescription)
         return newHistoryLineChartDataSet

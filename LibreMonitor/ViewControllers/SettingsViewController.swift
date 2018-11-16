@@ -254,7 +254,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         case glucoseOffsetTextField:
             UserDefaults.standard.glucoseOffset = Double(truncating: aNumber)
         case glucoseSlopeTextField:
-            UserDefaults.standard.glucoseOffset = Double(truncating: aNumber)
+            UserDefaults.standard.glucoseSlope = Double(truncating: aNumber)
         case temperatureParametersAdditionalSlope:
             additionalSlope = Double(truncating: aNumber)
             if let temperatureParameters = UserDefaults.standard.temperatureParameters {
