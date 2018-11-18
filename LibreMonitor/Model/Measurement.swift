@@ -34,7 +34,7 @@ struct Measurement {
 //    let slope_offset: Double = 0.0
 //    let offset_slope: Double = 0.0
 //    let offset_offset: Double = 0.0
-    let oopGlucose: Double
+    let temperatureAlgorithmGlucose: Double
     // {"status":"complete","slope_slope":0.00001816666666666667,"slope_offset":-0.00016666666666666666,"offset_offset":-21.5,"offset_slope":0.007499999999999993,"uuid":"calibrationmetadata-e61686dd-1305-44f0-a675-df98aabce67f","isValidForFooterWithReverseCRCs":61141}
 //    let slope_slope = 1.7333333333333336e-05
 //    let slope_offset = -0.0006666666666666666
@@ -81,11 +81,11 @@ struct Measurement {
             //        self.oopOffset = offset_slope * Double(rawTemperature) + offset_offset
             let oopGlucose = oopSlope * Double(rawGlucose) + oopOffset
             // Final correction, if sensor values are very low and need to be compensated
-            self.oopGlucose = oopGlucose * derivedAlgorithmParameterSet.additionalSlope + derivedAlgorithmParameterSet.additionalOffset
+            self.temperatureAlgorithmGlucose = oopGlucose * derivedAlgorithmParameterSet.additionalSlope + derivedAlgorithmParameterSet.additionalOffset
         } else {
             self.oopSlope = 0
             self.oopOffset = 0
-            self.oopGlucose = 0
+            self.temperatureAlgorithmGlucose = 0
         }
         
         print(self.description)

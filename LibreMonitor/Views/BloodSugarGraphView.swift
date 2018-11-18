@@ -177,7 +177,7 @@ final class BloodSugarGraphView: LineChartView {
         var newTrendEntries = [ChartDataEntry]()
         trendMeasurements.reversed().forEach{
             let timeIntervall = $0.date.timeIntervalSince1970
-            newTrendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
+            newTrendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.temperatureAlgorithmGlucose))
         }
         let newTrendLineChartDataSet = LineChartDataSet(values: newTrendEntries, label: "New Trend")
         newTrendLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
@@ -191,7 +191,7 @@ final class BloodSugarGraphView: LineChartView {
         var newHistoryEntries = [ChartDataEntry]()
         historyMeasurements.reversed().forEach{
             let timeIntervall = $0.date.timeIntervalSince1970 // Test - TimeInterval(60*5)
-            newHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.oopGlucose))
+            newHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.temperatureAlgorithmGlucose))
         }
         let newHistoryLineChartDataSet = LineChartDataSet(values: newHistoryEntries, label: "New History")
         newHistoryLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
@@ -207,9 +207,9 @@ final class BloodSugarGraphView: LineChartView {
     
     func testLineChartData(trendMeasurements: [Measurement]) -> LineChartDataSet {
         // Test for current glucose
-        let p1 = Double(trendMeasurements[10...14].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
-        let p2 = Double(trendMeasurements[5...9].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
-        let p3 = Double(trendMeasurements[0...4].map{$0.oopGlucose}.reduce(0.0, + )) / 5.0
+        let p1 = Double(trendMeasurements[10...14].map{$0.temperatureAlgorithmGlucose}.reduce(0.0, + )) / 5.0
+        let p2 = Double(trendMeasurements[5...9].map{$0.temperatureAlgorithmGlucose}.reduce(0.0, + )) / 5.0
+        let p3 = Double(trendMeasurements[0...4].map{$0.temperatureAlgorithmGlucose}.reduce(0.0, + )) / 5.0
         var testEntries = [ChartDataEntry]()
         testEntries.append(ChartDataEntry(x: trendMeasurements[12].date.timeIntervalSince1970, y: p1))
         testEntries.append(ChartDataEntry(x: trendMeasurements[7].date.timeIntervalSince1970, y: p2))

@@ -366,7 +366,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
             if let measurements = historyMeasurements {
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
-                var rawString = String(format: "%0d, %0d, %0d, %d", measurements[index].rawGlucose, measurements[index].rawTemperature, measurements[index].counter, Int(measurements[index].oopGlucose))
+                var rawString = String(format: "%0d, %0d, %0d, %d", measurements[index].rawGlucose, measurements[index].rawTemperature, measurements[index].counter, Int(measurements[index].temperatureAlgorithmGlucose))
                 if let oopCurrentValue = self.oopCurrentValue, index < oopCurrentValue.historyValues.count {
                     let theIndex = oopCurrentValue.historyValues.count - 1 - index
                     let aString = String(format: ", oop: %0d, %0d, %0d", Int(round(oopCurrentValue.historyValues[theIndex].bg)), oopCurrentValue.historyValues[theIndex].time, oopCurrentValue.historyValues[theIndex].quality)
@@ -587,11 +587,25 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     func setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: [Measurement] ) {
 
-        let currentGlucose = trendMeasurements[0].glucose
-        let longDelta = currentGlucose - trendMeasurements[15].glucose
-        let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
-        let longPrediction = currentGlucose + longDelta
-        let shortPrediction = currentGlucose + shortDelta
+        let currentGlucose: Double
+        let longDelta: Double
+        let shortDelta: Double
+        let shortPrediction: Double
+        let longPrediction: Double
+        
+        if UserDefaults.standard.useTemperatureAlgorithm {
+            currentGlucose = trendMeasurements[0].temperatureAlgorithmGlucose
+            longDelta = currentGlucose - trendMeasurements[15].temperatureAlgorithmGlucose
+            shortDelta = (currentGlucose - trendMeasurements[8].temperatureAlgorithmGlucose) * 2.0 * 16.0/15.0
+            longPrediction = currentGlucose + longDelta
+            shortPrediction = currentGlucose + shortDelta
+        } else {
+            currentGlucose = trendMeasurements[0].glucose
+            longDelta = currentGlucose - trendMeasurements[15].glucose
+            shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
+            longPrediction = currentGlucose + longDelta
+            shortPrediction = currentGlucose + shortDelta
+        }
         
         // Show high blood glucose alert if conditions are reached
         if (longPrediction > 180.0) || (shortPrediction > 180.0) || (longDelta > 30.0 && shortDelta > 30.0) {

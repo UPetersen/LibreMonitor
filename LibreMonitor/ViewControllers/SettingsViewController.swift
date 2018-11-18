@@ -92,7 +92,7 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
             temperatureParametersSlopeOffset.text = String(format: "%5.3g", derivedParameters.slope_offset)
             temperatureParametersOffsetOffset.text = String(format: "%5.3g", derivedParameters.offset_offset)
             temperatureParametersAdditionalSlope.text = String(format: "%5.3g", derivedParameters.additionalSlope)
-            temperatureParametersAdditionalOffset.text = String(format: "%3.0g", derivedParameters.additionalOffset)
+            temperatureParametersAdditionalOffset.text = String(format: "%5.3g", derivedParameters.additionalOffset)
             temperatureParametersIsValidForFooterCRCs.text = String(format: "%0d", derivedParameters.isValidForFooterWithReverseCRCs)
             additionalSlope = derivedParameters.additionalSlope
             additionalOffset = derivedParameters.additionalOffset
