@@ -61,24 +61,8 @@ struct SensorData {
     
     /// Sensor state (ready, failure, starting etc.)
     var state: SensorState {
-        switch header[4] {
-        case 01:
-            return SensorState.notYetStarted
-        case 02:
-            return SensorState.starting
-        case 03:
-            return SensorState.ready
-        case 04:
-            return SensorState.expired
-        case 05:
-            return SensorState.shutdown
-        case 06:
-            return SensorState.failure
-        default:
-            return SensorState.unknown
-        }
+        return SensorState(stateByte: header[4])
     }
-    
     
     init?(uuid: Data, bytes: [UInt8], date: Date = Date(), derivedAlgorithmParameterSet: TemperatureAlgorithmParameters? = nil) {
         guard bytes.count == numberOfBytes else {

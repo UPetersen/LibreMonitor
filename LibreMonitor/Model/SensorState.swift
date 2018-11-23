@@ -29,24 +29,24 @@ enum SensorState {
     init(){
         self = .unknown
     }
-//    init(stateByte: UInt8) {
-//        switch stateByte {
-//        case 01:
-//            self = .notYetStarted
-//        case 02:
-//            self = .starting
-//        case 03:
-//            self = .ready
-//        case 04:
-//            self = .expired
-//        case 05:
-//            self = .shutdown
-//        case 06:
-//            self = .failure
-//        default:
-//            self = .unknown
-//        }
-//    }
+    init(stateByte: UInt8) {
+        switch stateByte {
+        case 01:
+            self = .notYetStarted
+        case 02:
+            self = .starting
+        case 03:
+            self = .ready
+        case 04:
+            self = .expired
+        case 05:
+            self = .shutdown
+        case 06:
+            self = .failure
+        default:
+            self = .unknown
+        }
+    }
     
     var description: String {
         switch self {

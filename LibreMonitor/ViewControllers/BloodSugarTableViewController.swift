@@ -587,6 +587,10 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     func setBloodGlucoseHighOrLowNotificationIfNecessary(trendMeasurements: [Measurement] ) {
 
+        guard trendMeasurements.count >= 16 else {
+            return
+        }
+        
         let currentGlucose: Double
         let longDelta: Double
         let shortDelta: Double
