@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		11DB9C33006ABE4C6F2A5309 /* Pods_LibreMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57638DE5B016DAEE9465B711 /* Pods_LibreMonitor.framework */; };
+		2729327521A33A32009411AF /* LibreMonitor.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2729327421A33A32009411AF /* LibreMonitor.xcconfig */; };
 		893350C03F171279469A31AA /* Pods_LibreMonitorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5600B0B30465042D9D06EB /* Pods_LibreMonitorUITests.framework */; };
 		C60178961E3E7FE5008FCF3A /* BluetoothTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60178951E3E7FE5008FCF3A /* BluetoothTestData.swift */; };
 		C6078B0F1EC76BE800FEE6F7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6078B0E1EC76BE800FEE6F7 /* NotificationManager.swift */; };
@@ -101,6 +102,7 @@
 
 /* Begin PBXFileReference section */
 		10E10B329FE1A294608335D3 /* Pods-LibreMonitorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.release.xcconfig"; sourceTree = "<group>"; };
+		2729327421A33A32009411AF /* LibreMonitor.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LibreMonitor.xcconfig; sourceTree = "<group>"; };
 		29B84802438A170516B70200 /* Pods-LibreMonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorUITests/Pods-LibreMonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		3699E067440DF4250D7C1B33 /* Pods-LibreMonitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitor/Pods-LibreMonitor.debug.xcconfig"; sourceTree = "<group>"; };
 		3DC219F91FAAC75C67C11638 /* Pods-LibreMonitorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibreMonitorTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibreMonitorTests/Pods-LibreMonitorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 		C6822D591DB13F2200D08393 = {
 			isa = PBXGroup;
 			children = (
+				2729327421A33A32009411AF /* LibreMonitor.xcconfig */,
 				C6822D641DB13F2200D08393 /* LibreMonitor */,
 				C6822D7E1DB13F2200D08393 /* LibreMonitorTests */,
 				C6822D891DB13F2200D08393 /* LibreMonitorUITests */,
@@ -517,7 +520,6 @@
 				TargetAttributes = {
 					C6822D611DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 26F6YWJYL8;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -531,14 +533,12 @@
 					};
 					C6822D7A1DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 26F6YWJYL8;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = C6822D611DB13F2200D08393;
 					};
 					C6822D851DB13F2200D08393 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 26F6YWJYL8;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = C6822D611DB13F2200D08393;
@@ -572,6 +572,7 @@
 			files = (
 				C6822D751DB13F2200D08393 /* LaunchScreen.storyboard in Resources */,
 				C690FD4E1FC9FF4A003E1E99 /* iconDownDown60@2x.png in Resources */,
+				2729327521A33A32009411AF /* LibreMonitor.xcconfig in Resources */,
 				C690FD4F1FC9FF4A003E1E99 /* iconDownDown60@3x.png in Resources */,
 				C690FD501FC9FF4A003E1E99 /* iconUp60@3x.png in Resources */,
 				C690FD571FC9FF4A003E1E99 /* iconDown60@3x.png in Resources */,
@@ -800,6 +801,7 @@
 /* Begin XCBuildConfiguration section */
 		C6822D8D1DB13F2200D08393 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2729327421A33A32009411AF /* LibreMonitor.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -849,6 +851,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MAIN_APP_BUNDLE_IDENTIFIER = "$(inherited).LibreMonitorUI";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-function-bodies=300";
@@ -863,6 +866,7 @@
 		};
 		C6822D8E1DB13F2200D08393 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2729327421A33A32009411AF /* LibreMonitor.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -906,6 +910,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MAIN_APP_BUNDLE_IDENTIFIER = "$(inherited).LibreMonitorUI";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
@@ -924,11 +929,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
-				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LibreMonitor/LibreMonitor-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -944,11 +949,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = LibreMonitor/LibreMonitor.entitlements;
-				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LibreMonitor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitor;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LibreMonitor/LibreMonitor-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
@@ -961,7 +966,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LibreMonitorTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				NEW_SETTING = "";
@@ -980,7 +985,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LibreMonitorTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				NEW_SETTING = "";
@@ -997,7 +1002,7 @@
 			baseConfigurationReference = 29B84802438A170516B70200 /* Pods-LibreMonitorUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LibreMonitorUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorUITests;
@@ -1012,7 +1017,7 @@
 			baseConfigurationReference = 10E10B329FE1A294608335D3 /* Pods-LibreMonitorUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				DEVELOPMENT_TEAM = 26F6YWJYL8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LibreMonitorUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = UPP.LibreMonitorUITests;

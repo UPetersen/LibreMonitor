@@ -1,0 +1,14 @@
+//
+//  LibreMonitor.xcconfig
+//  LibreMonitor
+//
+//  Created by Bjørn Inge Berg on 19.11.2018.
+//  Copyright © 2018 Uwe Petersen. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// This is automatically disambiguated by development team, but you may choose to change this to
+// support running multiple apps simultaneously.
+MAIN_APP_BUNDLE_IDENTIFIER = UPP.LibreMonitor.${DEVELOPMENT_TEAM}
