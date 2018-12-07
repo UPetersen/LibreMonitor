@@ -72,6 +72,7 @@ struct NotificationManager {
             trigger: trigger
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        applicationIconBadgeNumber(value: 0)
     }
     
     static func removePendingBluetoothDisconnectedNotification() {
@@ -156,6 +157,7 @@ struct NotificationManager {
             trigger: trigger
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        applicationIconBadgeNumber(value: 0)
     }
     
     
@@ -186,6 +188,7 @@ struct NotificationManager {
             trigger: trigger
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        applicationIconBadgeNumber(value: 0)
     }
     
     static func removePendingApplicationTerminatedNotification() {
