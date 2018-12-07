@@ -17,9 +17,12 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
     var additionalOffset = 0.0
 
     var numberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .none
+        numberFormatter.usesGroupingSeparator = false
+        numberFormatter.usesSignificantDigits = true
+//        numberFormatter.minimumSignificantDigits = 3
+        return numberFormatter
     }()
     var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -82,18 +85,27 @@ final class SettingsViewController: UITableViewController, UITextFieldDelegate {
         // Temperature Algorithm
         useTemperatureAlgorithmSwitch.isOn = UserDefaults.standard.useTemperatureAlgorithm
         configureTemperatureAlgorithmParameterCells()
+        
     }
     
     func configureTemperatureAlgorithmParameterCells() {
         if let derivedParameters = UserDefaults.standard.temperatureParameters {
             temperatureParametersDate.text = dateFormatter.string(from: derivedParameters.date)
-            temperatureParametersSlopeSlope.text = String(format: "%5.3g", derivedParameters.slope_slope)
-            temperatureParametersOffsetSlope.text = String(format: "%5.3g", derivedParameters.offset_slope)
-            temperatureParametersSlopeOffset.text = String(format: "%5.3g", derivedParameters.slope_offset)
-            temperatureParametersOffsetOffset.text = String(format: "%5.3g", derivedParameters.offset_offset)
-            temperatureParametersAdditionalSlope.text = String(format: "%5.3g", derivedParameters.additionalSlope)
-            temperatureParametersAdditionalOffset.text = String(format: "%5.3g", derivedParameters.additionalOffset)
-            temperatureParametersIsValidForFooterCRCs.text = String(format: "%0d", derivedParameters.isValidForFooterWithReverseCRCs)
+            temperatureParametersSlopeSlope.text = numberFormatter.string(from: NSNumber(value: derivedParameters.slope_slope))
+            temperatureParametersOffsetSlope.text = numberFormatter.string(from: NSNumber(value: derivedParameters.offset_slope))
+            temperatureParametersSlopeOffset.text = numberFormatter.string(from: NSNumber(value: derivedParameters.slope_offset))
+            temperatureParametersOffsetOffset.text = numberFormatter.string(from: NSNumber(value: derivedParameters.offset_offset))
+            temperatureParametersAdditionalSlope.text = numberFormatter.string(from: NSNumber(value: derivedParameters.additionalSlope))
+            temperatureParametersAdditionalOffset.text = numberFormatter.string(from: NSNumber(value: derivedParameters.additionalOffset))
+            temperatureParametersIsValidForFooterCRCs.text = numberFormatter.string(from: NSNumber(value: derivedParameters.isValidForFooterWithReverseCRCs))
+
+//            temperatureParametersSlopeSlope.text = String(format: "%5.3g", derivedParameters.slope_slope)
+//            temperatureParametersOffsetSlope.text = String(format: "%5.3g", derivedParameters.offset_slope)
+//            temperatureParametersSlopeOffset.text = String(format: "%5.3g", derivedParameters.slope_offset)
+//            temperatureParametersOffsetOffset.text = String(format: "%5.3g", derivedParameters.offset_offset)
+//            temperatureParametersAdditionalSlope.text = String(format: "%5.3g", derivedParameters.additionalSlope)
+//            temperatureParametersAdditionalOffset.text = String(format: "%5.3g", derivedParameters.additionalOffset)
+//            temperatureParametersIsValidForFooterCRCs.text = String(format: "%0d", derivedParameters.isValidForFooterWithReverseCRCs)
             additionalSlope = derivedParameters.additionalSlope
             additionalOffset = derivedParameters.additionalOffset
         }

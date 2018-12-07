@@ -352,7 +352,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
             
         case .trendData:
             let index = (indexPath as NSIndexPath).row
-            if let measurements = trendMeasurements {
+            if let measurements = trendMeasurements, index < 16 {
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
                 let rawString = String(format: "%0d, %0d", measurements[index].rawGlucose, measurements[index].rawTemperature)
@@ -363,11 +363,12 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
 
         case .historyData:
             let index = (indexPath as NSIndexPath).row
-            if let measurements = historyMeasurements {
+            if let measurements = historyMeasurements, index < 32 {
                 let timeAsString = timeFormatter.string(from: measurements[index].date as Date)
                 let dateAsString = dateFormatter.string(from: measurements[index].date as Date)
                 var rawString = String(format: "%0d, %0d, %0d, %d", measurements[index].rawGlucose, measurements[index].rawTemperature, measurements[index].counter, Int(measurements[index].temperatureAlgorithmGlucose))
-                if let oopCurrentValue = self.oopCurrentValue, index < oopCurrentValue.historyValues.count {
+                
+                if let oopCurrentValue = self.oopCurrentValue, oopCurrentValue.historyValues.count == 32 {
                     let theIndex = oopCurrentValue.historyValues.count - 1 - index
                     let aString = String(format: ", oop: %0d, %0d, %0d", Int(round(oopCurrentValue.historyValues[theIndex].bg)), oopCurrentValue.historyValues[theIndex].time, oopCurrentValue.historyValues[theIndex].quality)
                     rawString.append(aString)

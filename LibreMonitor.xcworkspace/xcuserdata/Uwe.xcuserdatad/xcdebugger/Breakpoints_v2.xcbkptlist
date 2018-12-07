@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
-            filePath = "LibreMonitor/ViewControllers/BloodSugarTableViewController.swift"
-            timestampString = "564227223.610617"
+            filePath = "LibreMonitor/Model/Measurement.swift"
+            timestampString = "565455383.823815"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "updateTableView()"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "init(bytes:slope:offset:counter:date:derivedAlgorithmParameterSet:)"
             landmarkType = "7">
             <Actions>
                <BreakpointActionProxy

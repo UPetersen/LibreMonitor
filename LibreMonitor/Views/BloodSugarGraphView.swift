@@ -39,7 +39,9 @@ final class BloodSugarGraphView: LineChartView {
         
         self.noDataText = "No blood sugar data available"
         
-        guard let trendMeasurements = trendMeasurements, let historyMeasurements = historyMeasurements else {return}
+        guard let trendMeasurements = trendMeasurements, let historyMeasurements = historyMeasurements, trendMeasurements.count == 16, historyMeasurements.count == 32 else {
+            return
+        }
         
         
         // Trend data set (data needs to be ordered from lowest x-value to highest x-value)

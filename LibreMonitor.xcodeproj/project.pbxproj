@@ -77,6 +77,7 @@
 		C690FD551FC9FF4A003E1E99 /* iconUpUp60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4B1FC9FF49003E1E99 /* iconUpUp60@3x.png */; };
 		C690FD561FC9FF4A003E1E99 /* iconConstant60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4C1FC9FF49003E1E99 /* iconConstant60@3x.png */; };
 		C690FD571FC9FF4A003E1E99 /* iconDown60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C690FD4D1FC9FF49003E1E99 /* iconDown60@3x.png */; };
+		C6C567C921B4599600B90F1A /* TheSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C567C821B4599600B90F1A /* TheSensor.swift */; };
 		C6CA13F52053EA9D0089C278 /* MiaoMiaoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */; };
 		C6CA13F7205EC40B0089C278 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA13F6205EC40B0089C278 /* Data.swift */; };
 		C6DDBDBB1DC512410048D275 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6DDBDBA1DC512410048D275 /* HealthKit.framework */; };
@@ -187,6 +188,7 @@
 		C690FD4B1FC9FF49003E1E99 /* iconUpUp60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconUpUp60@3x.png"; sourceTree = "<group>"; };
 		C690FD4C1FC9FF49003E1E99 /* iconConstant60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconConstant60@3x.png"; sourceTree = "<group>"; };
 		C690FD4D1FC9FF49003E1E99 /* iconDown60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconDown60@3x.png"; sourceTree = "<group>"; };
+		C6C567C821B4599600B90F1A /* TheSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TheSensor.swift; path = Model/TheSensor.swift; sourceTree = "<group>"; };
 		C6CA13F42053EA9D0089C278 /* MiaoMiaoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MiaoMiaoManager.swift; path = Bluetooth/MiaoMiaoManager.swift; sourceTree = "<group>"; };
 		C6CA13F6205EC40B0089C278 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		C6DDBDBA1DC512410048D275 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
@@ -386,6 +388,7 @@
 				C6822DB01DB1618400D08393 /* CRC.swift */,
 				C6760961207175FC0056A5FF /* SensorSerialNumber.swift */,
 				C6822DB21DB1618400D08393 /* Measurement.swift */,
+				C6C567C821B4599600B90F1A /* TheSensor.swift */,
 				C6822DB31DB1618400D08393 /* SensorData.swift */,
 				C6822DB41DB1618400D08393 /* SensorState.swift */,
 				C66A0ECE2196C6E700F331A3 /* TemperatureAlgorithmParameters.swift */,
@@ -748,6 +751,7 @@
 				C6822DBE1DB161AB00D08393 /* BloodSugarTableViewController.swift in Sources */,
 				C61DA67D1EACA2CC00FEF4A1 /* BloodGlucoseEntryEditTableViewController.swift in Sources */,
 				C66A49701F40D7CB0005DC78 /* Crypto.m in Sources */,
+				C6C567C921B4599600B90F1A /* TheSensor.swift in Sources */,
 				C6822DB51DB1618400D08393 /* CRC.swift in Sources */,
 				C6822DD91DB1631D00D08393 /* Sensor+CoreDataClass.swift in Sources */,
 			);
