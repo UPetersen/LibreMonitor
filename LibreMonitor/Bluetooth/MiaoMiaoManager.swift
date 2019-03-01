@@ -264,7 +264,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     func connect() {
         os_log("Connect while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
-        if let peripheral = peripheral {
+//        if let peripheral = peripheral {
+        if let peripheral = peripheral, let identifier = UUID(uuidString: "3DE41921-6747-CDFD-D169-06EE86A81847"), peripheral.identifier == identifier {
             peripheral.delegate = self
             centralManager.stopScan()
             centralManager.connect(peripheral, options: nil)
@@ -321,7 +322,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         
-        os_log("Did connect peripheral while state %{public}@ with name: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name))
+        os_log("Did connect peripheral while state %{public}@ with name: %{public}@ and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
         state = .Connected
         // Discover all Services. This might be helpful if writing is needed some time
         peripheral.discoverServices(nil)
