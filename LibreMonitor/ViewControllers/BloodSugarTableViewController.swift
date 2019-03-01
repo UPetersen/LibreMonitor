@@ -89,11 +89,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     
     @IBAction func doRefresh(_ sender: UIRefreshControl) {
-        if let writeCharacteristic = miaoMiaoManager.writeCharacteristic {
-            miaoMiaoManager.peripheral?.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
-            miaoMiaoManager.rxBuffer = Data()
-            miaoMiaoManager.peripheral?.writeValue(Data.init(bytes: [0xF0]), for: writeCharacteristic, type: .withResponse)
-        }
+        miaoMiaoManager.requestData()
         sender.endRefreshing()
         tableView.reloadData()
     }

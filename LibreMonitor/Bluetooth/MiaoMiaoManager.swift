@@ -114,7 +114,7 @@
 //  The MiaoMiao protocol
 //  1.) Data
 //      TX: 0xF0
-//          Request all the data or the sensor. The bluetooth will return the data at a certain frequency (default is every 5 minutes) after the request
+//          Request all the data of the sensor. The bluetooth will return the data at a certain frequency (default is every 5 minutes) after the request
 //      RX:
 //          a) Data (363 bytes):
 //             Pos.  0 (0x00): 0x28 +
@@ -207,13 +207,11 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     var miaoMiaoResponseState: MiaoMiaoResponseState?
     var centralManager: CBCentralManager!
     var peripheral: CBPeripheral?
-//    var slipBuffer = SLIPBuffer()
     var writeCharacteristic: CBCharacteristic?
     
     var rxBuffer = Data()
     var sensorData: SensorData?
     
-//    fileprivate let serviceUUIDs:[CBUUID]? = [CBUUID(string: "6E400001B5A3F393E0A9E50E24DCCA9E")]
     fileprivate let deviceName = "miaomiao"
     fileprivate let serviceUUIDs:[CBUUID]? = [CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E")]
 
@@ -283,6 +281,9 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         case .Connected, .Connecting, .Notifying:
             state = .DisconnectingDueToButtonPress  // to avoid reconnect in didDisconnetPeripheral
             centralManager.cancelPeripheralConnection(peripheral!)
+        case .Scanning:
+            state = .DisconnectingDueToButtonPress  // to avoid reconnect in didDisconnetPeripheral
+            centralManager.stopScan()
         default:
             break
         }
@@ -310,8 +311,6 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
         os_log("Did discover peripheral while state %{public}@ with name: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name))
-        
-        
         
         if peripheral.name == deviceName {
             
@@ -381,6 +380,32 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                 peripheral.discoverCharacteristics(nil, for: service)
                 
                 os_log("Did discover service: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: service.debugDescription))
+                
+                // Services can include not only characteristics, but also services (that can include characteristics and services ..)
+                // This is not the case for the services used by MiaoMiao, thus this code is commented out
+//                print("And now for the included services: ")
+//                if let services = service.includedServices {
+//                    for service in services {
+//                        peripheral.discoverCharacteristics(nil, for: service)
+//                        os_log("Did discover included service: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: service.debugDescription))
+//                    }
+//                }
+            }
+        }
+        
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverIncludedServicesFor service: CBService, error: Error?) {
+    
+        os_log("Did discover includes services", log: MiaoMiaoManager.bt_log, type: .default)
+        if let error = error {
+            os_log("Did discover included services error: %{public}@", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
+        }
+        
+        if let services = peripheral.services {
+            for service in services {
+                peripheral.discoverCharacteristics(nil, for: service)
+                os_log("Did discover included service: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: service.debugDescription))
             }
         }
     }
@@ -397,6 +422,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
                 os_log("Did discover characteristic: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: characteristic.debugDescription))
+                
 //                print("Characteristic: ")
 //                debugPrint(characteristic.debugDescription)
 //                print("... with properties: ")
@@ -412,7 +438,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
 //                print("NotifyEncryptionRequired:            ", [characteristic.properties.contains(.notifyEncryptionRequired)])
 //                print("BroaIndicateEncryptionRequireddcast: ", [characteristic.properties.contains(.indicateEncryptionRequired)])
 //                print("Serivce for Characteristic:          ", [characteristic.service.debugDescription])
-//
+
 //                if characteristic.service.uuid == CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E") {
 //                    print("\n B I N G O \n")
 //                }
@@ -436,17 +462,41 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         
         os_log("Did update notification state for characteristic: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: characteristic.debugDescription))
         
+//        print("Characteristic: ")
+//        debugPrint(characteristic.debugDescription)
+//        print("... with properties: ")
+//        debugPrint(characteristic.properties)
+//        print("Broadcast:                           ", [characteristic.properties.contains(.broadcast)])
+//        print("Read:                                ", [characteristic.properties.contains(.read)])
+//        print("WriteWithoutResponse:                ", [characteristic.properties.contains(.writeWithoutResponse)])
+//        print("Write:                               ", [characteristic.properties.contains(.write)])
+//        print("Notify:                              ", [characteristic.properties.contains(.notify)])
+//        print("Indicate:                            ", [characteristic.properties.contains(.indicate)])
+//        print("AuthenticatedSignedWrites:           ", [characteristic.properties.contains(.authenticatedSignedWrites )])
+//        print("ExtendedProperties:                  ", [characteristic.properties.contains(.extendedProperties)])
+//        print("NotifyEncryptionRequired:            ", [characteristic.properties.contains(.notifyEncryptionRequired)])
+//        print("BroaIndicateEncryptionRequireddcast: ", [characteristic.properties.contains(.indicateEncryptionRequired)])
+//        print("Serivce for Characteristic:          ", [characteristic.service.debugDescription])
+        
+//        if characteristic.service.uuid == CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E") {
+//            print("\n B I N G O \n")
+//        }
+        
         if let error = error {
             os_log("Peripheral did update notification state for characteristic: %{public}@ with error", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
         } else {
             resetBuffer()
             requestData()
+//            testL2Transmission()
         }
         state = .Notifying
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         os_log("Did update value for characteristic: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: characteristic.debugDescription))
+        
+
+
         
         if let error = error {
             os_log("Characteristic update error: %{public}@", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
@@ -496,9 +546,10 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                             
                         case .newSensor: // 0x32: // A new sensor has been detected -> acknowledge to use sensor and reset buffer
                             delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x32, payloadData: rxBuffer)
-                            if let writeCharacteristic = writeCharacteristic {
-                                peripheral.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
-                            }
+//                            if let writeCharacteristic = writeCharacteristic {
+//                                peripheral.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
+//                            }
+                            confirmSensor()
                             rxBuffer = Data()
                         case .noSensor: // 0x34: // No sensor has been detected -> reset buffer (and wait for new data to arrive)
                             delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x34, payloadData: rxBuffer)
@@ -532,6 +583,10 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         os_log("Did Write value %{public}@ for characteristic %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(characteristic.value.debugDescription), String(characteristic.debugDescription))
+        print(characteristic.debugDescription)
+        if let error = error {
+            print("Had a write error " + error.localizedDescription)
+        }
     }
     
     // Miaomiao specific commands
@@ -539,7 +594,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     // Confirm (to replace) the sensor. Iif a new sensor is detected and shall be used, send this command (0xD301)
     func confirmSensor() {
         if let writeCharacteristic = writeCharacteristic {
-            peripheral?.writeValue(Data.init(bytes: [0xD3, 0x00]), for: writeCharacteristic, type: .withResponse)
+            peripheral?.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
         }
     }
     
@@ -549,6 +604,15 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             resetBuffer()
             timer?.invalidate()
             peripheral?.writeValue(Data.init(bytes: [0xF0]), for: writeCharacteristic, type: .withResponse)
+        }
+    }
+    
+    func testL2Transmission() {
+        if let writeCharacteristic = writeCharacteristic {
+//            peripheral?.writeValue(Data.init(bytes: [0x00, 0xfa, 0x01]), for: writeCharacteristic, type: .withResponse)
+            peripheral?.writeValue(Data.init(bytes: [0x02, 0xfa, 0x00]), for: writeCharacteristic, type: .withResponse)
+//            peripheral?.writeValue(Data.init(bytes: [0x04, 0xfa, 0x02]), for: writeCharacteristic, type: .withResponse)
+//            peripheral?.writeValue(Data.init(bytes: [0x01, 0x0000, 0x0008]), for: writeCharacteristic, type: .withResponse)
         }
     }
 
