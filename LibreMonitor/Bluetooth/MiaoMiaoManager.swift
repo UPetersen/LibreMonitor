@@ -263,6 +263,10 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     }
     
     func connect() {
+        // FIXME: Since I have two MiaoMiaos the one to connect to is hardcoded here. This is as long as I have not implemented a UI to choose which to connect to.
+        // identifiers are:
+        // First MiaoMiao:  A44638E4-B70F-DBE7-A519-C4E4DFED2066
+        // Second MiaoMiao: 3DE41921-6747-CDFD-D169-06EE86A81847
         os_log("Connect while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
 //        if let peripheral = peripheral {
         if let peripheral = peripheral, let identifier = UUID(uuidString: "3DE41921-6747-CDFD-D169-06EE86A81847"), peripheral.identifier == identifier {
@@ -311,7 +315,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        os_log("Did discover peripheral while state %{public}@ with name: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name))
+        os_log("Did discover peripheral while state %{public}@ with name: %{public} @and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
         
         if peripheral.name == deviceName {
             
