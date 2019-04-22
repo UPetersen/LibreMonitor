@@ -99,7 +99,7 @@ func CreateOnePatch(raw_glucose:UInt16, raw_temp:UInt16) -> [UInt8] {
         // done: Create_2018_09_02_Sensor
         //done: Create_2018_10_07_Sensor
     
-    print("Create patch from \(choosenPatch)")
+    print("Create patch from \(String(describing: choosenPatch))")
     return choosenPatch(raw_glucose, raw_temp)
 }
 

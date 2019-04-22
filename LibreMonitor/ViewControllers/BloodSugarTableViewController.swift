@@ -139,8 +139,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
             miaoMiaoManager.centralManager.stopScan()
             miaoMiaoManager.state = .Disconnected
         case .Connected, .Connecting, .Notifying:
-            miaoMiaoManager.disconnectManually()
-        case .Disconnected, .DisconnectingDueToButtonPress:
+            miaoMiaoManager.disconnectDueToUserRequest()
+        case .Disconnected, .DisconnectingDueToUserRequest:
             miaoMiaoManager.connect()
         }
     }
@@ -422,7 +422,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         self.navigationItem.rightBarButtonItem?.title? = connectButtonTitleForMiaoMiaoState(state)
         
         switch state {
-        case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectingDueToButtonPress, .Disconnected:
+        case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectingDueToUserRequest, .Disconnected:
             NotificationManager.applicationIconBadgeNumber(value: 0) // Data not accurate any more -> remove badge icon
             NotificationManager.scheduleBluetoothDisconnectedNotification(wait: 450)
         case .Notifying:
@@ -532,7 +532,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
 
     func colorForConnectionMiaoMiaoState() -> UIColor {
         switch (miaoMiaoManager.state) {
-        case .Unassigned, .Disconnected, .DisconnectingDueToButtonPress:
+        case .Unassigned, .Disconnected, .DisconnectingDueToUserRequest:
             return UIColor.red
         case .Scanning, .Connecting, .Connected:
             return UIColor(red: CGFloat(0.9), green: CGFloat(0.9), blue: CGFloat(1), alpha: CGFloat(1))
@@ -573,7 +573,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     func connectButtonTitleForMiaoMiaoState(_ state: MiaoMiaoManagerState) -> String {
         
         switch state {
-        case .Unassigned, .Disconnected, .DisconnectingDueToButtonPress:
+        case .Unassigned, .Disconnected, .DisconnectingDueToUserRequest:
             return "connect"
         case .Connected, .Connecting, .Scanning, .Notifying:
             return "disconnect"

@@ -10,8 +10,11 @@
 //    0.) Advertising
 //        MiaoMiao advertises with the following data:
 //        - key : "kCBAdvDataIsConnectable"     - value : 1
-//        - key : "kCBAdvDataManufacturerData"  - value : <0034cb1c 53093fb4> -> This might be usable as a unique device id.
+//        - key : "kCBAdvDataManufacturerData"  - value : <0034cb1c 53093fb4> -> This is the data for my first MiaoMiao
+//                                                        <0037d99d bc45127e> -> This is the data for my second MiaoMiao
 //        - key : "kCBAdvDataLocalName"         - value : miaomiao
+//        MiaoMiao does not advertise any services (that would be the key "CBAdvertisementDataServiceUUIDsKey")
+//        and thus it is not possible to scan for the MiaoMiao in the background (which requires providing an array of services)
 //
 //    1.) Services
 ///       The MiaoMiao has two bluetooth services, one provided for the open source community and one that is probably to be used by the Tomato app.
@@ -165,7 +168,7 @@ public enum MiaoMiaoManagerState: String {
     case Unassigned = "Unassigned"
     case Scanning = "Scanning"
     case Disconnected = "Disconnected"
-    case DisconnectingDueToButtonPress = "Disconnecting due to button press"
+    case DisconnectingDueToUserRequest = "Disconnecting due to button press"
     case Connecting = "Connecting"
     case Connected = "Connected"
     case Notifying = "Notifying"
@@ -277,17 +280,17 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         }
     }
     
-    func disconnectManually() {
-        os_log("Disconnect manually while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
+    func disconnectDueToUserRequest() {
+        os_log("Disconnect on user request while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
         //        NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 3)
         //        _ = Timer(timeInterval: 150, repeats: false, block: {timer in NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 0.5)})
         
         switch state {
         case .Connected, .Connecting, .Notifying:
-            state = .DisconnectingDueToButtonPress  // to avoid reconnect in didDisconnetPeripheral
+            state = .DisconnectingDueToUserRequest  // to avoid reconnect in didDisconnetPeripheral
             centralManager.cancelPeripheralConnection(peripheral!)
         case .Scanning:
-            state = .DisconnectingDueToButtonPress  // to avoid reconnect in didDisconnetPeripheral
+            state = .DisconnectingDueToUserRequest  // to avoid reconnect in didDisconnetPeripheral
             centralManager.stopScan()
         default:
             break
@@ -318,7 +321,6 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         os_log("Did discover peripheral while state %{public}@ with name: %{public} @and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
         
         if peripheral.name == deviceName {
-            
             self.peripheral = peripheral
             connect()
         }
@@ -339,6 +341,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             os_log("Did fail to connect peripheral error: %{public}@", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
         }
         state = .Disconnected
+        connect()
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -351,12 +354,11 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         
         
         switch state {
-        case .DisconnectingDueToButtonPress:
+        case .DisconnectingDueToUserRequest:
             state = .Disconnected
         default:
             state = .Disconnected
             connect()
-//            scanForMiaoMiao()
         }
         // Keep this code in case you want it some later time: it is used for reconnection only in background mode
         //        state = .Disconnected
