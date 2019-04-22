@@ -277,7 +277,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             centralManager.stopScan()
             centralManager.connect(peripheral, options: nil)
             state = .Connecting
-        }
+        } 
     }
     
     func disconnectDueToUserRequest() {
