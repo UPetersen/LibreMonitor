@@ -217,6 +217,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     fileprivate let deviceName = "miaomiao"
     fileprivate let serviceUUIDs:[CBUUID]? = [CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E")]
+    fileprivate let writeCharachteristicUUID = CBUUID(string: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E")
+    fileprivate let notifyCharacteristicUUID = CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E")
 
     var BLEScanDuration = 3.0
     weak var timer: Timer?
@@ -239,8 +241,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     override init() {
         super.init()
-        centralManager = CBCentralManager(delegate: self, queue: nil, options: nil)
-//        slipBuffer.delegate = self
+//        centralManager = CBCentralManager(delegate: self, queue: nil, options: nil)
+        centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true, CBCentralManagerOptionRestoreIdentifierKey: "LibreMonitorCoreBluetoothRestaurationKeyString"])
     }
     
     func scanForMiaoMiao() {
@@ -250,26 +252,19 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             os_log("Before scan for MiaoMiao while central manager state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: centralManager.state.rawValue))
             
             centralManager.scanForPeripherals(withServices: nil, options: nil)
-
             state = .Scanning
+            
             os_log("Before scan for MiaoMiao while central manager state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: centralManager.state.rawValue))
 //            print(centralManager.debugDescription)
         }
-//        // Set timer to check connection and reconnect if necessary
-//        timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: false) {_ in
-//            os_log("********** Reconnection timer fired in background **********", log: MiaoMiaoManager.bt_log, type: .default)
-//            if self.state != .Notifying {
-//                self.scanForMiaoMiao()
-//                //                NotificationManager.scheduleDebugNotification(message: "Reconnection timer fired in background", wait: 0.5)
-//            }
-//        }
     }
     
     func connect() {
-        // FIXME: Since I have two MiaoMiaos the one to connect to is hardcoded here. This is as long as I have not implemented a UI to choose which to connect to.
-        // identifiers are:
-        // First MiaoMiao:  A44638E4-B70F-DBE7-A519-C4E4DFED2066
-        // Second MiaoMiao: 3DE41921-6747-CDFD-D169-06EE86A81847
+        // FIXME: Since I have two MiaoMiaos the one which shall be connected is hardcoded here.
+        //        This is as long as I have not implemented a UI to choose which to connect to.
+        //        Identifiers  of these two MiaoMiaos are:
+        //           First MiaoMiao:  A44638E4-B70F-DBE7-A519-C4E4DFED2066
+        //           Second MiaoMiao: 3DE41921-6747-CDFD-D169-06EE86A81847
         os_log("Connect while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
 //        if let peripheral = peripheral {
         if let peripheral = peripheral, let identifier = UUID(uuidString: "3DE41921-6747-CDFD-D169-06EE86A81847"), peripheral.identifier == identifier {
@@ -277,13 +272,11 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             centralManager.stopScan()
             centralManager.connect(peripheral, options: nil)
             state = .Connecting
-        } 
+        }
     }
     
     func disconnectDueToUserRequest() {
         os_log("Disconnect on user request while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
-        //        NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 3)
-        //        _ = Timer(timeInterval: 150, repeats: false, block: {timer in NotificationManager.scheduleDebugNotification(message: "Timer fired in Background", wait: 0.5)})
         
         switch state {
         case .Connected, .Connecting, .Notifying:
@@ -295,16 +288,12 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         default:
             break
         }
-        //        if state == .Connected || peripheral?.state == .Connecting {
-        //            centralManager.cancelPeripheralConnection(peripheral!)
-        //        }
     }
     
     
     // MARK: - CBCentralManagerDelegate
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        
         os_log("Central Manager did update state to %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: central.state.rawValue))
         
         switch central.state {
@@ -313,6 +302,50 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         case .poweredOn:
             scanForMiaoMiao() // power was switched on, while app is running -> reconnect.
         }
+    }
+    
+
+    // State restauration to reconnect in the background if the app was suspended or killed by the system. 
+    func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
+        os_log("Central Manager will restore state to %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: dict.debugDescription))
+        if let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral] {
+            for peripheral in peripherals {
+                print(peripheral.description)
+                if peripheral.state == .disconnecting || peripheral.state == .disconnected {
+                    self.peripheral = peripheral
+                    self.state = .Disconnected
+                    connect()
+                } else {
+                    self.state = .Connected
+                    // peripheral should already be connected
+                }
+            }
+        } else {
+            switch central.state {
+            case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
+                state = .Unassigned
+            case .poweredOn:
+                scanForMiaoMiao() // power was switched on, while app is running -> reconnect.
+            }
+        }
+//        switch central.state {
+//        case .poweredOff, .resetting, .unauthorized, .unsupported:
+//            state = .Unassigned
+//        case .poweredOn, .unknown:
+//            if let peripheral = dict[CBCentralManagerRestoredStatePeripheralsKey] as? CBPeripheral {
+//                self.peripheral = peripheral
+//                // If the peripheral already exists:
+//                //   if disconnected, connect to it. Otherwhise it is already connected: disconnect and reconnect to get through the whole chain of methods.
+//                if peripheral.state == .disconnected || peripheral.state == .disconnecting {
+//                    connect()
+//                } else {
+//                    centralManager.cancelPeripheralConnection(peripheral)
+//                    connect()
+//                }
+//            } else {
+//                scanForMiaoMiao()
+//            }
+//        }
     }
     
     
@@ -331,7 +364,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         os_log("Did connect peripheral while state %{public}@ with name: %{public}@ and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
         state = .Connected
         // Discover all Services. This might be helpful if writing is needed some time
-        peripheral.discoverServices(nil)
+//        peripheral.discoverServices(nil)
+        peripheral.discoverServices(serviceUUIDs) // good practice to just discover the services, needed
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -380,11 +414,10 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             os_log("Did discover services error: %{public}@", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
         }
         
-        
         if let services = peripheral.services {
-            
             for service in services {
-                peripheral.discoverCharacteristics(nil, for: service)
+//                peripheral.discoverCharacteristics(nil, for: service)
+                peripheral.discoverCharacteristics([writeCharachteristicUUID, notifyCharacteristicUUID], for: service)
                 
                 os_log("Did discover service: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: service.debugDescription))
                 
@@ -402,20 +435,20 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         
     }
     
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverIncludedServicesFor service: CBService, error: Error?) {
-    
-        os_log("Did discover includes services", log: MiaoMiaoManager.bt_log, type: .default)
-        if let error = error {
-            os_log("Did discover included services error: %{public}@", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
-        }
-        
-        if let services = peripheral.services {
-            for service in services {
-                peripheral.discoverCharacteristics(nil, for: service)
-                os_log("Did discover included service: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: service.debugDescription))
-            }
-        }
-    }
+//    func peripheral(_ peripheral: CBPeripheral, didDiscoverIncludedServicesFor service: CBService, error: Error?) {
+//
+//        os_log("Did discover includes services", log: MiaoMiaoManager.bt_log, type: .default)
+//        if let error = error {
+//            os_log("Did discover included services error: %{public}@", log: MiaoMiaoManager.bt_log, type: .error ,  "\(error.localizedDescription)")
+//        }
+//
+//        if let services = peripheral.services {
+//            for service in services {
+//                peripheral.discoverCharacteristics(nil, for: service)
+//                os_log("Did discover included service: %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: service.debugDescription))
+//            }
+//        }
+//    }
     
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
@@ -451,13 +484,20 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
 //                }
 
                 // Choose the notifiying characteristic and Register to be notified whenever the MiaoMiao transmits
-                if (characteristic.properties.intersection(.notify)) == .notify && characteristic.uuid == CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E") {
+                if (characteristic.properties.intersection(.notify)) == .notify && characteristic.uuid == notifyCharacteristicUUID {
                     peripheral.setNotifyValue(true, for: characteristic)
                     os_log("Set notify value for this characteristic", log: MiaoMiaoManager.bt_log, type: .default)
                 }
-                if (characteristic.uuid == CBUUID(string: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E")) {
+                if (characteristic.uuid == writeCharachteristicUUID) {
                     writeCharacteristic = characteristic
                 }
+//                if (characteristic.properties.intersection(.notify)) == .notify && characteristic.uuid == CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E") {
+//                    peripheral.setNotifyValue(true, for: characteristic)
+//                    os_log("Set notify value for this characteristic", log: MiaoMiaoManager.bt_log, type: .default)
+//                }
+//                if (characteristic.uuid == CBUUID(string: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E")) {
+//                    writeCharacteristic = characteristic
+//                }
             }
         } else {
             os_log("Discovered characteristics, but no characteristics listed. There must be some error.", log: MiaoMiaoManager.bt_log, type: .default)
@@ -660,11 +700,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             }
         }
 
-        
         // Inform delegate that new data is available
         delegate?.miaoMiaoManagerDidUpdateSensorAndMiaoMiao(sensorData: sensorData!, miaoMiao: miaoMiao)
-
-        
         
     }
     

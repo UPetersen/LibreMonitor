@@ -34,11 +34,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.439519"
+            timestampString = "577648866.291815"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "499"
-            endingLineNumber = "499"
+            startingLineNumber = "539"
+            endingLineNumber = "539"
             landmarkName = "peripheral(_:didUpdateNotificationStateFor:error:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -50,11 +50,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.440287"
+            timestampString = "577648866.292717"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "588"
-            endingLineNumber = "588"
+            startingLineNumber = "628"
+            endingLineNumber = "628"
             landmarkName = "peripheral(_:didUpdateValueFor:error:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -66,11 +66,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.440873"
+            timestampString = "577648866.293166"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "590"
-            endingLineNumber = "590"
+            startingLineNumber = "630"
+            endingLineNumber = "630"
             landmarkName = "MiaoMiaoManager"
             landmarkType = "3">
          </BreakpointContent>
@@ -82,43 +82,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.4414411"
+            timestampString = "577648866.293587"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
-            landmarkName = "centralManager(_:didDiscover:advertisementData:rssi:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.442022"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
-            landmarkName = "centralManager(_:didDiscover:advertisementData:rssi:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.4425991"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
             landmarkName = "MiaoMiaoManager"
             landmarkType = "3">
          </BreakpointContent>
@@ -130,13 +98,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.443175"
+            timestampString = "577648866.294017"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
-            landmarkName = "centralManager(_:didDiscover:advertisementData:rssi:)"
-            landmarkType = "7">
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "MiaoMiaoManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -146,12 +114,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
-            timestampString = "577621088.4437619"
+            timestampString = "577648866.2944421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
-            landmarkName = "centralManager(_:didDiscover:advertisementData:rssi:)"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "MiaoMiaoManager"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
+            timestampString = "577648866.294867"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "MiaoMiaoManager"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LibreMonitor/AppDelegate.swift"
+            timestampString = "577648866.295294"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "application(_:didFinishLaunchingWithOptions:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LibreMonitor/Bluetooth/MiaoMiaoManager.swift"
+            timestampString = "577648866.295537"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "centralManager(_:willRestoreState:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

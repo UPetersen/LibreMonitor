@@ -414,7 +414,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     }
     
     
-    // MARK: MiaoMiaoManagerDelegate
+    // MARK: - MiaoMiaoManagerDelegate
 
     func miaoMiaoManagerPeripheralStateChanged(_ state: MiaoMiaoManagerState) {
         os_log("MiaMiao manager peripheral state changed to %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: state.rawValue))
