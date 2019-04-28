@@ -308,6 +308,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     // State restauration to reconnect in the background if the app was suspended or killed by the system. 
     func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
         os_log("Central Manager will restore state to %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: dict.debugDescription))
+        NotificationManager.scheduleApplicationCentralManagerWillRestoreStateNotification(message: dict.debugDescription, wait: 12)
         if let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral] {
             for peripheral in peripherals {
                 print(peripheral.description)
@@ -316,7 +317,11 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                     self.state = .Disconnected
                     connect()
                 } else {
+                    self.peripheral = peripheral
+                    peripheral.delegate = self
                     self.state = .Connected
+                    peripheral.discoverServices(serviceUUIDs) // good practice to just discover the services, needed
+
                     // peripheral should already be connected
                 }
             }

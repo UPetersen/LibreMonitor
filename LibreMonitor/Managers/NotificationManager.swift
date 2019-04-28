@@ -22,6 +22,8 @@ struct NotificationManager {
         case applicationTerminated
         case didRecieveMemoryWarning
         case debug
+        case didLaunchApplication
+        case willRestorState
     }
     
     static var timeFormatter: DateFormatter = {
@@ -252,8 +254,54 @@ struct NotificationManager {
     }
     
     
-
     
+    /// Application did launch local notification.
+    ///
+    /// This notification is scheduled each time LibreMonitor is launched. This aims at debbuging and especially observing if the application is launche by the system in the background
+    static func scheduleApplicationCentralManagerWillRestoreStateNotification(message: String = "", wait: TimeInterval = TimeInterval(10)) {
+        
+        let content = UNMutableNotificationContent()
+        content.title = "LibreMonitor will restore state"
+        content.subtitle = "at \(timeFormatter.string(from: Date()))"
+        content.body = message
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
+        
+        let request = UNNotificationRequest(
+            identifier: Category.didLaunchApplication.rawValue,
+            content: content,
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    
+    
+    /// Application did launch local notification.
+    ///
+    /// This notification is scheduled each time LibreMonitor is launched. This aims at debbuging and especially observing if the application is launche by the system in the background
+    static func scheduleApplicationDidLaunchApplicationNotification(message: String = "", wait: TimeInterval = TimeInterval(10)) {
+        
+        let content = UNMutableNotificationContent()
+        content.title = "LibreMonitor did launch application"
+        content.subtitle = "at \(timeFormatter.string(from: Date()))"
+        content.body = message
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: wait, repeats: false)
+        
+        let request = UNNotificationRequest(
+            identifier: Category.didLaunchApplication.rawValue,
+            content: content,
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    
+    
+
 //    // MARK: - Set alternative app icon
 //    static func setAlternativeAppIconForGlucoseDelta(_ delta: Double) {
 //

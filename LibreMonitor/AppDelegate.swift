@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // Allow local notifications for iOS 10
          NotificationManager.authorize(delegate: self)
+        NotificationManager.scheduleApplicationDidLaunchApplicationNotification(message: launchOptions.debugDescription, wait: 10)
         
         // Override point for customization after application launch.
 //        let splitViewController = self.window!.rootViewController as! UISplitViewController
