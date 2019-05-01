@@ -241,7 +241,6 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     override init() {
         super.init()
-//        centralManager = CBCentralManager(delegate: self, queue: nil, options: nil)
         centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true, CBCentralManagerOptionRestoreIdentifierKey: "LibreMonitorCoreBluetoothRestaurationKeyString"])
     }
     
@@ -266,8 +265,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         //           First MiaoMiao:  A44638E4-B70F-DBE7-A519-C4E4DFED2066
         //           Second MiaoMiao: 3DE41921-6747-CDFD-D169-06EE86A81847
         os_log("Connect while state %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue))
-//        if let peripheral = peripheral {
-        if let peripheral = peripheral, let identifier = UUID(uuidString: "3DE41921-6747-CDFD-D169-06EE86A81847"), peripheral.identifier == identifier {
+        if let peripheral = peripheral {
+//        if let peripheral = peripheral, let identifier = UUID(uuidString: "3DE41921-6747-CDFD-D169-06EE86A81847"), peripheral.identifier == identifier {
             peripheral.delegate = self
             centralManager.stopScan()
             centralManager.connect(peripheral, options: nil)
@@ -314,6 +313,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                 print(peripheral.description)
                 if peripheral.state == .disconnecting || peripheral.state == .disconnected {
                     self.peripheral = peripheral
+                    peripheral.delegate = self
                     self.state = .Disconnected
                     connect()
                 } else {
@@ -321,36 +321,16 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                     peripheral.delegate = self
                     self.state = .Connected
                     peripheral.discoverServices(serviceUUIDs) // good practice to just discover the services, needed
-
-                    // peripheral should already be connected
                 }
             }
         } else {
             switch central.state {
             case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
                 state = .Unassigned
-            case .poweredOn:
-                scanForMiaoMiao() // power was switched on, while app is running -> reconnect.
+            case .poweredOn: // Scanning will not work in background with MiaoMiao (since MiaoMiao does not advertise its services)
+                scanForMiaoMiao() // power was switched on, while app is running
             }
         }
-//        switch central.state {
-//        case .poweredOff, .resetting, .unauthorized, .unsupported:
-//            state = .Unassigned
-//        case .poweredOn, .unknown:
-//            if let peripheral = dict[CBCentralManagerRestoredStatePeripheralsKey] as? CBPeripheral {
-//                self.peripheral = peripheral
-//                // If the peripheral already exists:
-//                //   if disconnected, connect to it. Otherwhise it is already connected: disconnect and reconnect to get through the whole chain of methods.
-//                if peripheral.state == .disconnected || peripheral.state == .disconnecting {
-//                    connect()
-//                } else {
-//                    centralManager.cancelPeripheralConnection(peripheral)
-//                    connect()
-//                }
-//            } else {
-//                scanForMiaoMiao()
-//            }
-//        }
     }
     
     
