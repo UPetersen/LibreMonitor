@@ -102,7 +102,7 @@ final class BloodGlucoseEntryEditTableViewController: UITableViewController {
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         bloodGlucose?.managedObjectContext?.undoManager?.endUndoGrouping()
         bloodGlucose?.managedObjectContext?.undoManager?.removeAllActions()
-        try? bloodGlucose?.managedObjectContext?.save()
+        ((try? bloodGlucose?.managedObjectContext?.save()) as ()??)
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     

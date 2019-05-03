@@ -32,7 +32,7 @@ final class GlucoseCDTVC: FetchedResultsTableViewController {
             request.predicate = nil // all
             fetchedResultsController = NSFetchedResultsController<BloodGlucose>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
             fetchedResultsController?.delegate = self
-            try? fetchedResultsController?.performFetch()
+            ((try? fetchedResultsController?.performFetch()) as ()??)
             tableView.reloadData()
         }
     }

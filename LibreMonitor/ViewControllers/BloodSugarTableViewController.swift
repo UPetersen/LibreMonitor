@@ -503,7 +503,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                         uploader?.processFreestyleLibreHistoryEntries(nightscoutEntries: nightscoutEntries)
                         nightscoutEntries = []
                     }
-                    try? persistentContainer?.viewContext.save()
+                    ((try? persistentContainer?.viewContext.save()) as ()??)
                     
                 } catch {
                     fatalError("Failed to fetch BloodGlucose: \(error)")

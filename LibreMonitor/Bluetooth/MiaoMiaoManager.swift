@@ -300,6 +300,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             state = .Unassigned
         case .poweredOn:
             scanForMiaoMiao() // power was switched on, while app is running -> reconnect.
+        @unknown default:
+            fatalError("Failed due to unkown default, Uwe!")
         }
     }
     
@@ -329,6 +331,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                 state = .Unassigned
             case .poweredOn: // Scanning will not work in background with MiaoMiao (since MiaoMiao does not advertise its services)
                 scanForMiaoMiao() // power was switched on, while app is running
+            @unknown default:
+                fatalError("Failed due to unkown default, Uwe!")
             }
         }
     }
@@ -626,7 +630,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     // Confirm (to replace) the sensor. Iif a new sensor is detected and shall be used, send this command (0xD301)
     func confirmSensor() {
         if let writeCharacteristic = writeCharacteristic {
-            peripheral?.writeValue(Data.init(bytes: [0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
+            peripheral?.writeValue(Data([0xD3, 0x01]), for: writeCharacteristic, type: .withResponse)
         }
     }
     
@@ -635,14 +639,14 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
             confirmSensor()
             resetBuffer()
             timer?.invalidate()
-            peripheral?.writeValue(Data.init(bytes: [0xF0]), for: writeCharacteristic, type: .withResponse)
+            peripheral?.writeValue(Data([0xF0]), for: writeCharacteristic, type: .withResponse)
         }
     }
     
     func testL2Transmission() {
         if let writeCharacteristic = writeCharacteristic {
 //            peripheral?.writeValue(Data.init(bytes: [0x00, 0xfa, 0x01]), for: writeCharacteristic, type: .withResponse)
-            peripheral?.writeValue(Data.init(bytes: [0x02, 0xfa, 0x00]), for: writeCharacteristic, type: .withResponse)
+            peripheral?.writeValue(Data([0x02, 0xfa, 0x00]), for: writeCharacteristic, type: .withResponse)
 //            peripheral?.writeValue(Data.init(bytes: [0x04, 0xfa, 0x02]), for: writeCharacteristic, type: .withResponse)
 //            peripheral?.writeValue(Data.init(bytes: [0x01, 0x0000, 0x0008]), for: writeCharacteristic, type: .withResponse)
         }

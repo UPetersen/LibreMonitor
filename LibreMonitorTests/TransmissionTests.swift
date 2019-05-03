@@ -9,8 +9,8 @@
 import Foundation
 
 import XCTest
-//@testable import Pods_LibreMonitor
-@testable import LibreMonitor
+@testable import Pods_LibreMonitor
+//@testable import LibreMonitor
 
 class TransmissionTests: XCTestCase {
 

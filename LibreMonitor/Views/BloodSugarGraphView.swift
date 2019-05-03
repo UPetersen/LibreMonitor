@@ -132,7 +132,7 @@ final class BloodSugarGraphView: LineChartView {
             let timeIntervall = $0.date.timeIntervalSince1970
             trendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
         }
-        let trendLineChartDataSet = LineChartDataSet(values: trendEntries, label: "Trend")
+        let trendLineChartDataSet = LineChartDataSet(entries: trendEntries, label: "Trend")
         trendLineChartDataSet.drawValuesEnabled = false
         return trendLineChartDataSet
     }
@@ -144,7 +144,7 @@ final class BloodSugarGraphView: LineChartView {
             let timeIntervall = $0.date.timeIntervalSince1970
             historyEntries.append(ChartDataEntry(x: timeIntervall, y: $0.glucose))
         }
-        let historyLineChartDataSet = LineChartDataSet(values: historyEntries, label: "History")
+        let historyLineChartDataSet = LineChartDataSet(entries: historyEntries, label: "History")
         historyLineChartDataSet.setColor(NSUIColor.blue, alpha: CGFloat(1.0))
         historyLineChartDataSet.setCircleColor(NSUIColor.blue)
         return historyLineChartDataSet
@@ -164,7 +164,7 @@ final class BloodSugarGraphView: LineChartView {
                 oopHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: oopCurrentValue.currentBg))
             }
         }
-        let oopHistoryLineChartDataSet = LineChartDataSet(values: oopHistoryEntries, label: "OOP")
+        let oopHistoryLineChartDataSet = LineChartDataSet(entries: oopHistoryEntries, label: "OOP")
         oopHistoryLineChartDataSet.setColor(NSUIColor.red, alpha: CGFloat(1.0))
         oopHistoryLineChartDataSet.setCircleColor(NSUIColor.red)
         oopHistoryLineChartDataSet.circleRadius = 3.0
@@ -181,7 +181,7 @@ final class BloodSugarGraphView: LineChartView {
             let timeIntervall = $0.date.timeIntervalSince1970
             newTrendEntries.append(ChartDataEntry(x: timeIntervall, y: $0.temperatureAlgorithmGlucose))
         }
-        let newTrendLineChartDataSet = LineChartDataSet(values: newTrendEntries, label: "New Trend")
+        let newTrendLineChartDataSet = LineChartDataSet(entries: newTrendEntries, label: "New Trend")
         newTrendLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
         newTrendLineChartDataSet.setCircleColor(NSUIColor.darkGray)
         newTrendLineChartDataSet.circleRadius = 3.0
@@ -195,7 +195,7 @@ final class BloodSugarGraphView: LineChartView {
             let timeIntervall = $0.date.timeIntervalSince1970 // Test - TimeInterval(60*5)
             newHistoryEntries.append(ChartDataEntry(x: timeIntervall, y: $0.temperatureAlgorithmGlucose))
         }
-        let newHistoryLineChartDataSet = LineChartDataSet(values: newHistoryEntries, label: "New History")
+        let newHistoryLineChartDataSet = LineChartDataSet(entries: newHistoryEntries, label: "New History")
         newHistoryLineChartDataSet.setColor(NSUIColor.darkGray, alpha: CGFloat(1.0))
         newHistoryLineChartDataSet.setCircleColor(NSUIColor.darkGray)
         newHistoryLineChartDataSet.circleRadius = 3.0
@@ -219,7 +219,7 @@ final class BloodSugarGraphView: LineChartView {
         let p4 = p3 + 0.65 * (p3 - p1) + 0.2 * (p3 - p2)
         let t4 = trendMeasurements[2].date.timeIntervalSince1970 + 0.8 * (trendMeasurements[2].date.timeIntervalSince1970 - trendMeasurements[12].date.timeIntervalSince1970)
         testEntries.append(ChartDataEntry(x: t4, y: p4))
-        let testLineChartDataSet = LineChartDataSet(values: testEntries, label: "Test")
+        let testLineChartDataSet = LineChartDataSet(entries: testEntries, label: "Test")
         testLineChartDataSet.setColor(NSUIColor.brown, alpha: CGFloat(1.0))
         testLineChartDataSet.setCircleColor(NSUIColor.brown)
         testLineChartDataSet.circleRadius = 3.0
@@ -238,7 +238,7 @@ final class BloodSugarGraphView: LineChartView {
                 }
             }
         }
-        let fetchedGlucosesLineChartDataSet = LineChartDataSet(values: fetchedGlucosesEntries, label: "current")
+        let fetchedGlucosesLineChartDataSet = LineChartDataSet(entries: fetchedGlucosesEntries, label: "current")
         fetchedGlucosesLineChartDataSet.setColor(NSUIColor.brown, alpha: CGFloat(1.0))
         fetchedGlucosesLineChartDataSet.setCircleColor(NSUIColor.brown)
         fetchedGlucosesLineChartDataSet.circleRadius = 3.0

@@ -40,7 +40,8 @@ class LibreUtils {
         modifiedPatch += patch[320..<344] // footer
         
         // 2018-11-03: Uwe: fake uuid
-        return SensorData(uuid: Data(bytes: [0x00]), bytes: modifiedPatch)!.bytesWithCorrectCRC()
+        return SensorData(uuid: Data([0x00]), bytes: modifiedPatch)!.bytesWithCorrectCRC()
+//        return SensorData(uuid: Data(bytes: [0x00]), bytes: modifiedPatch)!.bytesWithCorrectCRC()
 //        return SensorData(bytes: modifiedPatch)!.bytesWithCorrectCRC()
         
     }
