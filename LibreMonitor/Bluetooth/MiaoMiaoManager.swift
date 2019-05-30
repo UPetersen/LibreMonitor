@@ -195,7 +195,7 @@ extension MiaoMiaoResponseState: CustomStringConvertible {
     }
 }
 
-protocol MiaoMiaoManagerDelegate {
+protocol MiaoMiaoManagerDelegate: class {
     func miaoMiaoManagerPeripheralStateChanged(_ state: MiaoMiaoManagerState)
     func miaoMiaoManagerReceivedMessage(_ messageIdentifier:UInt16, txFlags:UInt8, payloadData:Data)
     func miaoMiaoManagerDidUpdateSensorAndMiaoMiao(sensorData: SensorData, miaoMiao: MiaoMiao) -> Void
@@ -223,7 +223,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     var BLEScanDuration = 3.0
     weak var timer: Timer?
     
-    var delegate: MiaoMiaoManagerDelegate? {
+    weak var delegate: MiaoMiaoManagerDelegate? {
         didSet {
             // Help delegate initialize by sending current state directly after delegate assignment
             delegate?.miaoMiaoManagerPeripheralStateChanged(state)
@@ -328,12 +328,12 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                 peripheral.delegate = self
                 switch peripheral.state {
                 case .disconnected, .disconnecting:
-                    self.state = .Disconnected
+                    state = .Disconnected
                     connect()
                 case .connecting:
-                    self.state = .Connecting
+                    state = .Connecting
                 case .connected:
-                    self.state = .Connected
+                    state = .Connected
                     peripheral.discoverServices(serviceUUIDs) // good practice to just discover the services, needed
                 @unknown default:
                     fatalError("Failed due to unkown default, Uwe!")
@@ -552,25 +552,26 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
                     if let miaoMiaoResponseState = miaoMiaoResponseState {
                         switch miaoMiaoResponseState {
                         case .dataPacketReceived: // 0x28: // data received, append to buffer and inform delegate if end reached
-                            
-                            // Set timer to check if data is still uncomplete after a certain time frame
-                            // Any old buffer is invalidated and a new buffer created with every reception of data
-                            timer?.invalidate()
-                            timer = Timer.scheduledTimer(withTimeInterval: 8, repeats: false) { _ in
-                                os_log("********** MiaoMiaoManagertimer fired **********", log: MiaoMiaoManager.bt_log, type: .default)
-                                if self.rxBuffer.count >= 364 {
-                                    // buffer large enough and can be used
-                                    os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
-                                    self.delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x29, payloadData: self.rxBuffer)
-                                    self.handleCompleteMessage()
 
-                                    self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
-                                } else {
-                                    // buffer not large enough and has to be reset
-                                    os_log("Buffer incomplete and not large enough, reset buffer and request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
-                                    self.requestData()
-                                }
-                            }
+                            //Not needed any more with current firmware. If reused, use [weak self] to avoid retain cycle
+//                            // Set timer to check if data is still uncomplete after a certain time frame
+//                            // Any old buffer is invalidated and a new buffer created with every reception of data
+//                            timer?.invalidate()
+//                            timer = Timer.scheduledTimer(withTimeInterval: 8, repeats: false) { _ in
+//                                os_log("********** MiaoMiaoManagertimer fired **********", log: MiaoMiaoManager.bt_log, type: .default)
+//                                if self.rxBuffer.count >= 364 {
+//                                    // buffer large enough and can be used
+//                                    os_log("Buffer incomplete but large enough, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
+//                                    self.delegate?.miaoMiaoManagerReceivedMessage(0x0000, txFlags: 0x29, payloadData: self.rxBuffer)
+//                                    self.handleCompleteMessage()
+//
+//                                    self.rxBuffer = Data()  // reset buffer, once completed and delegate is informed
+//                                } else {
+//                                    // buffer not large enough and has to be reset
+//                                    os_log("Buffer incomplete and not large enough, reset buffer and request new data, again", log: MiaoMiaoManager.bt_log, type: .default)
+//                                    self.requestData()
+//                                }
+//                            }
                             
                             if rxBuffer.count >= 363 && rxBuffer.last! == 0x29 {
                                 os_log("Buffer complete, inform delegate.", log: MiaoMiaoManager.bt_log, type: .default)
@@ -688,8 +689,8 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         // Check if sensor data is valid and, if this is not the case, request data again after thirty second
         if let sensorData = sensorData {
             if !(sensorData.hasValidHeaderCRC && sensorData.hasValidBodyCRC && sensorData.hasValidFooterCRC) {
-                Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {_ in
-                    self.requestData()
+                Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: {[weak self] _ in
+                    self?.requestData()
                 })
             }
         }

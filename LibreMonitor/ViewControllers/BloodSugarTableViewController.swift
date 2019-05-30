@@ -22,7 +22,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     static let bt_log = OSLog(subsystem: "com.LibreMonitor", category: "BloodSugarTableViewController")
     
     var persistentContainer: NSPersistentContainer?
-    var miaoMiaoManager: MiaoMiaoManager!
+    weak var miaoMiaoManager: MiaoMiaoManager!
 
     var uploader: NightscoutUploader?
     private(set) var nightscoutEntries = [NightscoutEntry]()
@@ -34,7 +34,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     var fetchedGlucoses: [BloodGlucose]?
     var oopCurrentValue: OOPCurrentValue? {
         didSet {
-            self.tableView.reloadData()
+            tableView.reloadData()
             print("----------------------- \n\n\n DID SET IT \n\n\n ----------------------------")
 //            if let oopCurrentValue = oopCurrentValue {
 
@@ -100,7 +100,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         super.viewDidLoad()
         miaoMiaoManager.delegate = self
 
-        self.navigationItem.title = "LibreMonitor"
+        navigationItem.title = "LibreMonitor"
         if let site = UserDefaults.standard.nightscoutSite,
             let siteURL = URL.init(string: site),
             let apiSecret = UserDefaults.standard.nightscoutAPISecret {
@@ -109,7 +109,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
         
         let connectButtonTitle = connectButtonTitleForMiaoMiaoState(miaoMiaoManager.state)
         let conncectButton = UIBarButtonItem(title: connectButtonTitle, style: .plain, target: self, action: #selector(BloodSugarTableViewController.didTapConnectButton))
-        self.navigationItem.rightBarButtonItem = conncectButton
+        navigationItem.rightBarButtonItem = conncectButton
         
         dateFormatter.dateFormat = "yyyy-MM-dd"
         timeFormatter.dateFormat = "HH:mm:ss"
@@ -148,7 +148,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     
     @objc func updateTableView() {
         os_log("Update table view", log: BloodSugarTableViewController.bt_log, type: .default)
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -192,7 +192,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
             return theCell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-            self.configureCell(cell, atIndexPath: indexPath)
+            configureCell(cell, atIndexPath: indexPath)
             return cell
         }
     }
@@ -288,9 +288,18 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                 cell.textLabel?.text = "Glucose"
                 
                 if let trendMeasurements = trendMeasurements {
-                    let currentGlucose = trendMeasurements[0].glucose
-                    let longDelta = currentGlucose - trendMeasurements[15].glucose
-                    let shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
+                    let currentGlucose: Double
+                    let longDelta: Double
+                    let shortDelta: Double
+                    if trendMeasurements[0].temperatureAlgorithmGlucose >= 0 {
+                        currentGlucose = trendMeasurements[0].temperatureAlgorithmGlucose
+                        longDelta = currentGlucose - trendMeasurements[15].temperatureAlgorithmGlucose
+                        shortDelta = (currentGlucose - trendMeasurements[8].temperatureAlgorithmGlucose) * 2.0 * 16.0/15.0
+                    } else {
+                        currentGlucose = trendMeasurements[0].glucose
+                        longDelta = currentGlucose - trendMeasurements[15].glucose
+                        shortDelta = (currentGlucose - trendMeasurements[8].glucose) * 2.0 * 16.0/15.0
+                    }
                     let longPrediction = currentGlucose + longDelta
                     let shortPrediction = currentGlucose + shortDelta
                     cell.detailTextLabel?.text = String(format: "%0.0f, Delta: %0.0f (%0.0f), Prognosis: %0.0f (%0.0f)", arguments: [currentGlucose, longDelta, shortDelta, longPrediction, shortPrediction])
@@ -419,7 +428,7 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     func miaoMiaoManagerPeripheralStateChanged(_ state: MiaoMiaoManagerState) {
         os_log("MiaMiao manager peripheral state changed to %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: state.rawValue))
         
-        self.navigationItem.rightBarButtonItem?.title? = connectButtonTitleForMiaoMiaoState(state)
+        navigationItem.rightBarButtonItem?.title? = connectButtonTitleForMiaoMiaoState(state)
         
         switch state {
         case .Unassigned, .Connecting, .Connected, .Scanning, .DisconnectingDueToUserRequest, .Disconnected:
@@ -541,8 +550,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
     // TODO: This way the whole section is reloaded every five seconds. Solve this by moving the displayed time into a table view row or dedicated view
     func resetTimer() {
         timer.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: {timer in
-            self.tableView.reloadSections(IndexSet(integer: Section.graphHeader.rawValue), with: .none)
+        timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(5), repeats: true, block: { [weak self] timer in
+            self?.tableView.reloadSections(IndexSet(integer: Section.graphHeader.rawValue), with: .none)
         })
     }
 
@@ -674,8 +683,8 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                     // In case of timeout, the success parameter will be false, errormessage will have contents
                     // and the response will be "N/A"
                     // In case of success, response will be containing the result of the Algorithm
-                    libreOOPClient.getStatusIntervalled(uuid: uuid, { (success, errormessage, oopCurrentValue, newSstate) in
-                        self.oopCurrentValue = oopCurrentValue
+                    libreOOPClient.getStatusIntervalled(uuid: uuid, { [weak self] (success, errormessage, oopCurrentValue, newSstate) in
+                        self?.oopCurrentValue = oopCurrentValue
                         NSLog("GetStatusIntervalled returned with success?: \(success), error: \(errormessage), response: \(oopCurrentValue.debugDescription), newstate: \(newSstate)")
                     })
                 }

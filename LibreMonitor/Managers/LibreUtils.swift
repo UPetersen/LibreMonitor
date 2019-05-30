@@ -47,7 +47,7 @@ class LibreUtils {
     }
     
     public static func GetParsedOOPResult(patch: [UInt8]) -> OOPCurrentValue? {
-        let client = LibreOOPClient(accessToken: self.accessToken)
+        let client = LibreOOPClient(accessToken: accessToken)
         var result : OOPCurrentValue? = nil
         let awaiter = DispatchSemaphore(value: 0)
         
@@ -86,7 +86,7 @@ class LibreUtils {
     }
 
     public static func GetParsedOOPResultAsync(patch: [UInt8]) -> OOPCurrentValue? {
-        let client = LibreOOPClient(accessToken: self.accessToken)
+        let client = LibreOOPClient(accessToken: accessToken)
         var result : OOPCurrentValue? = nil
 //        let awaiter = DispatchSemaphore(value: 0)
         

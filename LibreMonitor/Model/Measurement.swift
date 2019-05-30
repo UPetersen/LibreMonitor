@@ -88,7 +88,7 @@ struct Measurement {
             self.temperatureAlgorithmGlucose = 0
         }
         
-        print(self.description)
+        print(description)
     }
     
 //
