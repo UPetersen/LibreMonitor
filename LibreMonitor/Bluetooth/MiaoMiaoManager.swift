@@ -299,7 +299,18 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
             state = .Unassigned
         case .poweredOn:
-            scanForMiaoMiao() // power was switched on, while app is running -> reconnect.
+            if delegate != nil && peripheral != nil { // do not scan if already connected
+                switch peripheral!.state {
+                case .disconnected, .disconnecting:
+                    connect()
+                case .connected:
+                    peripheral!.discoverServices(serviceUUIDs) // good practice to just discover the services, needed
+                default:
+                    print("already connected")
+                }
+            } else {
+                scanForMiaoMiao() // power was switched on, while app is running -> reconnect.
+            }
         @unknown default:
             fatalError("Failed due to unkown default, Uwe!")
         }
@@ -313,26 +324,20 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
         if let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral] {
             for peripheral in peripherals {
                 print(peripheral.description)
-                if peripheral.state == .disconnecting || peripheral.state == .disconnected {
-                    self.peripheral = peripheral
-                    peripheral.delegate = self
+                self.peripheral = peripheral
+                peripheral.delegate = self
+                switch peripheral.state {
+                case .disconnected, .disconnecting:
                     self.state = .Disconnected
                     connect()
-                } else {
-                    self.peripheral = peripheral
-                    peripheral.delegate = self
+                case .connecting:
+                    self.state = .Connecting
+                case .connected:
                     self.state = .Connected
                     peripheral.discoverServices(serviceUUIDs) // good practice to just discover the services, needed
+                @unknown default:
+                    fatalError("Failed due to unkown default, Uwe!")
                 }
-            }
-        } else {
-            switch central.state {
-            case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
-                state = .Unassigned
-            case .poweredOn: // Scanning will not work in background with MiaoMiao (since MiaoMiao does not advertise its services)
-                scanForMiaoMiao() // power was switched on, while app is running
-            @unknown default:
-                fatalError("Failed due to unkown default, Uwe!")
             }
         }
     }

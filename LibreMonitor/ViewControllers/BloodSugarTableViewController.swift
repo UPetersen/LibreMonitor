@@ -480,7 +480,23 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                         }
                         ///* 2018-10-27: Skip storing history data in core data for test purposes
                         // Store if there isn't a measurement yet for this time and if it is a possible value (i.e. greater than zero and greater than offset)
-                        if storeMeasurement && (UserDefaults.standard.glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+//                        if storeMeasurement && (UserDefaults.standard.glucoseOffset < measurement.glucose) && (0.0 < measurement.glucose) {
+//
+//                            fetchedBloodGlucoses?.forEach({ bloodGlucose in
+//                                os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
+//                            })
+//                            os_log("Store this one: %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, measurement.description)
+//
+//                            let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
+//                            glucose.bytes = measurement.byteString
+//                            glucose.value = measurement.glucose
+//                            glucose.date = measurement.date as NSDate
+//                            glucose.dateString = dateFormatter.string(from: measurement.date)
+//
+//                            // Prepare for nightscout
+//                            nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
+//                        }
+                        if storeMeasurement && (0.0 < measurement.temperatureAlgorithmGlucose) {
                             
                             fetchedBloodGlucoses?.forEach({ bloodGlucose in
                                 os_log("Fetched Glucose %{public}@", log: BloodSugarTableViewController.bt_log, type: .default, String(describing: "\(bloodGlucose.value) at \(String(describing: bloodGlucose.date))"))
@@ -489,12 +505,12 @@ final class BloodSugarTableViewController: UITableViewController, MiaoMiaoManage
                             
                             let glucose = BloodGlucose(context: (persistentContainer?.viewContext)!)
                             glucose.bytes = measurement.byteString
-                            glucose.value = measurement.glucose
+                            glucose.value = measurement.temperatureAlgorithmGlucose
                             glucose.date = measurement.date as NSDate
                             glucose.dateString = dateFormatter.string(from: measurement.date)
                             
                             // Prepare for nightscout
-                            nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.glucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
+                            nightscoutEntries.append(NightscoutEntry(glucose: Int(measurement.temperatureAlgorithmGlucose), timestamp: measurement.date, device: "LibreMonitor", glucoseType: .Sensor))
                         }
                         //*/
                     })
