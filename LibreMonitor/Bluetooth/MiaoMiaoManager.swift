@@ -345,7 +345,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        os_log("Did discover peripheral while state %{public}@ with name: %{public} @and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
+        os_log("Did discover peripheral while state %{public}@ with name: %{public}@ and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
         
         if let deviceName = peripheral.name, deviceName.hasPrefix(deviceNamePrefix) {
             self.peripheral = peripheral
