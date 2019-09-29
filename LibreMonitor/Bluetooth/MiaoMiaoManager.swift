@@ -215,7 +215,7 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     var rxBuffer = Data()
     var sensorData: SensorData?
     
-    fileprivate let deviceName = "miaomiao"
+    fileprivate let deviceNamePrefix = "miaomiao"
     fileprivate let serviceUUIDs:[CBUUID]? = [CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E")]
     fileprivate let writeCharachteristicUUID = CBUUID(string: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E")
     fileprivate let notifyCharacteristicUUID = CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E")
@@ -345,9 +345,9 @@ final class MiaoMiaoManager: NSObject, CBCentralManagerDelegate, CBPeripheralDel
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
-        os_log("Did discover peripheral while state %{public}@ with name: %{public} @and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
+        os_log("Did discover peripheral while state %{public}@ with name: %{public}@ and uuid/identifier %{public}@", log: MiaoMiaoManager.bt_log, type: .default, String(describing: state.rawValue), String(describing: peripheral.name), String(describing: peripheral.identifier))
         
-        if peripheral.name == deviceName {
+        if let deviceName = peripheral.name, deviceName.hasPrefix(deviceNamePrefix) {
             self.peripheral = peripheral
             connect()
         }
